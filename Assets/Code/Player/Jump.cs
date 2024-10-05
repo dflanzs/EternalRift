@@ -1,5 +1,7 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
+using Unity.Burst.Intrinsics;
 using Unity.VisualScripting;
 using UnityEngine;
 
@@ -8,7 +10,8 @@ using UnityEngine;
 public class Jump : MonoBehaviour {
 
     [SerializeField] private Transform _groundCheck;
-    [SerializeField] private float _jumpForce = 5f;
+    [SerializeField] private float _jumpForce = 5.0f;
+    [SerializeField] private float _maxVelocity = 45.0f;
 
     private Rigidbody2D _body;
 
@@ -20,6 +23,7 @@ public class Jump : MonoBehaviour {
         _body = GetComponent<Rigidbody2D>();
     }
 
+    // Called onece per frame
     private void Update() {
 
         _grounded = false;
@@ -42,5 +46,11 @@ public class Jump : MonoBehaviour {
 
         if(Input.GetKeyUp(KeyCode.Space) && _body.velocity.y > 0)
             _body.velocity = new Vector2(-_body.velocity.x,0);
+        
+
+        // Cant go faster than maxVelocity. Avoids clipping through floors
+        if(_body.velocity.y < -_maxVelocity)
+            _body.velocity = new Vector2(_body.velocity.x,Mathf.Clamp(_body.velocity.y, -_maxVelocity,Mathf.Infinity));
+        
     }
 }
