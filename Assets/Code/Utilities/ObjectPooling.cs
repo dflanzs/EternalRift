@@ -42,7 +42,7 @@ public class ObjectPooling : MonoBehaviour
         addToPool(buleetsPoolSize, enemiesPoolSize);
     }
 
-    private GameObject whichEnemy(){
+    private GameObject WhichEnemy(){
         int selector = Random.Range(-1, 1);
         
         if (selector > 0){
@@ -68,7 +68,7 @@ public class ObjectPooling : MonoBehaviour
 
         for (int i = 0; i < enemiesPoolSize; i++)
         {
-            GameObject instantiatedPrefab = Instantiate(whichEnemy());
+            GameObject instantiatedPrefab = Instantiate(WhichEnemy());
             instantiatedPrefab.SetActive(false);
 
             // Metemos los objetos a la lista
