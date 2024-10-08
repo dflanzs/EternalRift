@@ -12,11 +12,6 @@ public class ObjectPooling : MonoBehaviour
     public int enemiesPoolSize;
     public Vector3 position;
 
-    /* 
-    * Para poder usar la pool desde otros scripts vamos a usar el patrón Singleton. 
-    * Permite que tengamos una única instancia de la pool y que podamos acceder a los métodos desde otros scripts fácilmente
-    */
-
     private static ObjectPooling poolInstance;
 
     public static ObjectPooling Instance
@@ -92,7 +87,7 @@ public class ObjectPooling : MonoBehaviour
             }
             return null;
         } 
-        else if (objectType == "Meteor")
+        else if (objectType == "Enemy")
         {
             for (int i = 0; i < enemiesPool.Count; i++)
             {
