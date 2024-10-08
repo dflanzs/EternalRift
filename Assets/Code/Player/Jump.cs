@@ -6,9 +6,9 @@ using UnityEngine;
 [RequireComponent(typeof(CapsuleCollider2D))]
 public class Jump : MonoBehaviour {
 
-    [SerializeField] private Transform _groundCheck;
-    [SerializeField] private float _jumpForce = 5.0f;
-    [SerializeField] private float _maxVelocity = 45.0f;
+    [SerializeField] private Transform _groundCheck; // Position of the player "feet", add a gameobject
+    [SerializeField] private float _jumpForce = 6.75f; // Jump Force
+    [SerializeField] private float _maxVelocity = 45.0f; // Max vertical velocity
 
     private Rigidbody2D _body;
 
