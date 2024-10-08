@@ -576,9 +576,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _groundCheck: {fileID: 774590655}
-  _jumpForce: 5.5
+  _jumpForce: 6.75
   _maxVelocity: 45
-  _grounded: 0
 --- !u!70 &1959376437
 CapsuleCollider2D:
   m_ObjectHideFlags: 0
