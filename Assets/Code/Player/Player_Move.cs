@@ -9,7 +9,7 @@ public class Player_Move : MonoBehaviour
     
     [SerializeField] private float _velocidad = 7f; //ajustar velocidad seg�n veamos
     [SerializeField] private float _maxVelocidad = 15f;//maxima velocidad permitida
-    [SerializeField] private float _aceleracion = 5f;//la aceleracion para crear un movimiento m�s fluido y no sea muy rigido
+    [SerializeField] private float _aceleracion = 20f;//la aceleracion para crear un movimiento m�s fluido y no sea muy rigido
     
     private float velActual = 0f;// la velocidad actual del objeto, la necesitamos porque no ser� constante
     
