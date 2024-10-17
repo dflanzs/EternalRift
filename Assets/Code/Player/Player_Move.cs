@@ -13,6 +13,7 @@ public class Player_Move : MonoBehaviour
     
     private float velActual = 0f;// la velocidad actual del objeto, la necesitamos porque no ser� constante
     
+    private bool facingRight = true;
 
     // Start is called before the first frame update
     void Start()
@@ -26,17 +27,32 @@ public class Player_Move : MonoBehaviour
         manejoMovimiento();
     }
 
-    private void manejoMovimiento()
-    {
+    private void manejoMovimiento() {
        float entradaMov = Input.GetAxisRaw("Horizontal");
         if(entradaMov == 0)//si no se pulsa tecla de movimiento decelera hasta parar el personaje
         {
             velActual = Mathf.MoveTowards(velActual,0,_aceleracion*Time.deltaTime);
         }
-        else{//si se activa, mueve el personaje
+        else //si se activa, mueve el personaje
+        {
             velActual = Mathf.MoveTowards(velActual, entradaMov * _velocidad, _aceleracion * Time.deltaTime);
         }
+
         rb.velocity = new Vector2(Mathf.Clamp(velActual, -(_maxVelocidad), _maxVelocidad), rb.velocity.y);
        
+        if(entradaMov > 0 && !facingRight)
+            Flip();
+        if(entradaMov < 0 && facingRight)
+            Flip();
+
+
+    }
+
+    private void Flip(){
+        Vector3 scale = gameObject.transform.localScale;
+        scale.x *= -1;
+        gameObject.transform.localScale = scale;
+
+        facingRight = !facingRight;
     }
 }
