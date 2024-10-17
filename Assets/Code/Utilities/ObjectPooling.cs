@@ -10,7 +10,6 @@ public class ObjectPooling : MonoBehaviour
     
     public int buleetsPoolSize;
     public int enemiesPoolSize;
-    public Vector3 position;
 
     private static ObjectPooling poolInstance;
 

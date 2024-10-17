@@ -152,9 +152,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 806d2c4a4b0122967be268e8f51f5ac3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  gun: {fileID: 969367977}
-  bulletPrefab: {fileID: 5574008668113540788, guid: 70ad070ea6ec495bc965bfacf091a2ab, type: 3}
-  range: 3
+  _gun: {fileID: 969367977}
+  _bulletPrefab: {fileID: 5574008668113540788, guid: 70ad070ea6ec495bc965bfacf091a2ab, type: 3}
+  _range: 10
+  _damage: 5
 --- !u!212 &846969384
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -291,7 +292,6 @@ MonoBehaviour:
   enemy2Prefab: {fileID: 0}
   buleetsPoolSize: 50
   enemiesPoolSize: 0
-  position: {x: 0, y: 0, z: 0}
 --- !u!114 &1158398097
 MonoBehaviour:
   m_ObjectHideFlags: 0

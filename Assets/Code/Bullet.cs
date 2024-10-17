@@ -6,15 +6,29 @@ using UnityEngine;
 public class Bullet : MonoBehaviour
 {
 
-    public float speed = 10f;
+    [SerializeField] private float _speed = 10f;
+    private float _range;
 
-    public Vector3 targetVector;
+    private float _damage;
+    public float Damage { get { return _damage; } }
 
-    public Rigidbody2D rigid;
+    private Vector3 _originVector;
+
+    [SerializeField] private Rigidbody2D _rigid;
 
     void Start()
     {
-        rigid = GetComponent<Rigidbody2D>();
+        _rigid = GetComponent<Rigidbody2D>();
+    }
+
+    void Update(){
+        Vector2 dist = transform.position - _originVector;
+        
+        // Si la bala ha recorrido mas distancia que el rango de la bala la sacamos de la pool
+        if(dist.magnitude >= _range){
+            gameObject.SetActive(false);
+            _rigid.velocity = Vector2.zero;
+        }
     }
 
     private void OnTriggerEnter2D(Collider2D collider)
@@ -23,12 +37,17 @@ public class Bullet : MonoBehaviour
         {
             collider.gameObject.SetActive(false);
             gameObject.SetActive(false);
+            _rigid.velocity = Vector2.zero;
         }
     }
 
-    public void shoot(Vector3 targetVector, BoxCollider2D collision)
+    public void shoot(Vector3 originVector, BoxCollider2D collision,float range,float damage)
     {
-        rigid.velocity = targetVector * speed;
+        _range = range;
+        _damage = damage;
+        _originVector = originVector;
+
+        _rigid.velocity = originVector * _speed;
         collision.gameObject.SetActive(true);
     }
 }

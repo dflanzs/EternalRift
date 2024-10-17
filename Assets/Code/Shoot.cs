@@ -5,44 +5,27 @@ using UnityEngine;
 
 public class Shoot : MonoBehaviour
 {
-    public GameObject gun, bulletPrefab;
-    public float range = 3;
+    [SerializeField] private GameObject _gun, _bulletPrefab;
+    [SerializeField] private float _range = 10.0f;
+    [SerializeField] private float _damage = 5.0f;
     void Update()
     {
         if(Input.GetKeyDown(KeyCode.Mouse0))
         {   
             GameObject bullet = ObjectPooling.Instance.requestInstance("Bullet");
-            Debug.Log("GameObject bullet");   
             
             if(bullet != null)
             {            
                 bullet.SetActive(true);
                 
-                bullet.transform.position = gun.transform.position;
+                bullet.transform.position = _gun.transform.position;
                 bullet.transform.rotation = Quaternion.identity;
 
                 Bullet bulletScript = bullet.GetComponent<Bullet>();
-                bulletScript.shoot(gun.transform.right, bullet.GetComponent<BoxCollider2D>());
-                
-                Debug.Log("Disparo...");   
+                bulletScript.shoot(_gun.transform.right, bullet.GetComponent<BoxCollider2D>(),_range,_damage);
+                 
             }
 
-        }
-        checkBulletOutOfBounds(gun);
-    }
-
-    private void checkBulletOutOfBounds(GameObject gun)
-    {
-        GameObject[] bullets = GameObject.FindGameObjectsWithTag("Bullet");
-
-        foreach(GameObject bullet in bullets)
-        {
-            Debug.Log("Desaparece");
-            if(Mathf.Abs(bullet.transform.position.x) > gun.transform.position.x + range || 
-                Mathf.Abs(bullet.transform.position.y) > gun.transform.position.y + range)
-            {
-                bullet.SetActive(false);
-            }
         }
     }
 }
