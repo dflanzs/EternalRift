@@ -11,13 +11,6 @@ public class Shoot : MonoBehaviour
     {
         if(Input.GetKeyDown(KeyCode.Mouse0))
         {   
-                     
-            /* GameObject bullet = Instantiate(bulletPrefab, gun.transform.position,quaternion.identity);
-            Destroy(bullet,range);
-            Rigidbody2D rb = bullet.GetComponent<Rigidbody2D>();
-            Vector2 direction = gun.transform.right;  
-            rb.velocity = direction * speed; */
-
             GameObject bullet = ObjectPooling.Instance.requestInstance("Bullet");
             Debug.Log("GameObject bullet");   
             
