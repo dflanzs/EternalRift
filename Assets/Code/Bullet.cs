@@ -5,7 +5,6 @@ using System.Threading.Tasks;
 using UnityEngine;
 public class Bullet : MonoBehaviour
 {
-
     [SerializeField] private float _speed = 10f;
     private float _range;
 
@@ -33,21 +32,20 @@ public class Bullet : MonoBehaviour
 
     private void OnTriggerEnter2D(Collider2D collider)
     {
-        if(collider.gameObject.CompareTag("Bullet"))
+        if(!collider.gameObject.CompareTag("Player"))
         {
-            collider.gameObject.SetActive(false);
+            //collider.gameObject.SetActive(false); Cuando metamos a los enemigos comprobamos si es un enemigo
             gameObject.SetActive(false);
             _rigid.velocity = Vector2.zero;
         }
     }
 
-    public void shoot(Vector3 originVector, BoxCollider2D collision,float range,float damage)
+    public void shoot(Vector3 direction,Vector3 originVector,float range,float damage)
     {
         _range = range;
         _damage = damage;
         _originVector = originVector;
 
-        _rigid.velocity = originVector * _speed;
-        collision.gameObject.SetActive(true);
+        _rigid.velocity = direction * _speed;
     }
 }

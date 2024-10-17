@@ -14,6 +14,7 @@ public class Player_Move : MonoBehaviour
     private float velActual = 0f;// la velocidad actual del objeto, la necesitamos porque no ser� constante
     
     private bool facingRight = true;
+    public bool FacingRight { get{ return facingRight; }}
 
     // Start is called before the first frame update
     void Start()
