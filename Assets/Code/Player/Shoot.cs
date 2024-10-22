@@ -15,18 +15,60 @@ public class Shoot : MonoBehaviour
 
     private float cooldownCounter = 0.0f;
 
-    private void Update() {
-        if(cooldownCounter > 0.0f)
-            cooldownCounter -= Time.deltaTime;
+    private PlayerInputSystem playerInputSystem;
+    private bool isShooting = false;
 
-        if(Input.GetKeyDown(KeyCode.Mouse0) && cooldownCounter <= 0.0f)
-        {   
+    void Awake()
+    {
+        playerInputSystem = new PlayerInputSystem();
+        playerInputSystem.Player.Shoot.performed += ctx => StartShooting();
+        playerInputSystem.Player.Shoot.canceled += ctx => StopShooting();
+    }
+
+    private void Update()
+    {
+        if (isShooting)
+        {
+            ShootBullet();
+        }
+
+        if (cooldownCounter > 0.0f)
+        {
+            cooldownCounter -= Time.deltaTime;
+        }
+    }
+
+    void OnEnable()
+    {
+        playerInputSystem.Enable();
+    }
+
+    void OnDisable()
+    {
+        playerInputSystem.Disable();
+    }
+
+    private void StartShooting()
+    {
+        isShooting = true;
+    }
+
+    private void StopShooting()
+    {
+        isShooting = false;
+    }
+
+    private void ShootBullet()
+    {
+
+        if (cooldownCounter <= 0.0f)
+        {
             GameObject bullet = ObjectPooling.Instance.requestInstance("Bullet");
-            
-            if(bullet != null)
-            {            
+
+            if (bullet != null)
+            {
                 bullet.SetActive(true);
-                
+
                 bullet.transform.position = _gun.transform.position;
                 bullet.transform.rotation = Quaternion.identity;
 
@@ -37,7 +79,7 @@ public class Shoot : MonoBehaviour
                 Vector3 originVector = _gun.transform.position;
 
 
-                bulletScript.shoot(directionVector,originVector,_range,_damage);
+                bulletScript.shoot(directionVector, originVector, _range, _damage);
                 bullet.GetComponent<BoxCollider2D>().gameObject.SetActive(true);
                 cooldownCounter = _cooldown;
             }
