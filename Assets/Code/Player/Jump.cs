@@ -19,12 +19,6 @@ public class Jump : MonoBehaviour
 
     PlayerInputSystem playerInputSystem;
 
-    // Start is called before the first frame update
-    // private void Start()
-    // {
-    //     _body = GetComponent<Rigidbody2D>();
-    // }
-
     void Awake()
     {
         _body = GetComponent<Rigidbody2D>();
@@ -58,8 +52,6 @@ public class Jump : MonoBehaviour
             if (colliders[i].gameObject != this.gameObject)
                 _grounded = true;
         }
-
-        // HandleJump();
     }
 
     private void HandleJump()
