@@ -18,19 +18,24 @@ public class Jump : MonoBehaviour {
     // Start is called before the first frame update
     private void Start() {
         _body = GetComponent<Rigidbody2D>();
+        
+        if(_groundCheck == null)
+          Debug.LogWarning("No hay GroundCheck");
     }
 
     // Called onece per frame
     private void Update() {
 
         _grounded = false;
-        Collider2D[] colliders = Physics2D.OverlapCircleAll(_groundCheck.position,k_GroundedRadius);
+        if(_groundCheck != null){
+          Collider2D[] colliders = Physics2D.OverlapCircleAll(_groundCheck.position,k_GroundedRadius);
 
-        // Check if the player is touching ground
-        for(int i = 0;i < colliders.Length && !_grounded;i++){
-            if(colliders[i].gameObject != this.gameObject)
-                _grounded = true;
-        }
+            // Check if the player is touching ground
+            for(int i = 0;i < colliders.Length && !_grounded;i++){
+                if(colliders[i].gameObject != this.gameObject)
+                    _grounded = true;
+            }
+        } 
         
         HandleJump();
     }
