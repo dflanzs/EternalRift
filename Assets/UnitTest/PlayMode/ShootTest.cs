@@ -7,10 +7,11 @@ using UnityEngine.TestTools;
 public class ShootTest : MonoBehaviourBaseTest {
 
     [UnityTest]
-    [TestCase(new float[] {0.0f,1.0f}, 10, ExpectedResult = 0, TestName = "Range1")]
-    [TestCase(new float[] {0.0f,-1.0f}, 12, ExpectedResult = 0, TestName = "Range2")]
-    [TestCase(new float[] {1.0f,.0f}, 23, ExpectedResult = 0, TestName = "Range3")]
-    [TestCase(new float[] {-1.0f,.0f}, 13, ExpectedResult = 0, TestName = "Range4")]
+    // No vamos a disparar en diagonal
+    [TestCase(new float[] {0.0f,1.0f}, 10, ExpectedResult = 0, TestName = "Range 10 up")]
+    [TestCase(new float[] {0.0f,-1.0f}, 20, ExpectedResult = 0, TestName = "Range 20 down")]
+    [TestCase(new float[] {1.0f,.0f}, 30, ExpectedResult = 0, TestName = "Range 30 right")]
+    [TestCase(new float[] {-1.0f,.0f}, 50, ExpectedResult = 0, TestName = "Range 40 left")]
     public IEnumerator BulletRangeTest(float[] dir, float range) {
         // Configuración inicial de la dirección, origen y rango
         Vector3 direction = new Vector3(dir[0],dir[1],0.0f);
@@ -29,7 +30,7 @@ public class ShootTest : MonoBehaviourBaseTest {
         bullet.shoot(direction, origin, range, 1);
 
         // Esperar a que la bala llegue a su rango máximo
-        yield return new WaitForSeconds(5);
+        yield return new WaitForSeconds(5*range/10);
 
         // Comprobar que la posición final está en el rango esperado
         Assert.AreEqual(range, bullet.transform.position.magnitude,0.5f, "La bala no alcanzó la posición esperada.");
