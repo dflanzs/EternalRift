@@ -14,13 +14,16 @@ public class PlayerJumpingState : PlayerBaseState
 
     public override void EnterState(PlayerStateManager player)
     {
-        Debug.Log("Enter Jumping state");
         if (player.grounded)
         {
             player.grounded = false;
             player.animator.SetBool("isJumping", true);
-            player.animator.Play(jumpAnimation.name);
+            // player.animator.Play(jumpAnimation.name);
             player.rb.velocity = new Vector2(player.rb.velocity.x, jumpForce);
+        }
+        else
+        {
+            player.SwitchState(player.IdleState);
         }
     }
 
@@ -32,6 +35,12 @@ public class PlayerJumpingState : PlayerBaseState
             player.rb.velocity = new Vector2(player.rb.velocity.x, Mathf.Clamp(player.rb.velocity.y, maxVelocity, Mathf.Infinity));
         }
 
+        if (player.inputActions.Player.Move.triggered)
+        {
+            player.SwitchState(player.MovingState);
+
+        }
+
         Collider2D[] colliders = Physics2D.OverlapCircleAll(_groundCheck.position, k_GroundedRadius);
         // Check if the player is touching ground
         for (int i = 0; i < colliders.Length && !player.grounded; i++)
@@ -39,17 +48,16 @@ public class PlayerJumpingState : PlayerBaseState
             if (colliders[i].gameObject != this.gameObject)
             {
                 ExitState(player);
+                player.SwitchState(player.IdleState);
+
             }
         }
     }
 
     public override void ExitState(PlayerStateManager player)
     {
-        Debug.Log("Exit Jumping state");
         player.grounded = true;
         player.animator.SetBool("isJumping", false);
-        player.SwitchState(player.IdleState);
-
     }
 
 

@@ -9,7 +9,7 @@ public class PlayerIdleState : PlayerBaseState
 
     public override void EnterState(PlayerStateManager player)
     {
-        player.animator.Play(idleAnimation.name);
+        // player.animator.Play(idleAnimation.name);
     }
 
     public override void UpdateState(PlayerStateManager player)
@@ -18,11 +18,15 @@ public class PlayerIdleState : PlayerBaseState
         {
             player.SwitchState(player.JumpingState);
         }
+
+        if (player.inputActions.Player.Move.triggered)
+        {
+            player.SwitchState(player.MovingState);
+        }
     }
 
     public override void ExitState(PlayerStateManager player)
     {
-
     }
 
 }
