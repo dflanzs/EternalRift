@@ -1,6 +1,4 @@
 using System.Collections;
-using System.Collections.Generic;
-using Unity.VisualScripting;
 using UnityEngine;
 
 public class StateManager : MonoBehaviour
@@ -10,24 +8,33 @@ public class StateManager : MonoBehaviour
     public IdleState idleState = new IdleState();    
     public FocusedState focusedState = new FocusedState(); 
     public DeadState deadState = new DeadState();
+    public MoveState moveState = new MoveState();
+
     [SerializeField] private GameObject _player;
-    [SerializeField] private GameObject _groundCheck;
+    [SerializeField] private BoxCollider2D _groundChecker;
+
 
     void Start()
     {
-        currentState = idleState;
+        currentState = moveState;
 
-        currentState.EnterState(this, _player, _groundCheck);
+        currentState.EnterState(this, _player);
     }
 
     // Update is called once per frame
     void Update()
     {
-        currentState.UpdateState(this, _player, _groundCheck);
+        currentState.UpdateState(this, _player, _groundChecker);
     }
 
     public void SwitchState(BaseState state){
         currentState = state;
-        state.EnterState(this, _player, _groundCheck);
+        state.EnterState(this, _player);
+    }
+
+    // Metodo para lanzar corrutinas 
+    public Coroutine StartStateCoroutine(IEnumerator coroutine)
+    {
+        return StartCoroutine(coroutine);
     }
 }
