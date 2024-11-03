@@ -8,13 +8,18 @@ public class IdleState : BaseState
     private Vector3 _velocity = new Vector3(0, 0, 0); 
     private bool focused = false;
     private StateManager npc;
+    private int _direction;
 
     public override void UpdateState(StateManager npc, GameObject player, Transform _groundChecker){
-        
+        npc._StartCoroutine("wait");
+
+        npc.SwitchState(npc.moveState, _direction*-1);
     }
 
-    public override void EnterState(StateManager npc, GameObject player){
+    public override void EnterState(StateManager npc, GameObject player, int direction){
         this.npc = npc;
+
+        _direction = direction;
         Debug.Log("Entering MoveState");
         rb = player.GetComponent<Rigidbody2D>();
 

@@ -11,12 +11,14 @@ public class StateManager : MonoBehaviour
 
     [SerializeField] private GameObject _player;
     [SerializeField] private Transform _groundChecker; // Position of the player "feet", add a gameobject
+    private int _direction = -1;
+
 
     void Start()
     {
         // Start in MoveState by default
         currentState = moveState;
-        currentState.EnterState(this, _player);
+        currentState.EnterState(this, _player, _direction);
     }
 
     void Update()
@@ -24,10 +26,10 @@ public class StateManager : MonoBehaviour
         currentState.UpdateState(this, _player, _groundChecker);
     }
 
-    public void SwitchState(BaseState state)
+    public void SwitchState(BaseState state, int aux)
     {
         currentState = state;
-        state.EnterState(this, _player);
+        state.EnterState(this, _player, aux);
     }
 
     // Handle trigger exit for ground check
@@ -57,8 +59,11 @@ public class StateManager : MonoBehaviour
     }
 
     // Method to start coroutines from state actions if needed
-    public Coroutine StartStateCoroutine(IEnumerator coroutine)
-    {
-        return StartCoroutine(coroutine);
+    public void _StartCoroutine (string coroutine){
+        StartCoroutine(coroutine);
+    }
+
+    IEnumerator wait(){
+        yield return new WaitForSeconds(3);
     }
 }

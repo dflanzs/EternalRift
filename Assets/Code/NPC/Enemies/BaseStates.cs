@@ -2,7 +2,7 @@ using UnityEngine;
 
 public abstract class BaseState
 {
-    public abstract void EnterState(StateManager npc, GameObject player);
+    public abstract void EnterState(StateManager npc, GameObject player, int aux);
 
     public abstract void UpdateState(StateManager npc, GameObject player, Transform _groundChecker);
 

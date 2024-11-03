@@ -1,3 +1,4 @@
+using System;
 using Unity.VisualScripting;
 using UnityEngine;
 
@@ -15,7 +16,7 @@ public class MoveState : BaseState
     private Rigidbody2D rb;
     private bool focused = false, _grounded = true;
     private StateManager npc;
-
+    private int _direction;
     public override void UpdateState(StateManager npc, GameObject player, Transform _groundChecker)
     {
         rb.transform.rotation = Quaternion.identity;
@@ -31,14 +32,14 @@ public class MoveState : BaseState
 
         if (focused)
         {
-            npc.SwitchState(npc.focusedState);
+            npc.SwitchState(npc.focusedState, _direction);
         }
         else
         {
             if (_grounded)
             {
                 _currentSpeed = Mathf.MoveTowards(_currentSpeed, speed, _accel * Time.deltaTime);
-                rb.velocity = new Vector2(-Mathf.Clamp(_currentSpeed, -_maxVelocity, _maxVelocity), rb.velocity.y);
+                rb.velocity = new Vector2(_direction*Mathf.Clamp(_currentSpeed, -_maxVelocity, _maxVelocity), rb.velocity.y);
             } 
             else
             {
@@ -49,14 +50,15 @@ public class MoveState : BaseState
                 scale.x *= -1;
                 npc.transform.localScale = scale;
 
-                npc.SwitchState(npc.idleState);
+                npc.SwitchState(npc.idleState, _direction);
             }
         }
     }
 
-    public override void EnterState(StateManager npc, GameObject player)
+    public override void EnterState(StateManager npc, GameObject player, int direction)
     {
         this.npc = npc;
+        _direction = direction;
         Debug.Log("Entering MoveState");
         rb = npc.GetComponent<Rigidbody2D>();
     }
