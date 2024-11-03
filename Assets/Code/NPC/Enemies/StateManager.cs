@@ -11,6 +11,7 @@ public class StateManager : MonoBehaviour
 
     [SerializeField] private GameObject _player;
     [SerializeField] private Transform _groundChecker; // Position of the player "feet", add a gameobject
+    [SerializeField] private bool flies;
     private int _direction = -1;
 
 
@@ -18,7 +19,7 @@ public class StateManager : MonoBehaviour
     {
         // Start in MoveState by default
         currentState = moveState;
-        currentState.EnterState(this, _player, _direction);
+        currentState.EnterState(this, _player, _direction, flies);
     }
 
     void Update()
@@ -29,6 +30,6 @@ public class StateManager : MonoBehaviour
     public void SwitchState(BaseState state, int aux)
     {
         currentState = state;
-        state.EnterState(this, _player, aux);
+        state.EnterState(this, _player, aux, flies);
     }
 }

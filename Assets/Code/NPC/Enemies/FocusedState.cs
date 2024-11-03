@@ -8,7 +8,7 @@ public class FocusedState : BaseState
         
     }
 
-    public override void EnterState(StateManager npc, GameObject player, int aux){
+    public override void EnterState(StateManager npc, GameObject player, int intAux, bool boolAux){
 
     }
     

@@ -21,8 +21,9 @@ public class IdleState : BaseState
             npc.SwitchState(npc.moveState, _direction*-1);
     }
 
-    public override void EnterState(StateManager npc, GameObject player, int direction){
+    public override void EnterState(StateManager npc, GameObject player, int direction, bool flies){
         this.npc = npc;
+        
         _timer = 0;
         _direction = direction;
         Debug.Log("Entering idleState");
