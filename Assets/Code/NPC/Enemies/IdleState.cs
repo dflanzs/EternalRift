@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Threading;
 using UnityEngine;
 
 public class IdleState : BaseState
@@ -9,17 +10,22 @@ public class IdleState : BaseState
     private bool focused = false;
     private StateManager npc;
     private int _direction;
+    private float _watingTime = 3;
+    private float _timer;
 
     public override void UpdateState(StateManager npc, GameObject player, Transform _groundChecker){
-
-        npc.SwitchState(npc.moveState, _direction*-1);
+        
+        if (_timer < _watingTime)
+            _timer += Time.deltaTime;
+        else
+            npc.SwitchState(npc.moveState, _direction*-1);
     }
 
     public override void EnterState(StateManager npc, GameObject player, int direction){
         this.npc = npc;
-
+        _timer = 0;
         _direction = direction;
-        Debug.Log("Entering MoveState");
+        Debug.Log("Entering idleState");
         rb = player.GetComponent<Rigidbody2D>();
 
         rb.velocity *= _velocity;
