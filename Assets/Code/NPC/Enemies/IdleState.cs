@@ -9,7 +9,7 @@ public class IdleState : BaseState
     private bool focused = false;
     private StateManager npc;
 
-    public override void UpdateState(StateManager npc, GameObject player, BoxCollider2D _groundChecker){
+    public override void UpdateState(StateManager npc, GameObject player, Transform _groundChecker){
         
     }
 

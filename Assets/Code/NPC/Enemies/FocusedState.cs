@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class FocusedState : BaseState
 {
-    public override void UpdateState(StateManager npc, GameObject player, BoxCollider2D _groundChecker){
+    public override void UpdateState(StateManager npc, GameObject player, Transform _groundChecker){
         
     }
 
