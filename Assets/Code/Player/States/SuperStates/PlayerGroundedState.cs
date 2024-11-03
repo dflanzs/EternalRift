@@ -7,14 +7,24 @@ public class PlayerGroundedState : PlayerState
 
     public int xInput;
     public bool JumpInput;
+    private bool isGrounded;
 
     public PlayerGroundedState(Player player, PlayerStateMachine stateMachine, PlayerData playerData, string animBoolName) : base(player, stateMachine, playerData, animBoolName)
     {
     }
 
+    public override void DoChecks()
+    {
+        base.DoChecks();
+
+        isGrounded = player.CheckIfGrounded();
+    }
+
     public override void Enter()
     {
         base.Enter();
+
+        player.JumpState.ResetAmountOfJumpsLeft();
     }
 
     public override void Exit()
@@ -29,10 +39,15 @@ public class PlayerGroundedState : PlayerState
         xInput = player.InputHandler.NormalizedInputX;
         JumpInput = player.InputHandler.JumpInput;
 
-        if (JumpInput)
+        if (JumpInput && player.JumpState.CanJump())
         {
             player.InputHandler.UseJumpInput(); // Reset the jump input
             stateMachine.ChangeState(player.JumpState);
+        }
+        else if (!isGrounded)
+        {
+            player.InAirState.StartCoyoteTime();
+            stateMachine.ChangeState(player.InAirState);
         }
     }
 
@@ -41,10 +56,7 @@ public class PlayerGroundedState : PlayerState
         base.PhysicsUpdate();
     }
 
-    public override void DoChecks()
-    {
-        base.DoChecks();
-    }
+
 
 
 }

@@ -11,9 +11,22 @@ public class PlayerInputHandler : MonoBehaviour
 
     public bool JumpInput { get; private set; }
 
+    public bool JumpInputStop { get; private set; }
+
+    // So the player can't hold the jump button and jump forever
+    [SerializeField]
+    private float inputHoldTime = 0.2f;
+
+    private float jumpInputStartTime;
+
     private void Awake()
     {
         inputActions = new PlayerInputSystem();
+    }
+
+    void Update()
+    {
+        CheckJumpInputHoldTime();
     }
 
     private void OnEnable()
@@ -47,12 +60,25 @@ public class PlayerInputHandler : MonoBehaviour
         if (context.performed)
         {
             JumpInput = true;
+            JumpInputStop = false;
+            jumpInputStartTime = Time.time;
         }
-        else if (context.canceled)
+
+        if (context.canceled)
+        {
+            JumpInputStop = true;
+        }
+
+
+    }
+
+    public void UseJumpInput() => JumpInput = false;
+
+    private void CheckJumpInputHoldTime()
+    {
+        if (Time.time >= jumpInputStartTime + inputHoldTime)
         {
             JumpInput = false;
         }
     }
-
-    public void UseJumpInput() => JumpInput = false;
 }

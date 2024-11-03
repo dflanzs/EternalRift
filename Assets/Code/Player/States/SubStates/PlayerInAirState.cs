@@ -7,6 +7,12 @@ public class PlayerInAirState : PlayerState
 
     private int xInput;
     private bool isGrounded;
+    private bool jumpInput;
+    private bool isJumping;
+    private bool jumpInputStop;
+
+    // Alouds the player to jump a few frames after leaving the ground
+    private bool coyoteTime;
 
     public PlayerInAirState(Player player, PlayerStateMachine stateMachine, PlayerData playerData, string animBoolName) : base(player, stateMachine, playerData, animBoolName)
     {
@@ -34,11 +40,21 @@ public class PlayerInAirState : PlayerState
     {
         base.LogicUpdate();
 
+        CheckCoyoteTime();
+
         xInput = player.InputHandler.NormalizedInputX;
+        jumpInput = player.InputHandler.JumpInput;
+        jumpInputStop = player.InputHandler.JumpInputStop;
+
+        CheckJumpMultiplier();
 
         if (isGrounded && player.CurrentVelocity.y < 0.01f)
         {
             stateMachine.ChangeState(player.LandState);
+        }
+        else if (jumpInput && player.JumpState.CanJump())
+        {
+            stateMachine.ChangeState(player.JumpState);
         }
         else
         {
@@ -54,6 +70,36 @@ public class PlayerInAirState : PlayerState
     {
         base.PhysicsUpdate();
     }
+
+    private void CheckJumpMultiplier()
+    {
+        if (isJumping)
+        {
+            if (jumpInputStop)
+            {
+                player.SetVelocityY(player.CurrentVelocity.y * playerData.jumpHeightMultiplier);
+                isJumping = false;
+            }
+            // else is falling
+            else if (player.CurrentVelocity.y <= 0f)
+            {
+                isJumping = false;
+            }
+        }
+    }
+
+    private void CheckCoyoteTime()
+    {
+        if (coyoteTime && Time.time >= startTime + playerData.coyoteTime)
+        {
+            coyoteTime = false;
+            player.JumpState.DecreaseAmountOfJumpsLeft();
+        }
+    }
+
+    public void SetIsJumping() => isJumping = true;
+
+    public void StartCoyoteTime() => coyoteTime = true;
 
 
 }
