@@ -11,7 +11,6 @@ public class IdleState : BaseState
     private int _direction;
 
     public override void UpdateState(StateManager npc, GameObject player, Transform _groundChecker){
-        npc._StartCoroutine("wait");
 
         npc.SwitchState(npc.moveState, _direction*-1);
     }

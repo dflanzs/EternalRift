@@ -64,10 +64,4 @@ public class MoveState : BaseState
     }
 
     public override void OnCollisionEnter(StateManager npc, GameObject player) { }
-
-    public void SetGrounded(bool isGrounded)
-    {
-        _grounded = isGrounded;
-        Debug.Log("Grounded state changed to: " + _grounded);
-    }
 }
