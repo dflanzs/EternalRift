@@ -1,4 +1,5 @@
 using System;
+using TMPro;
 using Unity.VisualScripting;
 using UnityEngine;
 
@@ -14,38 +15,39 @@ public class MoveState : BaseState
 
     private float _currentSpeed;
     private Rigidbody2D rb;
-    private bool focused = false, _grounded = true;
+    private bool _focused = false, _grounded = true;
     private StateManager npc;
     private int _direction;
 
     private bool _flies;
 
-    public override void UpdateState(StateManager npc, GameObject player, Transform _groundChecker)
+    public override void UpdateState(StateManager npc, GameObject player, Transform _groundChecker, Transform _filedOfView)
     {
-        /* if (!_flies) */
-            _grounded = false;
-        /* else 
-            _grounded = true; */
-        
+        _grounded = false;
+        _focused = false;
 
-        Collider2D[] colliders = Physics2D.OverlapCircleAll(_groundChecker.position,k_GroundedRadius);
+        Collider2D[] collidersGC = Physics2D.OverlapCircleAll(_groundChecker.position,k_GroundedRadius);
 
         // Check if the player is touching ground
-        for(int i = 0;i < colliders.Length && !_grounded;i++){
-            if(colliders[i].gameObject != npc.gameObject){
-                /* if (!_flies) */
-                    _grounded = true;
-                /* else 
-                    _grounded = false; */
+        for(int i = 0;i < collidersGC.Length && !_grounded;i++){
+            if(collidersGC[i].gameObject.CompareTag("Platform")){
+                _grounded = true;
+            }
+        }
+    
+        Collider2D[] collidersFOV = Physics2D.OverlapCircleAll(_filedOfView.position, _filedOfView.gameObject.GetComponent<CircleCollider2D>().radius);
+        for(int i = 0;i < collidersFOV.Length && !_focused;i++){
+            if(collidersFOV[i].gameObject.CompareTag("Player")){
+                _focused = true;
             }
         }
         
         Debug.Log(_flies);
         Debug.Log(_grounded);
 
-        if (focused)
+        if (_focused)
         {
-            npc.SwitchState(npc.focusedState, _direction);
+            npc.SwitchState(npc.focusedState, _direction, _focused);
         }
         else
         {
@@ -65,7 +67,7 @@ public class MoveState : BaseState
                     scale.x *= -1;
                     npc.transform.localScale = scale;
 
-                    npc.SwitchState(npc.idleState, _direction);
+                    npc.SwitchState(npc.idleState, _direction, _flies);
                 }
             }
             else
@@ -83,7 +85,7 @@ public class MoveState : BaseState
                     scale.x *= -1;
                     npc.transform.localScale = scale;
 
-                    npc.SwitchState(npc.idleState, _direction);
+                    npc.SwitchState(npc.idleState, _direction, _flies);
                 }
             }
         }

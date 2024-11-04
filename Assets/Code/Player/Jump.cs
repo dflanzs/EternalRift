@@ -28,7 +28,7 @@ public class Jump : MonoBehaviour {
 
         // Check if the player is touching ground
         for(int i = 0;i < colliders.Length && !_grounded;i++){
-            if(colliders[i].gameObject != this.gameObject)
+            if(colliders[i].gameObject.CompareTag("Platform"))
                 _grounded = true;
         }
         
