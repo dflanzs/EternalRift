@@ -17,6 +17,12 @@ public class PlayerData : ScriptableObject
     public float coyoteTime = 0.2f;
     public float jumpHeightMultiplier = 0.5f;
 
+    [Header("Dash State")]
+    public float dashVelocity = 100f;
+    public float dashCooldown = 1f;
+    public float dashTime = 0.2f;
+    public float dashWhileMovingMultiplier = 2.5f;
+
     [Header("Check Variables")]
     public float groundCheckRadius = 0.3f;
     public LayerMask whatIsGround;

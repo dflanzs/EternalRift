@@ -10,14 +10,16 @@ public class PlayerInputHandler : MonoBehaviour
     public int NormalizedInputY { get; private set; }
 
     public bool JumpInput { get; private set; }
-
     public bool JumpInputStop { get; private set; }
+    public bool DashInput { get; private set; }
+    // public bool DashInputStop { get; private set; }
 
     // So the player can't hold the jump button and jump forever
     [SerializeField]
     private float inputHoldTime = 0.2f;
 
     private float jumpInputStartTime;
+    private float dashInputStartTime;
 
     private void Awake()
     {
@@ -27,6 +29,7 @@ public class PlayerInputHandler : MonoBehaviour
     void Update()
     {
         CheckJumpInputHoldTime();
+        // CheckDashInputHoldTime();
     }
 
     private void OnEnable()
@@ -35,6 +38,8 @@ public class PlayerInputHandler : MonoBehaviour
         inputActions.Player.Move.canceled += OnMoveInput;
         inputActions.Player.Jump.performed += OnJumpInput;
         inputActions.Player.Jump.canceled += OnJumpInput;
+        inputActions.Player.Dash.performed += OnDashInput;
+        inputActions.Player.Dash.canceled += OnDashInput;
         inputActions.Enable();
     }
 
@@ -81,4 +86,29 @@ public class PlayerInputHandler : MonoBehaviour
             JumpInput = false;
         }
     }
+
+    public void OnDashInput(InputAction.CallbackContext context)
+    {
+        if (context.performed)
+        {
+            DashInput = true;
+            // DashInputStop = false;
+            dashInputStartTime = Time.time;
+        }
+
+        if (context.canceled)
+        {
+            // DashInputStop = true;
+        }
+    }
+
+    public void UseDashInput() => DashInput = false;
+
+    // private void CheckDashInputHoldTime()
+    // {
+    //     if (Time.time >= dashInputStartTime + inputHoldTime)
+    //     {
+    //         DashInput = false;
+    //     }
+    // }
 }

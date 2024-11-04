@@ -13,6 +13,7 @@ public class Player : MonoBehaviour
     public PlayerJumpState JumpState { get; private set; }
     public PlayerLandState LandState { get; private set; }
     public PlayerInAirState InAirState { get; private set; }
+    public PlayerDashState DashState { get; private set; }
 
     [SerializeField] private PlayerData playerData;
 
@@ -54,6 +55,7 @@ public class Player : MonoBehaviour
         JumpState = new PlayerJumpState(this, StateMachine, playerData, "inAir");
         InAirState = new PlayerInAirState(this, StateMachine, playerData, "inAir");
         LandState = new PlayerLandState(this, StateMachine, playerData, "land");
+        DashState = new PlayerDashState(this, StateMachine, playerData, "inAir");
 
         FacingDirection = 1;
     }
@@ -77,6 +79,14 @@ public class Player : MonoBehaviour
     #endregion
 
     #region Set Functions
+
+    public void SetVelocity(float velocity, Vector2 direction)
+    {
+        workspace = direction * velocity;
+        RB.velocity = workspace;
+        CurrentVelocity = workspace;
+    }
+
     public void SetVelocityX(float velocity)
     {
         workspace.Set(velocity, CurrentVelocity.y);

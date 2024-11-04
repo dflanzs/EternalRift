@@ -5,8 +5,12 @@ using UnityEngine;
 public class PlayerGroundedState : PlayerState
 {
 
+    // Input variables
     public int xInput;
     public bool JumpInput;
+    public bool dashInput;
+
+    // Check variables
     private bool isGrounded;
 
     public PlayerGroundedState(Player player, PlayerStateMachine stateMachine, PlayerData playerData, string animBoolName) : base(player, stateMachine, playerData, animBoolName)
@@ -25,6 +29,7 @@ public class PlayerGroundedState : PlayerState
         base.Enter();
 
         player.JumpState.ResetAmountOfJumpsLeft();
+        player.DashState.ResetCanDash();
     }
 
     public override void Exit()
@@ -38,6 +43,7 @@ public class PlayerGroundedState : PlayerState
 
         xInput = player.InputHandler.NormalizedInputX;
         JumpInput = player.InputHandler.JumpInput;
+        dashInput = player.InputHandler.DashInput;
 
         if (JumpInput && player.JumpState.CanJump())
         {
@@ -48,6 +54,10 @@ public class PlayerGroundedState : PlayerState
         {
             player.InAirState.StartCoyoteTime();
             stateMachine.ChangeState(player.InAirState);
+        }
+        else if (dashInput && player.DashState.CheckIfCanDash())
+        {
+            stateMachine.ChangeState(player.DashState);
         }
     }
 

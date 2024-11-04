@@ -34,14 +34,16 @@ public class PlayerAbilityState : PlayerState
     public override void LogicUpdate()
     {
         base.LogicUpdate();
-
-        if (isGrounded && player.CurrentVelocity.y < 0.01f)
+        if (isAbilityDone)
         {
-            stateMachine.ChangeState(player.IdleState);
-        }
-        else
-        {
-            stateMachine.ChangeState(player.InAirState);
+            if (isGrounded && player.CurrentVelocity.y < 0.01f)
+            {
+                stateMachine.ChangeState(player.IdleState);
+            }
+            else
+            {
+                stateMachine.ChangeState(player.InAirState);
+            }
         }
     }
 

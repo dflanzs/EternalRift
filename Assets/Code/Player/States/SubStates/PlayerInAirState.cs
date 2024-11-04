@@ -5,11 +5,14 @@ using UnityEngine;
 public class PlayerInAirState : PlayerState
 {
 
+    // Inputs
     private int xInput;
-    private bool isGrounded;
     private bool jumpInput;
-    private bool isJumping;
     private bool jumpInputStop;
+    private bool dashInput;
+    // Checks
+    private bool isGrounded;
+    private bool isJumping;
 
     // Alouds the player to jump a few frames after leaving the ground
     private bool coyoteTime;
@@ -45,6 +48,7 @@ public class PlayerInAirState : PlayerState
         xInput = player.InputHandler.NormalizedInputX;
         jumpInput = player.InputHandler.JumpInput;
         jumpInputStop = player.InputHandler.JumpInputStop;
+        dashInput = player.InputHandler.DashInput;
 
         CheckJumpMultiplier();
 
@@ -55,6 +59,10 @@ public class PlayerInAirState : PlayerState
         else if (jumpInput && player.JumpState.CanJump())
         {
             stateMachine.ChangeState(player.JumpState);
+        }
+        else if (dashInput && player.DashState.CheckIfCanDash())
+        {
+            stateMachine.ChangeState(player.DashState);
         }
         else
         {
