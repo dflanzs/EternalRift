@@ -5,7 +5,7 @@ using UnityEngine;
 
 public class Shoot : MonoBehaviour
 {
-    [SerializeField] private Player_Move _player;
+    [SerializeField] private Player player;
     [SerializeField] private GameObject _gun, _bulletPrefab;
 
     [Header("Gun values")]
@@ -15,19 +15,14 @@ public class Shoot : MonoBehaviour
 
     private float cooldownCounter = 0.0f;
 
-    private PlayerInputSystem playerInputSystem;
-    private bool isShooting = false;
-
-    void Awake()
-    {
-        playerInputSystem = new PlayerInputSystem();
-        playerInputSystem.Player.Shoot.performed += ctx => StartShooting();
-        playerInputSystem.Player.Shoot.canceled += ctx => StopShooting();
-    }
+    private bool shootInput;
 
     private void Update()
     {
-        if (isShooting)
+
+        shootInput = player.InputHandler.ShootInput;
+
+        if (shootInput)
         {
             ShootBullet();
         }
@@ -38,25 +33,6 @@ public class Shoot : MonoBehaviour
         }
     }
 
-    void OnEnable()
-    {
-        playerInputSystem.Enable();
-    }
-
-    void OnDisable()
-    {
-        playerInputSystem.Disable();
-    }
-
-    private void StartShooting()
-    {
-        isShooting = true;
-    }
-
-    private void StopShooting()
-    {
-        isShooting = false;
-    }
 
     private void ShootBullet()
     {
@@ -74,9 +50,9 @@ public class Shoot : MonoBehaviour
 
                 Bullet bulletScript = bullet.GetComponent<Bullet>();
 
-                int direction = _player.FacingRight ? 1 : -1;
-                Vector3 directionVector = _gun.transform.right * direction;
-                Vector3 originVector = _gun.transform.position;
+                int direction = player.FacingDirection;
+                Vector2 directionVector = new Vector2(direction, 0);
+                Vector2 originVector = new Vector2(_gun.transform.position.x, _gun.transform.position.y);
 
 
                 bulletScript.shoot(directionVector, originVector, _range, _damage);

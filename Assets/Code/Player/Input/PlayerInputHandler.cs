@@ -14,6 +14,8 @@ public class PlayerInputHandler : MonoBehaviour
     public bool DashInput { get; private set; }
     // public bool DashInputStop { get; private set; }
 
+    public bool ShootInput { get; private set; }
+
     // So the player can't hold the jump button and jump forever
     [SerializeField]
     private float inputHoldTime = 0.2f;
@@ -40,6 +42,8 @@ public class PlayerInputHandler : MonoBehaviour
         inputActions.Player.Jump.canceled += OnJumpInput;
         inputActions.Player.Dash.performed += OnDashInput;
         inputActions.Player.Dash.canceled += OnDashInput;
+        inputActions.Player.Shoot.performed += OnShootInput;
+        inputActions.Player.Shoot.canceled += OnShootInput;
         inputActions.Enable();
     }
 
@@ -49,7 +53,24 @@ public class PlayerInputHandler : MonoBehaviour
         inputActions.Player.Move.canceled -= OnMoveInput;
         inputActions.Player.Jump.performed -= OnJumpInput;
         inputActions.Player.Jump.canceled -= OnJumpInput;
+        inputActions.Player.Dash.performed -= OnDashInput;
+        inputActions.Player.Dash.canceled -= OnDashInput;
+        inputActions.Player.Shoot.performed -= OnShootInput;
+        inputActions.Player.Shoot.canceled -= OnShootInput;
         inputActions.Disable();
+    }
+
+    public void OnShootInput(InputAction.CallbackContext context)
+    {
+        if (context.performed)
+        {
+            ShootInput = true;
+        }
+
+        if (context.canceled)
+        {
+            ShootInput = false;
+        }
     }
 
     public void OnMoveInput(InputAction.CallbackContext context)
