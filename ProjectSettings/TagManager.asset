@@ -7,11 +7,12 @@ TagManager:
   - Bullet
   - Platform
   - Malo
+  - Ground
   layers:
   - Default
   - TransparentFX
   - Ignore Raycast
-  - 
+  - Ground
   - Water
   - UI
   - 
