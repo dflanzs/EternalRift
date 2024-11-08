@@ -22,8 +22,12 @@ public class Jump : MonoBehaviour
     void Awake()
     {
         _body = GetComponent<Rigidbody2D>();
+     
         _groundCheck = transform.Find("GroundCheck");
-
+        
+        if(_groundCheck == null)
+          Debug.LogWarning("No hay GroundCheck");
+          
         playerInputSystem = new PlayerInputSystem();
         playerInputSystem.Player.Jump.performed += ctx => HandleJump();
         playerInputSystem.Player.Jump.canceled += ctx => HandleJumpCanceled();
