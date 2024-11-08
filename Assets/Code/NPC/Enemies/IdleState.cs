@@ -31,7 +31,6 @@ public class IdleState : BaseState
         _flies = npc.getFlies();
         _timer = 0;
         _direction = npc.getDirection();
-        Debug.Log("Entering idleState");
         rb = player.GetComponent<Rigidbody2D>();
 
         rb.velocity *= _velocity;

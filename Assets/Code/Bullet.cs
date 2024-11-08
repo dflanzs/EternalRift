@@ -1,7 +1,3 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 using UnityEngine;
 public class Bullet : MonoBehaviour
 {
@@ -32,7 +28,7 @@ public class Bullet : MonoBehaviour
 
     private void OnTriggerEnter2D(Collider2D collider)
     {
-        if(!collider.gameObject.CompareTag("Player"))
+        if(collider.gameObject.CompareTag("npc"))
         {
             //collider.gameObject.SetActive(false); Cuando metamos a los enemigos comprobamos si es un enemigo
             gameObject.SetActive(false);

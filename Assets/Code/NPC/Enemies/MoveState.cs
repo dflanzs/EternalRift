@@ -60,7 +60,6 @@ public class MoveState : BaseState
                 } 
                 else
                 {
-                    Debug.Log("Switch walking");
                     rb.velocity = new Vector2(0, 0);
 
                     Vector3 scale = npc.transform.localScale;
@@ -78,8 +77,7 @@ public class MoveState : BaseState
                 }
                 else
                 {
-                    Debug.Log("Switch flying");
-                    rb.velocity = new Vector2(0, 0);
+                    rb.velocity = Vector2.zero;
 
                     Vector3 scale = npc.transform.localScale;
                     scale.x *= -1;

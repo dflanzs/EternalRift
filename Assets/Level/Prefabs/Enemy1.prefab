@@ -234,6 +234,7 @@ MonoBehaviour:
   _groundChecker: {fileID: 6788737050541098393}
   _filedOfView: {fileID: 4112436093051482115}
   flies: 0
+  health: 10
 --- !u!1 &7258963495387932880
 GameObject:
   m_ObjectHideFlags: 0
