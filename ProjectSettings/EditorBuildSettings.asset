@@ -11,4 +11,5 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Scenes/GameLab.unity
     guid: fd13fba037c97d24f9687c390ca6ed76
-  m_configObjects: {}
+  m_configObjects:
+    com.unity.input.settings.actions: {fileID: -944628639613478452, guid: f145b971bc2f7b04f83279e9a7e9e313, type: 3}
