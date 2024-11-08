@@ -5,6 +5,9 @@ TagManager:
   serializedVersion: 2
   tags:
   - Bullet
+  - Agua
+  - Puerta
+  - Platform
   layers:
   - Default
   - TransparentFX

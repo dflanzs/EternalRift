@@ -1,7 +1,5 @@
-
 using Unity.Mathematics;
 using UnityEngine;
-
 
 public class Shoot : MonoBehaviour
 {
@@ -15,18 +13,19 @@ public class Shoot : MonoBehaviour
 
     private float cooldownCounter = 0.0f;
 
-    private void Update() {
-        if(cooldownCounter > 0.0f)
+    private void Update()
+    {
+        if (cooldownCounter > 0.0f)
             cooldownCounter -= Time.deltaTime;
 
-        if(Input.GetKeyDown(KeyCode.Mouse0) && cooldownCounter <= 0.0f)
-        {   
+        // Solo permite disparar si el jugador tiene el arma
+        if (GameManager.Instance.hasWeapon && Input.GetKeyDown(KeyCode.Mouse0) && cooldownCounter <= 0.0f)
+        {
             GameObject bullet = ObjectPooling.Instance.requestInstance("Bullet");
-            
-            if(bullet != null)
-            {            
+
+            if (bullet != null)
+            {
                 bullet.SetActive(true);
-                
                 bullet.transform.position = _gun.transform.position;
                 bullet.transform.rotation = Quaternion.identity;
 
@@ -36,12 +35,11 @@ public class Shoot : MonoBehaviour
                 Vector3 directionVector = _gun.transform.right * direction;
                 Vector3 originVector = _gun.transform.position;
 
-
-                bulletScript.shoot(directionVector,originVector,_range,_damage);
+                bulletScript.shoot(directionVector, originVector, _range, _damage);
                 bullet.GetComponent<BoxCollider2D>().gameObject.SetActive(true);
                 cooldownCounter = _cooldown;
             }
-
         }
     }
 }
+
