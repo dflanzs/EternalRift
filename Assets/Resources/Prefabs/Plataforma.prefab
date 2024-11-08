@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 5640808980459350076}
   - component: {fileID: 176279101556507063}
   - component: {fileID: 883750723974097805}
-  m_Layer: 0
+  m_Layer: 3
   m_Name: floating-platform
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -141,7 +141,7 @@ GameObject:
   - component: {fileID: 6188277036029749826}
   - component: {fileID: 1863157793931363273}
   - component: {fileID: 8574977168340572357}
-  m_Layer: 0
+  m_Layer: 3
   m_Name: floating-platform
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -270,7 +270,7 @@ GameObject:
   m_Component:
   - component: {fileID: 4097049402118622151}
   - component: {fileID: 7787170819748890371}
-  m_Layer: 0
+  m_Layer: 3
   m_Name: Plataforma
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -351,7 +351,7 @@ GameObject:
   - component: {fileID: 2157193215244411312}
   - component: {fileID: 5896771869062957115}
   - component: {fileID: 1157123113516818403}
-  m_Layer: 0
+  m_Layer: 3
   m_Name: floating-platform
   m_TagString: Untagged
   m_Icon: {fileID: 0}

@@ -1,14 +1,14 @@
 {
-    "name": "PlayMode",
+    "name": "EditMode",
     "rootNamespace": "",
     "references": [
         "UnityEngine.TestRunner",
         "UnityEditor.TestRunner",
-        "Code",
-        "Unity.InputSystem",
-        "Unity.InputSystem.TestFramework"
+        "Code"
     ],
-    "includePlatforms": [],
+    "includePlatforms": [
+        "Editor"
+    ],
     "excludePlatforms": [],
     "allowUnsafeCode": false,
     "overrideReferences": true,
