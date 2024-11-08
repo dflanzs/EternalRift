@@ -7,6 +7,7 @@ TagManager:
   - Bullet
   - Platform
   - groundCheckerNPC
+  - fieldOfView
   layers:
   - Default
   - TransparentFX

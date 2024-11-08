@@ -1,6 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
-using UnityEditor.Scripting;
 using UnityEngine;
 
 public class DeadState : BaseState
@@ -9,7 +6,7 @@ public class DeadState : BaseState
         
     }
 
-    public override void EnterState(StateManager npc, GameObject player, int intAux, bool boolAux){
+    public override void EnterState(StateManager npc, GameObject player){
 
     }
 

@@ -47,7 +47,7 @@ public class MoveState : BaseState
 
         if (_focused)
         {
-            npc.SwitchState(npc.focusedState, _direction, _focused);
+            npc.SwitchState(npc.focusedState);
         }
         else
         {
@@ -67,7 +67,7 @@ public class MoveState : BaseState
                     scale.x *= -1;
                     npc.transform.localScale = scale;
 
-                    npc.SwitchState(npc.idleState, _direction, _flies);
+                    npc.SwitchState(npc.idleState);
                 }
             }
             else
@@ -85,17 +85,17 @@ public class MoveState : BaseState
                     scale.x *= -1;
                     npc.transform.localScale = scale;
 
-                    npc.SwitchState(npc.idleState, _direction, _flies);
+                    npc.SwitchState(npc.idleState);
                 }
             }
         }
     }
 
-    public override void EnterState(StateManager npc, GameObject player, int direction, bool flies)
+    public override void EnterState(StateManager npc, GameObject player)
     {
         this.npc = npc;
-        _flies = flies;
-        _direction = direction;
+        _direction = npc.getDirection();
+        _flies = npc.getFlies();
         Debug.Log("Entering MoveState");
         rb = npc.GetComponent<Rigidbody2D>();
     }

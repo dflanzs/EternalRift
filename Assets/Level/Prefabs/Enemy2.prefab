@@ -165,7 +165,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _player: {fileID: 0}
   _groundChecker: {fileID: 6788737050541098393}
-  _filedOfView: {fileID: 0}
+  _filedOfView: {fileID: 7368682715003471004}
   flies: 1
 --- !u!1 &7258963495387932880
 GameObject:
