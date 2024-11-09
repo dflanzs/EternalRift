@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -51,6 +52,15 @@ public class PlayerInAirState : PlayerState
         dashInput = player.InputHandler.DashInput;
 
         CheckJumpMultiplier();
+
+        Debug.Log("Is Grounded: " + isGrounded);
+
+
+        // Check max velocity of the fall
+        if (player.RB.velocity.y < -playerData.maxVelocity)
+        {
+            player.RB.velocity = new Vector2(player.RB.velocity.x, Math.Clamp(player.RB.velocity.y, -playerData.maxVelocity, Mathf.Infinity));
+        }
 
         if (isGrounded && player.CurrentVelocity.y < 0.01f)
         {
