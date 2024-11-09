@@ -38,7 +38,7 @@ public class FocusedState : BaseState
             if (_flies)
             {
                 rb.velocity = Vector2.zero;
-                Debug.Log("Shoot");
+                //Debug.Log("Shoot");
             }
             else if (!_flies)
             {
@@ -84,7 +84,7 @@ public class FocusedState : BaseState
     }
 
     public override void EnterState(StateManager npc, GameObject player){
-        Debug.Log("FocusState");
+        //Debug.Log("FocusState");
 
         _flies = npc.getFlies();
         _focused = npc.getFocus();
