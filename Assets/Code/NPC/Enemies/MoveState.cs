@@ -61,7 +61,7 @@ public class MoveState : BaseState
                 } 
                 else
                 {
-                    rb.velocity = new Vector2(0, 0);
+                    rb.velocity = Vector2.zero;
 
                     /* Vector3 scale = npc.transform.localScale;
                     scale.x *= -1;

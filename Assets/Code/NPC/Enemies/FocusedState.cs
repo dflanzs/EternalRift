@@ -8,6 +8,7 @@ public class FocusedState : BaseState
     private Rigidbody2D rb;
     private bool _flies;
     private Vector2 _scale;
+    private float _moveSpeed = 5f; // Velocidad constante hacia el jugador
 
     public override void UpdateState(StateManager npc, GameObject player, Transform _groundChecker, Transform _filedOfView){
         _focused = false;
@@ -21,7 +22,7 @@ public class FocusedState : BaseState
         }
 
         Collider2D[] collidersGC = Physics2D.OverlapCircleAll(_groundChecker.position,k_GroundedRadius);
-        for(int i = 0;i < collidersGC.Length && !_grounded;i++){
+        for(int i = 0; i < collidersGC.Length && !_grounded;  i++){
             if(collidersGC[i].gameObject.CompareTag("Platform")){
                 _grounded = true;
             }
@@ -48,7 +49,10 @@ public class FocusedState : BaseState
                     }
 
                     npc.transform.localScale = _scale; 
-                    rb.velocity = player.transform.position;
+                    
+                    // Calcular la dirección hacia el jugador
+                    Vector2 direction = (player.transform.position - npc.transform.position).normalized;
+                    rb.velocity = direction * _moveSpeed; // Aplicar velocidad constante hacia el jugador
                 }
                 else if(!_grounded)
                 {
@@ -59,7 +63,6 @@ public class FocusedState : BaseState
         else if (!_focused)
         {
             npc.setPrevstate(npc.focusedState);
-            /* npc.setDirection(_prevDirection * -1); */
             npc.SwitchState(npc.idleState);
         }
     }
@@ -72,9 +75,13 @@ public class FocusedState : BaseState
         _prevDirection = npc.getDirection();
         rb = npc.gameObject.GetComponent<Rigidbody2D>();
     }
-    
 
     public override void OnCollisionEnter(StateManager npc, GameObject player){
-
+        // Mantener la velocidad constante hacia el jugador incluso después de la colisión
+        if (player.CompareTag("Player"))
+        {
+            Vector2 direction = (player.transform.position - npc.transform.position).normalized;
+            rb.velocity = direction * _moveSpeed;
+        }
     }
 }
