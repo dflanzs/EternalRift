@@ -5,15 +5,19 @@ TagManager:
   serializedVersion: 2
   tags:
   - Bullet
-  - Platform
   - groundCheckerNPC
   - fieldOfView
   - npc
+  - Agua
+  - Puerta
+  - Platform
+  - Malo
+  - Ground
   layers:
   - Default
   - TransparentFX
   - Ignore Raycast
-  - 
+  - Ground
   - Water
   - UI
   - 
