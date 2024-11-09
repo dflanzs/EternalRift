@@ -18,9 +18,8 @@ public class StateManager : MonoBehaviour
     [SerializeField] private int health;
 
     private BaseState prevState;
-    private readonly float k_GroundedRadius = 0.2f;
     private int direction = -1;
-    private bool _focused = false, _grounded = false;
+    private bool _focused = false;
 
 
     void Start()

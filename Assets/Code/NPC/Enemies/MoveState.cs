@@ -6,19 +6,16 @@ using UnityEngine;
 public class MoveState : BaseState
 {
     [SerializeField] private float speed = 5f;
-    [SerializeField] private float waitTime = 2f;
     [SerializeField] private float _maxVelocity = 15f;
     [SerializeField] private float _accel = 20f;
 
     private readonly float k_GroundedRadius = 0.2f;
-
 
     private float _currentSpeed;
     private Rigidbody2D rb;
     private bool _focused = false, _grounded = true;
     private StateManager npc;
     private int _direction;
-
     private bool _flies;
 
     public override void UpdateState(StateManager npc, GameObject player, Transform _groundChecker, Transform _filedOfView)
@@ -41,9 +38,6 @@ public class MoveState : BaseState
                 _focused = true;
             }
         }
-        
-        Debug.Log(_flies);
-        Debug.Log(_grounded);
 
         if (_focused)
         {
