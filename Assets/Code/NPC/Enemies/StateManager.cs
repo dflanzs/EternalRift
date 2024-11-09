@@ -5,7 +5,7 @@ using UnityEngine;
 
 public class StateManager : MonoBehaviour
 {
-    BaseState currentState;
+    public BaseState currentState;
     public IdleState idleState = new IdleState();    
     public FocusedState focusedState = new FocusedState(); 
     public DeadState deadState = new DeadState();
@@ -28,6 +28,10 @@ public class StateManager : MonoBehaviour
         currentState = moveState;
         prevState = null;
         currentState.EnterState(this, _player);
+
+        if(_player == null)
+            _player = GameObject.FindGameObjectWithTag("Player");
+    
     }
 
     void Update()
@@ -35,14 +39,15 @@ public class StateManager : MonoBehaviour
         Collider2D[] collidersNPC = Physics2D.OverlapCircleAll(transform.position, 1);
         for(int i = 0; i < collidersNPC.Length; i++){
             if(collidersNPC[i].gameObject.CompareTag("Bullet")){
-                health -= 5;
+                health -= (int) collidersNPC[i].gameObject.GetComponent<Bullet>().Damage;
+                collidersNPC[i].gameObject.SetActive(false);
             }
         }
 
         if (health > 0)
             currentState.UpdateState(this, _player, _groundChecker, _filedOfView);
         
-        else if (health == 0)
+        else if (health <= 0)
             SwitchState(deadState);
     }
 

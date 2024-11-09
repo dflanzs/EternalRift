@@ -15,7 +15,7 @@ GameObject:
   - component: {fileID: 6363785699124382527}
   m_Layer: 0
   m_Name: Enemy2
-  m_TagString: Untagged
+  m_TagString: npc
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -211,7 +211,7 @@ GameObject:
   - component: {fileID: 1233104851735860171}
   m_Layer: 0
   m_Name: FOV
-  m_TagString: Untagged
+  m_TagString: fieldOfView
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
