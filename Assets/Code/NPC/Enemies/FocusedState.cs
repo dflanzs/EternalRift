@@ -1,3 +1,4 @@
+using System;
 using UnityEngine;
 
 public class FocusedState : BaseState
@@ -8,12 +9,14 @@ public class FocusedState : BaseState
     private Rigidbody2D rb;
     private bool _flies;
     private Vector2 _scale;
+    private Vector2 _target;
     private float _moveSpeed = 5f; // Velocidad constante hacia el jugador
 
     public override void UpdateState(StateManager npc, GameObject player, Transform _groundChecker, Transform _filedOfView){
         _focused = false;
         _grounded = false;
-        
+        _target = (player.transform.position - npc.transform.position).normalized;
+
         Collider2D[] collidersFOV = Physics2D.OverlapCircleAll(_filedOfView.position, _filedOfView.gameObject.GetComponent<CircleCollider2D>().radius);
         for(int i = 0; i < collidersFOV.Length && !_focused; i++){
             if(collidersFOV[i].gameObject.CompareTag("Player")){
@@ -47,7 +50,7 @@ public class FocusedState : BaseState
                         _scale = npc.transform.localScale;
                         _scale.x = -1;
                     }
-
+                    
                     npc.transform.localScale = _scale; 
                     
                     // Calcular la dirección hacia el jugador
@@ -56,13 +59,27 @@ public class FocusedState : BaseState
                 }
                 else if(!_grounded)
                 {
-                    rb.velocity = Vector2.zero;
+                    if (Vector2.Dot(_target, npc.transform.forward) < 0)
+                    {
+                        Debug.Log("Back");
+                        _scale = npc.transform.localScale;
+                        _scale.x *= -1;
+                        npc.transform.localScale = _scale;
+                        npc.setDirection(npc.getDirection() * -1);
+                    }
+                    else{
+                        rb.velocity = Vector2.zero;
+                        npc.setPrevstate(npc.focusedState);
+                        npc.setDirection(_prevDirection * -1); // Cambiar la dirección
+                        npc.SwitchState(npc.idleState);
+                    }
                 }
             }
         }
         else if (!_focused)
         {
             npc.setPrevstate(npc.focusedState);
+            npc.setDirection(npc.getDirection() * -1); // Cambiar la dirección
             npc.SwitchState(npc.idleState);
         }
     }
