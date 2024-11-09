@@ -218,7 +218,7 @@ GameObject:
   - component: {fileID: 74255634}
   - component: {fileID: 74255633}
   - component: {fileID: 74255632}
-  m_Layer: 0
+  m_Layer: 3
   m_Name: Cueva
   m_TagString: Platform
   m_Icon: {fileID: 0}
@@ -48720,7 +48720,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1118876410}
   - component: {fileID: 1118876409}
-  m_Layer: 0
+  m_Layer: 3
   m_Name: Grid
   m_TagString: Untagged
   m_Icon: {fileID: 0}
