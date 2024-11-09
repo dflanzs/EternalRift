@@ -94,7 +94,7 @@ public class MoveState : BaseState
         _direction = npc.getDirection();
         _flies = npc.getFlies();
 
-        Debug.Log("Entering MoveState");
+        //Debug.Log("Entering MoveState");
         rb = npc.GetComponent<Rigidbody2D>();
     }
 

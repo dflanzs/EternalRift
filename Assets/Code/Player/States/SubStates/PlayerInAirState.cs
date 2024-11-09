@@ -53,7 +53,7 @@ public class PlayerInAirState : PlayerState
 
         CheckJumpMultiplier();
 
-        Debug.Log("Is Grounded: " + isGrounded);
+        //Debug.Log("Is Grounded: " + isGrounded);
 
 
         // Check max velocity of the fall
