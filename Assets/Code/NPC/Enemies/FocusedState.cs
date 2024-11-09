@@ -7,6 +7,7 @@ public class FocusedState : BaseState
     private int _prevDirection;
     private Rigidbody2D rb;
     private bool _flies;
+    private Vector2 _scale;
 
     public override void UpdateState(StateManager npc, GameObject player, Transform _groundChecker, Transform _filedOfView){
         _focused = false;
@@ -37,22 +38,35 @@ public class FocusedState : BaseState
             {
                 if (_grounded)
                 {
+                    if (player.transform.position.x <= npc.transform.position.x)
+                    {
+                        _scale = npc.transform.localScale;
+                        _scale.x = 1;
+                    } else if (player.transform.position.x > npc.transform.position.x){
+                        _scale = npc.transform.localScale;
+                        _scale.x = -1;
+                    }
+
+                    npc.transform.localScale = _scale; 
                     rb.velocity = player.transform.position;
                 }
-                else if(!_grounded){
+                else if(!_grounded)
+                {
                     rb.velocity = Vector2.zero;
-                    _focused = false;
                 }
             }
         }
-        else
+        else if (!_focused)
         {
-            npc.setDirection(_prevDirection * -1);
+            npc.setPrevstate(npc.focusedState);
+            /* npc.setDirection(_prevDirection * -1); */
             npc.SwitchState(npc.idleState);
         }
     }
 
     public override void EnterState(StateManager npc, GameObject player){
+        Debug.Log("FocusState");
+
         _flies = npc.getFlies();
         _focused = npc.getFocus();
         _prevDirection = npc.getDirection();

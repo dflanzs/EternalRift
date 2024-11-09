@@ -1,5 +1,6 @@
 using System.Collections;
 using System.IO.Pipes;
+using Unity.VisualScripting;
 using UnityEngine;
 
 public class StateManager : MonoBehaviour
@@ -16,14 +17,17 @@ public class StateManager : MonoBehaviour
     [SerializeField] private bool flies;
     [SerializeField] private int health;
 
+    private BaseState prevState;
+    private readonly float k_GroundedRadius = 0.2f;
     private int direction = -1;
-    private bool _focused = false;
+    private bool _focused = false, _grounded = false;
 
 
     void Start()
     {
         // Start in MoveState by default
         currentState = moveState;
+        prevState = null;
         currentState.EnterState(this, _player);
     }
 
@@ -72,5 +76,24 @@ public class StateManager : MonoBehaviour
     public void setHealth(int health){
         this.health = health;
     }
+    public BaseState getPrevstate(){
+        return prevState;
+    }
+    public void setPrevstate(BaseState newState){
+        prevState = newState;
+    }
+
+/*     public bool getGrounded(){
+        Collider2D[] collidersGC = Physics2D.OverlapCircleAll(_groundChecker.position, k_GroundedRadius);
+
+        // Check if the player is touching ground
+        for(int i = 0;i < collidersGC.Length && !_grounded;i++){
+            if(collidersGC[i].gameObject.CompareTag("Platform")){
+                _grounded = true;
+            }
+        }
+
+        return _grounded;
+    } */
 
 }

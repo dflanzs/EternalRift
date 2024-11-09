@@ -9,7 +9,6 @@ public class IdleState : BaseState
     private Rigidbody2D rb;
     private Vector3 _velocity = new Vector3(0, 0, 0); 
     private bool _focused = false, _flies;
-    private StateManager npc;
     private int _direction;
     private float _watingTime = 3;
     private float _timer;
@@ -19,17 +18,29 @@ public class IdleState : BaseState
         if (_timer < _watingTime)
             _timer += Time.deltaTime;
         else{
-            npc.setDirection(_direction * -1);
-            npc.SwitchState(npc.moveState);
+            /* Vector3 scale = npc.transform.localScale;
+            scale.x *= -1;
+            npc.transform.localScale = scale; */
+
+            _focused = npc.getFocus();
+            
+            if (_focused)
+                npc.SwitchState(npc.focusedState); 
+            
+            else
+            {
+                npc.setPrevstate(npc.idleState);
+                npc.setDirection(_direction * -1);
+                npc.SwitchState(npc.moveState); 
+            }
         }
     }
 
     public override void EnterState(StateManager npc, GameObject player){
-        this.npc = npc;
+        _timer = 0;
         
         _focused = npc.getFocus();
         _flies = npc.getFlies();
-        _timer = 0;
         _direction = npc.getDirection();
         rb = player.GetComponent<Rigidbody2D>();
 

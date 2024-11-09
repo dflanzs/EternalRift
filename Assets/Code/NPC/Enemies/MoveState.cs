@@ -47,6 +47,7 @@ public class MoveState : BaseState
 
         if (_focused)
         {
+            npc.setPrevstate(npc.moveState);
             npc.SwitchState(npc.focusedState);
         }
         else
@@ -62,10 +63,11 @@ public class MoveState : BaseState
                 {
                     rb.velocity = new Vector2(0, 0);
 
-                    Vector3 scale = npc.transform.localScale;
+                    /* Vector3 scale = npc.transform.localScale;
                     scale.x *= -1;
-                    npc.transform.localScale = scale;
+                    npc.transform.localScale = scale; */
 
+                    npc.setPrevstate(npc.moveState);
                     npc.SwitchState(npc.idleState);
                 }
             }
@@ -79,10 +81,7 @@ public class MoveState : BaseState
                 {
                     rb.velocity = Vector2.zero;
 
-                    Vector3 scale = npc.transform.localScale;
-                    scale.x *= -1;
-                    npc.transform.localScale = scale;
-
+                    npc.setPrevstate(npc.moveState);
                     npc.SwitchState(npc.idleState);
                 }
             }
@@ -91,9 +90,16 @@ public class MoveState : BaseState
 
     public override void EnterState(StateManager npc, GameObject player)
     {
-        this.npc = npc;
+        if (npc.getPrevstate() == npc.idleState)
+        {
+            Vector3 scale = npc.transform.localScale;
+            scale.x *= -1;
+            npc.transform.localScale = scale;
+        }
+
         _direction = npc.getDirection();
         _flies = npc.getFlies();
+
         Debug.Log("Entering MoveState");
         rb = npc.GetComponent<Rigidbody2D>();
     }
