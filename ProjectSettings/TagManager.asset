@@ -5,6 +5,9 @@ TagManager:
   serializedVersion: 2
   tags:
   - Bullet
+  - groundCheckerNPC
+  - fieldOfView
+  - npc
   - Agua
   - Puerta
   - Platform
