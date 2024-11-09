@@ -1,5 +1,5 @@
+using Unity.Mathematics;
 using UnityEngine;
-
 
 public class Shoot : MonoBehaviour
 {
@@ -31,11 +31,10 @@ public class Shoot : MonoBehaviour
         }
     }
 
-
     private void ShootBullet()
     {
 
-        if (cooldownCounter <= 0.0f)
+        if (GameManager.Instance.hasWeapon && cooldownCounter <= 0.0f)
         {
             GameObject bullet = ObjectPooling.Instance.requestInstance("Bullet");
 
@@ -52,12 +51,11 @@ public class Shoot : MonoBehaviour
                 Vector2 directionVector = new Vector2(direction, 0);
                 Vector2 originVector = new Vector2(_gun.transform.position.x, _gun.transform.position.y);
 
-
                 bulletScript.shoot(directionVector, originVector, _range, _damage);
                 bullet.GetComponent<BoxCollider2D>().gameObject.SetActive(true);
                 cooldownCounter = _cooldown;
             }
-
         }
     }
 }
+
