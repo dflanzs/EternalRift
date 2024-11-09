@@ -8,11 +8,13 @@ TagManager:
   - Agua
   - Puerta
   - Platform
+  - Malo
+  - Ground
   layers:
   - Default
   - TransparentFX
   - Ignore Raycast
-  - 
+  - Ground
   - Water
   - UI
   - 

@@ -3,7 +3,7 @@ using UnityEngine;
 
 public class Shoot : MonoBehaviour
 {
-    [SerializeField] private Player_Move _player;
+    [SerializeField] private Player player;
     [SerializeField] private GameObject _gun, _bulletPrefab;
 
     [Header("Gun values")]
@@ -13,27 +13,43 @@ public class Shoot : MonoBehaviour
 
     private float cooldownCounter = 0.0f;
 
+    private bool shootInput;
+
     private void Update()
     {
-        if (cooldownCounter > 0.0f)
-            cooldownCounter -= Time.deltaTime;
 
-        // Solo permite disparar si el jugador tiene el arma
-        if (GameManager.Instance.hasWeapon && Input.GetKeyDown(KeyCode.Mouse0) && cooldownCounter <= 0.0f)
+        shootInput = player.InputHandler.ShootInput;
+
+        if (shootInput)
+        {
+            ShootBullet();
+        }
+
+        if (cooldownCounter > 0.0f)
+        {
+            cooldownCounter -= Time.deltaTime;
+        }
+    }
+
+    private void ShootBullet()
+    {
+
+        if (GameManager.Instance.hasWeapon && cooldownCounter <= 0.0f)
         {
             GameObject bullet = ObjectPooling.Instance.requestInstance("Bullet");
 
             if (bullet != null)
             {
                 bullet.SetActive(true);
+
                 bullet.transform.position = _gun.transform.position;
                 bullet.transform.rotation = Quaternion.identity;
 
                 Bullet bulletScript = bullet.GetComponent<Bullet>();
 
-                int direction = _player.FacingRight ? 1 : -1;
-                Vector3 directionVector = _gun.transform.right * direction;
-                Vector3 originVector = _gun.transform.position;
+                int direction = player.FacingDirection;
+                Vector2 directionVector = new Vector2(direction, 0);
+                Vector2 originVector = new Vector2(_gun.transform.position.x, _gun.transform.position.y);
 
                 bulletScript.shoot(directionVector, originVector, _range, _damage);
                 bullet.GetComponent<BoxCollider2D>().gameObject.SetActive(true);
