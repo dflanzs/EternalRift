@@ -53,7 +53,7 @@ public class PlayerInAirState : PlayerState
 
         CheckJumpMultiplier();
 
-        Debug.Log(player.CurrentVelocity.y);
+        //Debug.Log(player.CurrentVelocity.y);
 
 
         // Check max velocity of the fall
