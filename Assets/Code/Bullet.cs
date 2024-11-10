@@ -1,7 +1,6 @@
 using UnityEngine;
 public class Bullet : MonoBehaviour
 {
-    [SerializeField] private float _speed = 10f;
     private float _range;
 
     private float _damage;
@@ -41,12 +40,12 @@ public class Bullet : MonoBehaviour
         }
     }
 
-    public void shoot(Vector3 direction,Vector3 originVector,float range,float damage)
+    public void shoot(Vector3 movement,Vector3 originVector,float range,float damage)
     {
         _range = range;
         _damage = damage;
         _originVector = originVector;
 
-        _rigid.velocity = direction * _speed;
+        _rigid.velocity = movement;
     }
 }

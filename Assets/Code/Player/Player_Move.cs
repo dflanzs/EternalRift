@@ -12,6 +12,7 @@ public class Player_Move : MonoBehaviour
     [SerializeField] private float _aceleracion = 20f;//la aceleracion para crear un movimiento m�s fluido y no sea muy rigido
     
     private float velActual = 0f;// la velocidad actual del objeto, la necesitamos porque no ser� constante
+    public float VelActual { get{ return velActual; }}
     
     private bool facingRight = true;
     public bool FacingRight { get{ return facingRight; }}

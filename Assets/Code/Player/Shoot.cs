@@ -1,4 +1,6 @@
+using System;
 using UnityEngine;
+using UnityEngine.UIElements.Experimental;
 
 public class Shoot : MonoBehaviour
 {
@@ -6,12 +8,13 @@ public class Shoot : MonoBehaviour
     [SerializeField] private GameObject _gun, _bulletPrefab;
 
     [Header("Gun values")]
-    [SerializeField] private float _cooldown = 0.5f;
-    [SerializeField] private float _range = 10.0f;
-    [SerializeField] private float _damage = 5.0f;
+    
+    [SerializeField] private Weapon weapon;
+    public Weapon Weapon{ set {weapon = value;} }
 
     private float cooldownCounter = 0.0f;
 
+    public float CooldownCounter{ set {cooldownCounter = value;} }
     private bool shootInput;
 
     private void Update()
@@ -46,13 +49,14 @@ public class Shoot : MonoBehaviour
 
                 Bullet bulletScript = bullet.GetComponent<Bullet>();
 
-                int direction = player.FacingDirection;
-                Vector2 directionVector = new Vector2(direction, 0);
-                Vector2 originVector = new Vector2(_gun.transform.position.x, _gun.transform.position.y);
+                Vector3 directionVector = _gun.transform.right * (weapon._speed + Math.Abs(player.CurrentVelocity.magnitude));
+                Vector3 originVector = _gun.transform.position;
 
-                bulletScript.shoot(directionVector, originVector, _range, _damage);
+
+                bulletScript.shoot(directionVector,originVector,weapon._range,weapon._damage);
+
                 bullet.GetComponent<BoxCollider2D>().gameObject.SetActive(true);
-                cooldownCounter = _cooldown;
+                cooldownCounter = weapon._cooldown;
             }
         }
     }
