@@ -11,10 +11,12 @@ public class WeaponsChange : MonoBehaviour
     private int whichWeapon = 0;
 
     void Start(){
-        Weapon[] _weapons = Resources.LoadAll<Weapon>("Weapons");
-        foreach(Weapon weapon in _weapons){
+        //Esto para testear bien, pero si no le damos todas las armas al jugador de primeras
+        //Weapon[] _weapons = Resources.LoadAll<Weapon>("Weapons");
+        /*foreach(Weapon weapon in _weapons){
             weapons.Add(weapon);
-        }
+        }*/
+        
         scriptShoot.Weapon = weapons[whichWeapon];
     }
 
