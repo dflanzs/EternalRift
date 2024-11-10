@@ -53,14 +53,12 @@ public class PlayerInAirState : PlayerState
 
         CheckJumpMultiplier();
 
-        Debug.Log("Is Grounded: " + isGrounded);
+        Debug.Log(player.CurrentVelocity.y);
 
 
         // Check max velocity of the fall
-        if (player.RB.velocity.y < -playerData.maxVelocity)
-        {
-            player.RB.velocity = new Vector2(player.RB.velocity.x, Math.Clamp(player.RB.velocity.y, -playerData.maxVelocity, Mathf.Infinity));
-        }
+        float clampedYVelocity = Mathf.Clamp(player.CurrentVelocity.y, -playerData.maxVelocity, playerData.maxVelocity);
+        player.SetVelocityY(clampedYVelocity);
 
         if (isGrounded && player.CurrentVelocity.y < 0.01f)
         {

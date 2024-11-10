@@ -7,15 +7,15 @@ public class PlayerData : ScriptableObject
 {
 
     [Header("Move State")]
-    public float movementVelocity = 10f;
+    public float movementVelocity = 13f;
 
     [Header("Jump State")]
-    public float jumpVelocity = 15f;
+    public float jumpVelocity = 20f;
     public int amountOfJumps = 1;
-    public float maxVelocity = 45f;
+    public float maxVelocity = 20f;
 
     [Header("In Air State")]
-    public float coyoteTime = 0.2f;
+    public float coyoteTime = 0.1f;
     public float jumpHeightMultiplier = 0.5f;
 
     [Header("Dash State")]
