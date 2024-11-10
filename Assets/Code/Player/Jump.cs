@@ -51,9 +51,8 @@ public class Jump : MonoBehaviour
         Collider2D[] colliders = Physics2D.OverlapCircleAll(_groundCheck.position, k_GroundedRadius);
 
         // Check if the player is touching ground
-        for (int i = 0; i < colliders.Length && !_grounded; i++)
-        {
-            if (colliders[i].gameObject != this.gameObject)
+        for(int i = 0;i < colliders.Length && !_grounded;i++){
+            if(colliders[i].gameObject.CompareTag("Platform"))
                 _grounded = true;
         }
     }
