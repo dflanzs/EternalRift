@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
+using UnityEngine.SceneManagement;
 
 public class Player : MonoBehaviour
 {
@@ -29,6 +30,7 @@ public class Player : MonoBehaviour
 
     #region Check Transforms
     [SerializeField] private Transform groundCheck;
+    
     #endregion
 
     #region Other Variables
@@ -37,6 +39,9 @@ public class Player : MonoBehaviour
 
     // A temporary variable to store the movement of the player 
     private Vector2 workspace;
+
+    //ultima posicion segura
+    private Vector2 lastSafePosition;
     #endregion
 
     #region Unity Callback Functions
@@ -68,6 +73,12 @@ public class Player : MonoBehaviour
 
     void Update()
     {
+        if (Input.GetKeyDown(KeyCode.P))
+        {
+            // Restaura la escena actual
+            SceneManager.LoadScene(SceneManager.GetActiveScene().name);
+        }
+
         CurrentVelocity = RB.velocity;
         StateMachine.CurrentState.LogicUpdate();
     }
@@ -117,11 +128,26 @@ public class Player : MonoBehaviour
         return Physics2D.OverlapCircle(groundCheck.position, playerData.groundCheckRadius, playerData.whatIsGround);
     }
 
+   
+
     #endregion
 
 
     #region Other Functions
+    private void OnTriggerEnter2D(Collider2D other)
+    {
+        if (other.CompareTag("malo"))
+        {
+            // Teletransporta al personaje a la última posición segura
+            transform.position = lastSafePosition;
+        }
 
+        if (other.CompareTag("checkpoint"))
+        {
+            // Teletransporta al personaje a la última posición segura
+            lastSafePosition = transform.position;
+        }
+    }
     private void AnimationTrigger() => StateMachine.CurrentState.AnimationTrigger();
 
     private void AnimationFinishTrigger() => StateMachine.CurrentState.AnimationFinishTrigger();

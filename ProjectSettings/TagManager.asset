@@ -8,6 +8,8 @@ TagManager:
   - Platform
   - Malo
   - Ground
+  - malo
+  - checkpoint
   layers:
   - Default
   - TransparentFX
