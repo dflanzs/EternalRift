@@ -17,6 +17,7 @@ public class WeaponsChange : MonoBehaviour
             weapons.Add(weapon);
         }*/
         
+      if(weapons.Count > 0) // Si la lista no esta vacia
         scriptShoot.Weapon = weapons[whichWeapon];
     }
 

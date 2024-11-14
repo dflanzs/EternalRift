@@ -11,7 +11,7 @@ public class ShootTest : MonoBehaviourBaseTest {
     [TestCase(new float[] {0.0f,1.0f}, 10, ExpectedResult = 0, TestName = "Range 10 up")]
     [TestCase(new float[] {0.0f,-1.0f}, 20, ExpectedResult = 0, TestName = "Range 20 down")]
     [TestCase(new float[] {1.0f,.0f}, 30, ExpectedResult = 0, TestName = "Range 30 right")]
-    [TestCase(new float[] {-1.0f,.0f}, 50, ExpectedResult = 0, TestName = "Range 40 left")]
+    [TestCase(new float[] {-1.0f,.0f}, 40, ExpectedResult = 0, TestName = "Range 40 left")]
     public IEnumerator BulletRangeTest(float[] dir, float range) {
         // Configuración inicial de la dirección, origen y rango
         Vector3 direction = new Vector3(dir[0],dir[1],0.0f);
