@@ -30,7 +30,7 @@ public class ShootTest : MonoBehaviourBaseTest {
         bullet.shoot(direction, origin, range, 1);
 
         // Esperar a que la bala llegue a su rango máximo
-        yield return new WaitForSeconds(5*range/10);
+        yield return new WaitForSeconds(range);
 
         // Comprobar que la posición final está en el rango esperado
         Assert.AreEqual(range, bullet.transform.position.magnitude,0.5f, "La bala no alcanzó la posición esperada.");

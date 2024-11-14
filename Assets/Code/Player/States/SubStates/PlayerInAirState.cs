@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -51,6 +52,13 @@ public class PlayerInAirState : PlayerState
         dashInput = player.InputHandler.DashInput;
 
         CheckJumpMultiplier();
+
+        //Debug.Log(player.CurrentVelocity.y);
+
+
+        // Check max velocity of the fall
+        float clampedYVelocity = Mathf.Clamp(player.CurrentVelocity.y, -playerData.maxVelocity, playerData.maxVelocity);
+        player.SetVelocityY(clampedYVelocity);
 
         if (isGrounded && player.CurrentVelocity.y < 0.01f)
         {

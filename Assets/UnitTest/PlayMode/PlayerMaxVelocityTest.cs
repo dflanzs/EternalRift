@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using NUnit.Framework;
 using UnityEngine;
@@ -12,11 +13,9 @@ public class PlayerMaxVelocityTest : MonoBehaviourBaseTest {
     [TestCase(30.0f, ExpectedResult = 0, TestName = "Fall 30 seconds")]
     [TestCase(60.0f, ExpectedResult = 0, TestName = "Fall 60 seconds")]
     public IEnumerator PlayerFallingTest(float seconds) {
-
-      Rigidbody2D body = gameObject.AddComponent<Rigidbody2D>();
-
-      gameObject.AddComponent<CapsuleCollider2D>();
-      gameObject.AddComponent<Jump>();
+      
+      gameObject = GameObject.Instantiate(Resources.Load<GameObject>("Prefabs/Player"));
+      Rigidbody2D body = gameObject.GetComponent<Rigidbody2D>();
 
       yield return new WaitForEndOfFrame();
 

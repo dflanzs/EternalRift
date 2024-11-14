@@ -21,7 +21,7 @@ MonoBehaviour:
   dashCooldown: 1
   dashTime: 0.2
   dashWhileMovingMultiplier: 2.5
-  groundCheckRadius: 0.3
+  groundCheckRadius: 1
   whatIsGround:
     serializedVersion: 2
     m_Bits: 8
