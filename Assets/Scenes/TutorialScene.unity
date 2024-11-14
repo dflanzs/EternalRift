@@ -134,7 +134,7 @@ GameObject:
   - component: {fileID: 74255634}
   - component: {fileID: 74255633}
   - component: {fileID: 74255632}
-  m_Layer: 0
+  m_Layer: 3
   m_Name: Cueva
   m_TagString: Platform
   m_Icon: {fileID: 0}
@@ -24959,6 +24959,18 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 6097214014951737960, guid: abf6b26570e24404baa46261c0d5ca43, type: 3}
+      propertyPath: weapons.Array.size
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 6097214014951737960, guid: abf6b26570e24404baa46261c0d5ca43, type: 3}
+      propertyPath: weapons.Array.data[0]
+      value: 
+      objectReference: {fileID: 11400000, guid: d40afa61a62f57e088c338b9c1f3b39f, type: 2}
+    - target: {fileID: 6097214014951737960, guid: abf6b26570e24404baa46261c0d5ca43, type: 3}
+      propertyPath: weapons.Array.data[1]
+      value: 
+      objectReference: {fileID: 11400000, guid: 7b375264aaec1cf2590b660da0fff54e, type: 2}
     - target: {fileID: 6737107676826690572, guid: abf6b26570e24404baa46261c0d5ca43, type: 3}
       propertyPath: m_SortingOrder
       value: 1
@@ -38802,7 +38814,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1118876410}
   - component: {fileID: 1118876409}
-  m_Layer: 0
+  m_Layer: 3
   m_Name: Grid
   m_TagString: Untagged
   m_Icon: {fileID: 0}
