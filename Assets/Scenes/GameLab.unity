@@ -297,7 +297,7 @@ GameObject:
   - component: {fileID: 370337046}
   - component: {fileID: 370337045}
   - component: {fileID: 370337044}
-  m_Layer: 0
+  m_Layer: 3
   m_Name: Square (11)
   m_TagString: Platform
   m_Icon: {fileID: 0}
@@ -983,7 +983,7 @@ GameObject:
   - component: {fileID: 946309212}
   - component: {fileID: 946309211}
   - component: {fileID: 946309210}
-  m_Layer: 0
+  m_Layer: 3
   m_Name: Square (12)
   m_TagString: Platform
   m_Icon: {fileID: 0}

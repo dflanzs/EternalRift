@@ -8,7 +8,7 @@ public class WeaponBox : MonoBehaviour
 
     private void Start()
     {
-        messageText.SetActive(false);  // Oculta el mensaje al inicio
+        //messageText.SetActive(false);  // Oculta el mensaje al inicio
     }
 
     private void OnMouseDown()
@@ -22,9 +22,9 @@ public class WeaponBox : MonoBehaviour
 
     private IEnumerator DisplayMessage()
     {
-        messageText.SetActive(true);
+        //messageText.SetActive(true);
         yield return new WaitForSeconds(3);  // Muestra el mensaje durante 3 segundos
-        messageText.SetActive(false);
+        //messageText.SetActive(false);
     }
 }
 

@@ -36233,7 +36233,7 @@ GameObject:
   - component: {fileID: 306694712}
   - component: {fileID: 306694711}
   - component: {fileID: 306694710}
-  m_Layer: 0
+  m_Layer: 3
   m_Name: malo
   m_TagString: malo
   m_Icon: {fileID: 0}
@@ -39595,7 +39595,7 @@ GameObject:
   - component: {fileID: 1106019766}
   - component: {fileID: 1106019765}
   - component: {fileID: 1106019764}
-  m_Layer: 0
+  m_Layer: 3
   m_Name: checkpoints
   m_TagString: checkpoint
   m_Icon: {fileID: 0}
@@ -42269,7 +42269,7 @@ GameObject:
   - component: {fileID: 1579381182}
   - component: {fileID: 1579381184}
   - component: {fileID: 1579381183}
-  m_Layer: 0
+  m_Layer: 3
   m_Name: Tilemap background
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -49380,7 +49380,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1913191495}
   - component: {fileID: 1913191494}
-  m_Layer: 0
+  m_Layer: 3
   m_Name: Grid
   m_TagString: Untagged
   m_Icon: {fileID: 0}
