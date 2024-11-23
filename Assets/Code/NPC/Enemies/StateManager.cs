@@ -11,6 +11,8 @@ public class StateManager : MonoBehaviour
 
     [SerializeField] private GameObject _player;
     [SerializeField] private Transform _groundChecker; // Position of the player "feet", add a gameobject
+    [SerializeField] private Transform _playerCollisionCheckerRight; // Position of the player "feet", add a gameobject
+    [SerializeField] private Transform _playerCollisionCheckerLeft; // Position of the player "feet", add a gameobject
     [SerializeField] private Transform _filedOfView; // Position of the player "feet", add a gameobject
     [SerializeField] private bool flies;
     [SerializeField] private int health;
@@ -85,11 +87,19 @@ public class StateManager : MonoBehaviour
     
     public bool checkPlayerCollision()
     {
-        Collider2D[] collidersGC = Physics2D.OverlapCircleAll(_groundChecker.position, k_GroundedRadius);
+        Collider2D[] colliderLeft = Physics2D.OverlapCircleAll(_playerCollisionCheckerLeft.position, k_GroundedRadius);
+        Collider2D[] colliderRight = Physics2D.OverlapCircleAll(_playerCollisionCheckerRight.position, k_GroundedRadius);
+        
         bool playerCollision = false;
 
-        for(int i = 0; i < collidersGC.Length && !playerCollision;  i++){
-            if(collidersGC[i].gameObject.CompareTag("Platform")){
+        for(int i = 0; i < colliderLeft.Length && !playerCollision;  i++){
+            if(colliderLeft[i].gameObject.CompareTag("Player")){
+                playerCollision = true;
+            }
+        }
+        
+        for(int i = 0; i < colliderRight.Length && !playerCollision;  i++){
+            if(colliderRight[i].gameObject.CompareTag("Player")){
                 playerCollision = true;
             }
         }

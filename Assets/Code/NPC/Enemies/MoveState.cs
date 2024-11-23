@@ -34,8 +34,6 @@ public class MoveState : BaseState
     {        
         _grounded = npc.checkGrounded(_groundChecker);
         
-        Debug.Log(_grounded);
-
         if (_flies)
         {
             hit = Physics2D.Raycast(npc.transform.position, player.transform.position - npc.gameObject.transform.position,
