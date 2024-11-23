@@ -79,20 +79,18 @@ public class MoveState : BaseState
         else if(!_flies)
         {
             Vector2 direction = npc.transform.localScale.x > 0 ? Vector2.right : Vector2.left;
-            hit = Physics2D.Raycast(npc.transform.position, player.transform.position - npc.gameObject.transform.position, k_GroundedRadius, LayerMask.GetMask("Ground", "Player"));
+            hit = Physics2D.Raycast(npc.transform.position, player.transform.position - npc.gameObject.transform.position, Mathf.Infinity, LayerMask.GetMask("Ground", "Player"));
 
             if (hit.collider != null)
             {
                 if (hit.collider.CompareTag("Platform"))
                 {
                     Debug.Log("Ground detected");
-                    _focused = false; // Nos aseguramos que es falso
                 }
                 else if (hit.collider.CompareTag("Player"))
                 {
                     Debug.Log("Player detected");
                     checkFocus(_fieldOfView);
-                    _focused = true;
                 }
             }
 
