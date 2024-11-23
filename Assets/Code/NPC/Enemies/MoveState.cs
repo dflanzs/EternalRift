@@ -1,6 +1,3 @@
-using System;
-using TMPro;
-using Unity.VisualScripting;
 using UnityEngine;
 
 public class MoveState : BaseState
@@ -9,27 +6,34 @@ public class MoveState : BaseState
     [SerializeField] private float _maxVelocity = 15f;
     [SerializeField] private float _accel = 20f;
 
-    private readonly float k_GroundedRadius = 0.2f;
     private float _currentSpeed;
     private Rigidbody2D rb;
     private bool _focused = false, _grounded = true;
-    private StateManager npc;
     private int _direction;
     private bool _flies;
     private RaycastHit2D hit;
+
+    public override void EnterState(StateManager npc, GameObject player)
+    {
+        rb = npc.GetComponent<Rigidbody2D>();
+
+        if (npc.getPrevstate() == npc.idleState)
+        {
+            Vector3 scale = npc.transform.localScale;
+            scale.x *= -1;
+            npc.transform.localScale = scale;
+        }
+
+        _grounded = npc.getGrounded();
+        _direction = npc.getDirection();
+        _focused = npc.getFocus();
+        _flies = npc.getFlies();
+    }
+
     public override void UpdateState(StateManager npc, GameObject player, Transform _groundChecker, Transform _fieldOfView)
     {
-        _grounded = false;
-        _focused = false;
-
-        Collider2D[] collidersGC = Physics2D.OverlapCircleAll(_groundChecker.position,k_GroundedRadius);
-
-        // Check if the player is touching ground
-        for(int i = 0;i < collidersGC.Length && !_grounded;i++){
-            if(collidersGC[i].gameObject.CompareTag("Platform")){
-                _grounded = true;
-            }
-        }
+        _focused = npc.getFocus();
+        _grounded = npc.getGrounded();
 
         if (_flies)
         {
@@ -45,7 +49,7 @@ public class MoveState : BaseState
                 else if (hit.collider.CompareTag("Player"))
                 {
                     Debug.Log("Player detected");
-                    checkFocus(_fieldOfView);
+                    _focused = npc.checkFocus(_fieldOfView);
                 }
             }
 
@@ -88,7 +92,7 @@ public class MoveState : BaseState
                 else if (hit.collider.CompareTag("Player"))
                 {
                     Debug.Log("Player detected");
-                    checkFocus(_fieldOfView);
+                    _focused = npc.checkFocus(_fieldOfView);
                 }
             }
 
@@ -115,30 +119,14 @@ public class MoveState : BaseState
         }
     }
 
-    public override void EnterState(StateManager npc, GameObject player)
-    {
-        if (npc.getPrevstate() == npc.idleState)
-        {
-            Vector3 scale = npc.transform.localScale;
-            scale.x *= -1;
-            npc.transform.localScale = scale;
-        }
-
-        _direction = npc.getDirection();
-        _flies = npc.getFlies();
-
-        //Debug.Log("Entering MoveState");
-        rb = npc.GetComponent<Rigidbody2D>();
-    }
-
-    private void checkFocus(Transform _fieldOfView){
+/*     private void _focused = npc.checkFocus(Transform _fieldOfView){
         Collider2D[] collidersFOV = Physics2D.OverlapCircleAll(_fieldOfView.position, _fieldOfView.gameObject.GetComponent<CircleCollider2D>().radius);
         for(int i = 0;i < collidersFOV.Length && !_focused;i++){
             if(collidersFOV[i].gameObject.CompareTag("Player")){
                 _focused = true;
             }
         }
-    }
+    } */
 
     public override void OnCollisionEnter(StateManager npc, GameObject player) { }
 }
