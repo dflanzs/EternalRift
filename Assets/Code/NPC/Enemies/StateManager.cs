@@ -18,7 +18,7 @@ public class StateManager : MonoBehaviour
     private BaseState prevState;
     private int direction = -1;
     private bool _focused = false, _grounded = false;
-    private readonly float k_GroundedRadius = 20f;
+    private readonly float k_GroundedRadius = 0.2f;
 
 
     void Start()
@@ -51,7 +51,7 @@ public class StateManager : MonoBehaviour
     }
 
     // Checkers
-    public bool checkGrounded()
+    public bool checkGrounded(Transform _groundChecker)
     {
         Collider2D[] collidersGC = Physics2D.OverlapCircleAll(_groundChecker.position, k_GroundedRadius);
 
@@ -72,6 +72,7 @@ public class StateManager : MonoBehaviour
         Collider2D[] collidersFOV = Physics2D.OverlapCircleAll(_fieldOfView.position, _fieldOfView.gameObject.GetComponent<CircleCollider2D>().radius);
     
         for(int i = 0; i < collidersFOV.Length && !_focused; i++){
+            
             if(collidersFOV[i].gameObject.CompareTag("Player")){
                 setFocus(true);
                 return true;
