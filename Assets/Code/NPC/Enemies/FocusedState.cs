@@ -1,4 +1,3 @@
-using System;
 using UnityEngine;
 
 public class FocusedState : BaseState
@@ -11,20 +10,15 @@ public class FocusedState : BaseState
     private Vector2 _scale;
     private Vector2 _target;
     private float _moveSpeed = 5f; // Velocidad constante hacia el jugador
+    private RaycastHit2D hit;
+    private Vector2 direction;
 
-    public override void UpdateState(StateManager npc, GameObject player, Transform _groundChecker, Transform _filedOfView){
+    public override void UpdateState(StateManager npc, GameObject player, Transform _groundChecker, Transform _fieldOfView){
         _focused = false;
         _grounded = false;
         _prevDirection = npc.getDirection();
 
         _target = (player.transform.position - npc.transform.position).normalized;
-
-        Collider2D[] collidersFOV = Physics2D.OverlapCircleAll(_filedOfView.position, _filedOfView.gameObject.GetComponent<CircleCollider2D>().radius);
-        for(int i = 0; i < collidersFOV.Length && !_focused; i++){
-            if(collidersFOV[i].gameObject.CompareTag("Player")){
-                _focused = true;
-            }
-        }
 
         Collider2D[] collidersGC = Physics2D.OverlapCircleAll(_groundChecker.position,k_GroundedRadius);
         for(int i = 0; i < collidersGC.Length && !_grounded;  i++){
@@ -32,12 +26,85 @@ public class FocusedState : BaseState
                 _grounded = true;
             }
         }
+        
+        if (_flies)
+        {
+            if (_focused)
+            {
+                rb.velocity = new Vector2(0, rb.velocity.y);
+                //Debug.Log("Shoot");
+            }
+            else
+            {
+                npc.setPrevstate(npc.focusedState);
+                npc.setDirection(npc.getDirection()); // Cambiar la dirección
+                npc.SwitchState(npc.idleState);   
+            }
+        }
+        else if(!_flies)
+        {
+            hit = Physics2D.Raycast(npc.transform.position, player.transform.position, Mathf.Infinity);
 
-        if (_focused)
+            if (hit.collider != null)
+            {
+                if (hit.collider.CompareTag("Player"))
+                {
+                    Debug.Log("Player detected");
+                    checkFocus(_fieldOfView);
+                }
+                else if (hit.collider.CompareTag("Platform"))
+                {
+                    Debug.Log("Ground detected");
+                }
+            }
+
+            if (_focused)
+            {
+                if (_grounded)
+                {
+                    if (player.transform.position.x <= npc.transform.position.x)
+                    {
+                        _scale = npc.transform.localScale;
+                        _scale.x = 1;
+                    } else if (player.transform.position.x > npc.transform.position.x){
+                        _scale = npc.transform.localScale;
+                        _scale.x = -1;
+                    }
+                    
+                    npc.transform.localScale = _scale; 
+                    
+                    // Calcular la dirección hacia el jugador
+                    direction = (player.transform.position - npc.transform.position).normalized;
+                    if (direction.x > 0)
+                        npc.setDirection(1);
+                        
+                    else if(direction.x < 0)
+                        npc.setDirection(-1);
+
+                    rb.velocity = new Vector2(direction.x * _moveSpeed, rb.velocity.y); // Aplicar velocidad constante hacia el jugador
+                }
+                else if(!_grounded)
+                {
+                    rb.velocity = new Vector2(0, rb.velocity.y);
+
+                    npc.setPrevstate(npc.focusedState);
+                    npc.setDirection(_prevDirection); // Cambiar la dirección
+                    npc.SwitchState(npc.idleState);
+                }
+            }
+            else
+            {
+                npc.setPrevstate(npc.focusedState);
+                npc.setDirection(npc.getDirection()); // Cambiar la dirección
+                npc.SwitchState(npc.idleState);
+            }
+        }
+
+        /* if (_focused)
         {
             if (_flies)
             {
-                rb.velocity = Vector2.zero;
+                rb.velocity = new Vector2(0, rb.velocity.y);
                 //Debug.Log("Shoot");
             }
             else if (!_flies)
@@ -67,7 +134,7 @@ public class FocusedState : BaseState
                 }
                 else if(!_grounded)
                 {
-                    rb.velocity = Vector2.zero;
+                    rb.velocity = new Vector2(0, rb.velocity.y);
 
                     npc.setPrevstate(npc.focusedState);
                     npc.setDirection(_prevDirection); // Cambiar la dirección
@@ -80,7 +147,7 @@ public class FocusedState : BaseState
             npc.setPrevstate(npc.focusedState);
             npc.setDirection(npc.getDirection()); // Cambiar la dirección
             npc.SwitchState(npc.idleState);
-        }
+        } */
     }
 
     public override void EnterState(StateManager npc, GameObject player){
@@ -98,6 +165,15 @@ public class FocusedState : BaseState
         {
             Vector2 direction = (player.transform.position - npc.transform.position).normalized;
             rb.velocity = direction * _moveSpeed;
+        }
+    }
+
+    private void checkFocus(Transform _fieldOfView){
+        Collider2D[] collidersFOV = Physics2D.OverlapCircleAll(_fieldOfView.position, _fieldOfView.gameObject.GetComponent<CircleCollider2D>().radius);
+        for(int i = 0; i < collidersFOV.Length && !_focused; i++){
+            if(collidersFOV[i].gameObject.CompareTag("Player")){
+                _focused = true;
+            }
         }
     }
 }

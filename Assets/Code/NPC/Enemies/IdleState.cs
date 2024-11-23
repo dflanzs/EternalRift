@@ -1,13 +1,15 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.IO.Pipes;
 using System.Threading;
 using TMPro;
+using UnityEditor.Callbacks;
 using UnityEngine;
 
 public class IdleState : BaseState
 {
     private Rigidbody2D rb;
-    private Vector3 _velocity = new Vector3(0, 0, 0); 
+    private Vector2 _velocity  = new Vector2(0, 0); 
     private bool _focused = false, _flies;
     private int _direction;
     private float _watingTime = 3;
@@ -42,13 +44,11 @@ public class IdleState : BaseState
         _focused = npc.getFocus();
         _flies = npc.getFlies();
         _direction = npc.getDirection();
-        rb = player.GetComponent<Rigidbody2D>();
+        rb = npc.gameObject.GetComponent<Rigidbody2D>();
 
-        rb.velocity *= _velocity;
+        rb.velocity = new Vector2( rb.velocity.x * _velocity.x, rb.velocity.y);
     }
 
-    public override void OnCollisionEnter(StateManager npc, GameObject player){
-
-    }
+    public override void OnCollisionEnter(StateManager npc, GameObject player){ }
 }
 
