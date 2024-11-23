@@ -78,7 +78,6 @@ public class MoveState : BaseState
         } 
         else if(!_flies)
         {
-            Vector2 direction = npc.transform.localScale.x > 0 ? Vector2.right : Vector2.left;
             hit = Physics2D.Raycast(npc.transform.position, player.transform.position - npc.gameObject.transform.position,
                                     Mathf.Infinity, LayerMask.GetMask("Ground", "Player"));
 
@@ -116,60 +115,6 @@ public class MoveState : BaseState
                 }
             }
         }
-
-        /* if (_focused)
-        {
-            npc.setPrevstate(npc.moveState);
-            npc.SwitchState(npc.focusedState);
-        }
-        else
-        {
-            if(!_flies)
-            {
-
-                if (_grounded)
-                {
-                    _currentSpeed = Mathf.MoveTowards(_currentSpeed, speed, _accel * Time.deltaTime);
-                    rb.velocity = new Vector2(_direction*Mathf.Clamp(_currentSpeed, -_maxVelocity, _maxVelocity), rb.velocity.y);
-                } 
-                else
-                {
-                    rb.velocity = new Vector2(0, rb.velocity.y);
-
-                    npc.setPrevstate(npc.moveState);
-                    npc.SwitchState(npc.idleState);
-                }
-            }
-            else
-            {
-                Vector2 direction = npc.transform.localScale.x > 0 ? Vector2.right : Vector2.left;
-                hit = Physics2D.Raycast(npc.transform.position, direction, Mathf.Infinity, LayerMask.GetMask("Player", "Ground"));
-
-                if (hit.collider != null)
-                {
-                    if (hit.collider.CompareTag("Player"))
-                    {
-                        Debug.Log("Player detected");
-                        checkFocus(_fieldOfView);
-                    }
-                    else if (hit.collider.CompareTag("Platform"))
-                    {
-                        Debug.Log("Ground detected");
-                    }
-                }
-                if(!_grounded){
-                    _currentSpeed = Mathf.MoveTowards(_currentSpeed, speed, _accel * Time.deltaTime);
-                    rb.velocity = new Vector2(_direction*Mathf.Clamp(_currentSpeed, -_maxVelocity, _maxVelocity), rb.velocity.y);
-                }
-                else
-                {
-                    rb.velocity = new Vector2(0, rb.velocity.y);
-
-                    npc.setPrevstate(npc.moveState);
-                    npc.SwitchState(npc.idleState);
-                }
-            }
-        } */
     }
 
     public override void EnterState(StateManager npc, GameObject player)

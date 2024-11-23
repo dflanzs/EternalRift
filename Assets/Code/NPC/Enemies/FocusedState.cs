@@ -2,13 +2,12 @@ using UnityEngine;
 
 public class FocusedState : BaseState
 {
-    private bool _focused, _grounded;
     private readonly float k_GroundedRadius = 0.2f;
+    private bool _focused, _grounded;
     private int _prevDirection;
     private Rigidbody2D rb;
     private bool _flies;
     private Vector2 _scale;
-    private Vector2 _target;
     private float _moveSpeed = 5f; // Velocidad constante hacia el jugador
     private RaycastHit2D hit;
     private Vector2 direction;
@@ -18,9 +17,7 @@ public class FocusedState : BaseState
         _grounded = false;
         _prevDirection = npc.getDirection();
 
-        _target = (player.transform.position - npc.transform.position).normalized;
-
-        Collider2D[] collidersGC = Physics2D.OverlapCircleAll(_groundChecker.position,k_GroundedRadius);
+        Collider2D[] collidersGC = Physics2D.OverlapCircleAll(_groundChecker.position, k_GroundedRadius);
         for(int i = 0; i < collidersGC.Length && !_grounded;  i++){
             if(collidersGC[i].gameObject.CompareTag("Platform")){
                 _grounded = true;
@@ -43,18 +40,19 @@ public class FocusedState : BaseState
         }
         else if(!_flies)
         {
-            hit = Physics2D.Raycast(npc.transform.position, player.transform.position, Mathf.Infinity);
+            hit = Physics2D.Raycast(npc.transform.position, player.transform.position - npc.gameObject.transform.position,
+                                    Mathf.Infinity, LayerMask.GetMask("Ground", "Player"));
 
             if (hit.collider != null)
             {
-                if (hit.collider.CompareTag("Player"))
+                if (hit.collider.CompareTag("Platform"))
+                {
+                    Debug.Log("Ground detected");
+                }
+                else if (hit.collider.CompareTag("Player"))
                 {
                     Debug.Log("Player detected");
                     checkFocus(_fieldOfView);
-                }
-                else if (hit.collider.CompareTag("Platform"))
-                {
-                    Debug.Log("Ground detected");
                 }
             }
 
@@ -64,9 +62,11 @@ public class FocusedState : BaseState
                 {
                     if (player.transform.position.x <= npc.transform.position.x)
                     {
+                        Debug.Log("Changing irection");
                         _scale = npc.transform.localScale;
                         _scale.x = 1;
                     } else if (player.transform.position.x > npc.transform.position.x){
+                        Debug.Log("Changing irection");
                         _scale = npc.transform.localScale;
                         _scale.x = -1;
                     }
@@ -74,7 +74,7 @@ public class FocusedState : BaseState
                     npc.transform.localScale = _scale; 
                     
                     // Calcular la dirección hacia el jugador
-                    direction = (player.transform.position - npc.transform.position).normalized;
+                    direction = player.transform.position - npc.transform.position;
                     if (direction.x > 0)
                         npc.setDirection(1);
                         
@@ -99,55 +99,6 @@ public class FocusedState : BaseState
                 npc.SwitchState(npc.idleState);
             }
         }
-
-        /* if (_focused)
-        {
-            if (_flies)
-            {
-                rb.velocity = new Vector2(0, rb.velocity.y);
-                //Debug.Log("Shoot");
-            }
-            else if (!_flies)
-            {
-                if (_grounded)
-                {
-                    if (player.transform.position.x <= npc.transform.position.x)
-                    {
-                        _scale = npc.transform.localScale;
-                        _scale.x = 1;
-                    } else if (player.transform.position.x > npc.transform.position.x){
-                        _scale = npc.transform.localScale;
-                        _scale.x = -1;
-                    }
-                    
-                    npc.transform.localScale = _scale; 
-                    
-                    // Calcular la dirección hacia el jugador
-                    Vector2 direction = (player.transform.position - npc.transform.position).normalized;
-                    if (direction.x > 0)
-                        npc.setDirection(1);
-                        
-                    else if(direction.x < 0)
-                        npc.setDirection(-1);
-
-                    rb.velocity = direction * _moveSpeed; // Aplicar velocidad constante hacia el jugador
-                }
-                else if(!_grounded)
-                {
-                    rb.velocity = new Vector2(0, rb.velocity.y);
-
-                    npc.setPrevstate(npc.focusedState);
-                    npc.setDirection(_prevDirection); // Cambiar la dirección
-                    npc.SwitchState(npc.idleState);
-                }
-            }
-        }
-        else if (!_focused)
-        {
-            npc.setPrevstate(npc.focusedState);
-            npc.setDirection(npc.getDirection()); // Cambiar la dirección
-            npc.SwitchState(npc.idleState);
-        } */
     }
 
     public override void EnterState(StateManager npc, GameObject player){
