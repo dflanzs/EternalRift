@@ -15,6 +15,7 @@ TagManager:
   - Ground
   - malo
   - checkpoint
+  - npcCollision
   layers:
   - Default
   - TransparentFX

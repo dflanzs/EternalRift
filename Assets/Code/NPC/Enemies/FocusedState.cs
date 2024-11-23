@@ -3,7 +3,13 @@ using UnityEngine;
 
 public class FocusedState : BaseState
 {
+
+    [SerializeField] private float speed = 5f;
+    [SerializeField] private float _maxVelocity = 15f;
+    [SerializeField] private float _accel = 20f;
+
     private readonly float k_GroundedRadius = 0.2f;
+    private float _currentSpeed;
     private bool _focused, _grounded;
     private int _prevDirection;
     private Rigidbody2D rb;
@@ -15,10 +21,6 @@ public class FocusedState : BaseState
 
     public override void UpdateState(StateManager npc, GameObject player, Transform _groundChecker, Transform _fieldOfView)
     {
-        // Limit lateral velocity
-        if (rb.velocity.x > npc.getMaxSpeed())
-            rb.velocity = new Vector2(rb.velocity.x * 0.99f, rb.velocity.y);
-
         _focused = false;
         _grounded = false;
         _prevDirection = npc.getDirection();
@@ -32,6 +34,22 @@ public class FocusedState : BaseState
         
         if (_flies)
         {
+            hit = Physics2D.Raycast(npc.transform.position, player.transform.position - npc.gameObject.transform.position,
+                                    Mathf.Infinity, LayerMask.GetMask("Ground", "Player"));
+
+            if (hit.collider != null)
+            {
+                if (hit.collider.CompareTag("Platform"))
+                {
+                    Debug.Log("Ground detected");
+                }
+                else if (hit.collider.CompareTag("Player"))
+                {
+                    Debug.Log("Player detected");
+                    checkFocus(_fieldOfView);
+                }
+            }
+
             if (_focused)
             {
                 rb.velocity = new Vector2(0, rb.velocity.y);
@@ -87,7 +105,8 @@ public class FocusedState : BaseState
                     else if(direction.x < 0)
                         npc.setDirection(-1);
 
-                    rb.velocity = new Vector2(direction.x, rb.velocity.y); // Aplicar velocidad constante hacia el jugador
+                   _currentSpeed = Mathf.MoveTowards(_currentSpeed, speed, _accel * Time.deltaTime);
+                    rb.velocity = new Vector2(_prevDirection*Mathf.Clamp(_currentSpeed, -_maxVelocity, _maxVelocity), rb.velocity.y); // Aplicar velocidad constante hacia el jugador
 
                 }
                 else if(!_grounded)
@@ -119,7 +138,7 @@ public class FocusedState : BaseState
     public override void OnCollisionEnter(StateManager npc, GameObject player)
     {
         // Mantener la velocidad constante hacia el jugador incluso después de la colisión
-        if (player.CompareTag("Player"))
+        if (player.CompareTag("npcCollision"))
         {
             // Vector2 direction = (player.transform.position - npc.transform.position).normalized;
             rb.velocity = new Vector2(0, rb.velocity.y);

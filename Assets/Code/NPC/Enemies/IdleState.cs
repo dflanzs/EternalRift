@@ -19,8 +19,7 @@ public class IdleState : BaseState
         
         if (_timer < _watingTime)
             _timer += Time.deltaTime;
-        else
-        {
+        else{
             _focused = npc.getFocus();
             
             if (_focused && npc.getPrevstate() != npc.focusedState)

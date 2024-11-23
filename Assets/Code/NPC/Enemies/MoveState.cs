@@ -10,7 +10,6 @@ public class MoveState : BaseState
     [SerializeField] private float _accel = 20f;
 
     private readonly float k_GroundedRadius = 0.2f;
-
     private float _currentSpeed;
     private Rigidbody2D rb;
     private bool _focused = false, _grounded = true;
@@ -20,10 +19,6 @@ public class MoveState : BaseState
     private RaycastHit2D hit;
     public override void UpdateState(StateManager npc, GameObject player, Transform _groundChecker, Transform _fieldOfView)
     {
-        // Limit lateral velocity
-        if (rb.velocity.x > npc.getMaxSpeed())
-            rb.velocity = new Vector2(rb.velocity.x * 0.99f, rb.velocity.y);
-
         _grounded = false;
         _focused = false;
 
@@ -38,7 +33,22 @@ public class MoveState : BaseState
 
         if (_flies)
         {
-            checkFocus(_fieldOfView);
+            hit = Physics2D.Raycast(npc.transform.position, player.transform.position - npc.gameObject.transform.position,
+                                    Mathf.Infinity, LayerMask.GetMask("Ground", "Player"));
+
+            if (hit.collider != null)
+            {
+                if (hit.collider.CompareTag("Platform"))
+                {
+                    Debug.Log("Ground detected");
+                }
+                else if (hit.collider.CompareTag("Player"))
+                {
+                    Debug.Log("Player detected");
+                    checkFocus(_fieldOfView);
+                }
+            }
+
             if (_focused)
             {
                 npc.setPrevstate(npc.moveState);
@@ -46,7 +56,7 @@ public class MoveState : BaseState
             }
             else
             {
-                if (_grounded)
+                if (!_grounded)
                 {
                     _currentSpeed = Mathf.MoveTowards(_currentSpeed, speed, _accel * Time.deltaTime);
                     rb.velocity = new Vector2(_direction*Mathf.Clamp(_currentSpeed, -_maxVelocity, _maxVelocity), rb.velocity.y);
