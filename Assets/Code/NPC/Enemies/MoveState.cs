@@ -79,7 +79,8 @@ public class MoveState : BaseState
         else if(!_flies)
         {
             Vector2 direction = npc.transform.localScale.x > 0 ? Vector2.right : Vector2.left;
-            hit = Physics2D.Raycast(npc.transform.position, player.transform.position - npc.gameObject.transform.position, Mathf.Infinity, LayerMask.GetMask("Ground", "Player"));
+            hit = Physics2D.Raycast(npc.transform.position, player.transform.position - npc.gameObject.transform.position,
+                                    Mathf.Infinity, LayerMask.GetMask("Ground", "Player"));
 
             if (hit.collider != null)
             {
@@ -102,7 +103,6 @@ public class MoveState : BaseState
             else
             {
                 Debug.Log("MoveState: !_focused");
-                Debug.Log(_grounded);
                 if(_grounded){
                     _currentSpeed = Mathf.MoveTowards(_currentSpeed, speed, _accel * Time.deltaTime);
                     rb.velocity = new Vector2(_direction*Mathf.Clamp(_currentSpeed, -_maxVelocity, _maxVelocity), rb.velocity.y);
@@ -189,8 +189,6 @@ public class MoveState : BaseState
     }
 
     private void checkFocus(Transform _fieldOfView){
-        Debug.Log("GroundCheck");
-
         Collider2D[] collidersFOV = Physics2D.OverlapCircleAll(_fieldOfView.position, _fieldOfView.gameObject.GetComponent<CircleCollider2D>().radius);
         for(int i = 0;i < collidersFOV.Length && !_focused;i++){
             if(collidersFOV[i].gameObject.CompareTag("Player")){

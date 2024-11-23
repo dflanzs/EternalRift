@@ -39386,7 +39386,7 @@ GameObject:
   - component: {fileID: 696188925}
   m_Layer: 3
   m_Name: Square
-  m_TagString: Untagged
+  m_TagString: Platform
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -39786,7 +39786,7 @@ GameObject:
   - component: {fileID: 1106019766}
   - component: {fileID: 1106019765}
   - component: {fileID: 1106019764}
-  m_Layer: 3
+  m_Layer: 2
   m_Name: checkpoints
   m_TagString: checkpoint
   m_Icon: {fileID: 0}
@@ -42460,7 +42460,7 @@ GameObject:
   - component: {fileID: 1579381182}
   - component: {fileID: 1579381184}
   - component: {fileID: 1579381183}
-  m_Layer: 3
+  m_Layer: 2
   m_Name: Tilemap background
   m_TagString: Untagged
   m_Icon: {fileID: 0}
