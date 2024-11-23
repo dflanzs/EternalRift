@@ -20,24 +20,12 @@ public class MoveState : BaseState
     private RaycastHit2D hit;
     public override void UpdateState(StateManager npc, GameObject player, Transform _groundChecker, Transform _fieldOfView)
     {
+        // Limit lateral velocity
+        if (rb.velocity.x > npc.getMaxSpeed())
+            rb.velocity = new Vector2(rb.velocity.x * 0.99f, rb.velocity.y);
+
         _grounded = false;
         _focused = false;
-
-        //LayerMask mask = LayerMask.GetMask("Player", "Ground");
-        //hit = Physics2D.Raycast(npc.transform.position, npc.transform.forward, k_GroundedRadius, mask);
-
-
-        
-        /* if (hit)
-        {
-            if (mask.Equals("Player"))
-            {
-                Debug.Log("Player");
-                checkFocus(_fieldOfView);
-            }
-            else 
-                Debug.Log("Ground");
-        } */
 
         Collider2D[] collidersGC = Physics2D.OverlapCircleAll(_groundChecker.position,k_GroundedRadius);
 
@@ -104,7 +92,7 @@ public class MoveState : BaseState
                 Debug.Log("MoveState: !_focused");
                 if(_grounded){
                     _currentSpeed = Mathf.MoveTowards(_currentSpeed, speed, _accel * Time.deltaTime);
-                    rb.velocity = new Vector2(_direction*Mathf.Clamp(_currentSpeed, -_maxVelocity, _maxVelocity), rb.velocity.y);
+                    rb.velocity = new Vector2(_direction * Mathf.Clamp(_currentSpeed, -_maxVelocity, _maxVelocity), rb.velocity.y);
                 }
                 else
                 {

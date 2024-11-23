@@ -19,16 +19,14 @@ public class IdleState : BaseState
         
         if (_timer < _watingTime)
             _timer += Time.deltaTime;
-        else{
-            /* Vector3 scale = npc.transform.localScale;
-            scale.x *= -1;
-            npc.transform.localScale = scale; */
-
+        else
+        {
             _focused = npc.getFocus();
             
-            if (_focused)
+            if (_focused && npc.getPrevstate() != npc.focusedState)
+            {
                 npc.SwitchState(npc.focusedState); 
-            
+            }
             else
             {
                 npc.setPrevstate(npc.idleState);

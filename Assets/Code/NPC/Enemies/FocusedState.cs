@@ -1,3 +1,4 @@
+using System;
 using UnityEngine;
 
 public class FocusedState : BaseState
@@ -12,7 +13,12 @@ public class FocusedState : BaseState
     private RaycastHit2D hit;
     private Vector2 direction;
 
-    public override void UpdateState(StateManager npc, GameObject player, Transform _groundChecker, Transform _fieldOfView){
+    public override void UpdateState(StateManager npc, GameObject player, Transform _groundChecker, Transform _fieldOfView)
+    {
+        // Limit lateral velocity
+        if (rb.velocity.x > npc.getMaxSpeed())
+            rb.velocity = new Vector2(rb.velocity.x * 0.99f, rb.velocity.y);
+
         _focused = false;
         _grounded = false;
         _prevDirection = npc.getDirection();
@@ -81,7 +87,8 @@ public class FocusedState : BaseState
                     else if(direction.x < 0)
                         npc.setDirection(-1);
 
-                    rb.velocity = new Vector2(direction.x * _moveSpeed, rb.velocity.y); // Aplicar velocidad constante hacia el jugador
+                    rb.velocity = new Vector2(direction.x, rb.velocity.y); // Aplicar velocidad constante hacia el jugador
+
                 }
                 else if(!_grounded)
                 {
@@ -101,26 +108,28 @@ public class FocusedState : BaseState
         }
     }
 
-    public override void EnterState(StateManager npc, GameObject player){
-        //Debug.Log("FocusState");
-
+    public override void EnterState(StateManager npc, GameObject player)
+    {
         _flies = npc.getFlies();
         _focused = npc.getFocus();
         _prevDirection = npc.getDirection();
         rb = npc.gameObject.GetComponent<Rigidbody2D>();
     }
 
-    public override void OnCollisionEnter(StateManager npc, GameObject player){
+    public override void OnCollisionEnter(StateManager npc, GameObject player)
+    {
         // Mantener la velocidad constante hacia el jugador incluso después de la colisión
         if (player.CompareTag("Player"))
         {
-            Vector2 direction = (player.transform.position - npc.transform.position).normalized;
-            rb.velocity = direction * _moveSpeed;
+            // Vector2 direction = (player.transform.position - npc.transform.position).normalized;
+            rb.velocity = new Vector2(0, rb.velocity.y);
         }
     }
 
-    private void checkFocus(Transform _fieldOfView){
+    private void checkFocus(Transform _fieldOfView)
+    {
         Collider2D[] collidersFOV = Physics2D.OverlapCircleAll(_fieldOfView.position, _fieldOfView.gameObject.GetComponent<CircleCollider2D>().radius);
+    
         for(int i = 0; i < collidersFOV.Length && !_focused; i++){
             if(collidersFOV[i].gameObject.CompareTag("Player")){
                 _focused = true;

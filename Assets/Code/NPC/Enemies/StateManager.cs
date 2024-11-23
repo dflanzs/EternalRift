@@ -16,6 +16,7 @@ public class StateManager : MonoBehaviour
     [SerializeField] private Transform _filedOfView; // Position of the player "feet", add a gameobject
     [SerializeField] private bool flies;
     [SerializeField] private int health;
+    [SerializeField] private float _maxSpeed = 45.0f;
 
     private BaseState prevState;
     private int direction = -1;
@@ -85,6 +86,10 @@ public class StateManager : MonoBehaviour
     }
     public void setPrevstate(BaseState newState){
         prevState = newState;
+    }
+
+    public float getMaxSpeed(){
+        return _maxSpeed;
     }
 
 /*     public bool getGrounded(){
