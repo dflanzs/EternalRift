@@ -224,4 +224,7 @@ public class StateManager : MonoBehaviour
     {
         _shootCooldown = shootCooldown;
     }
+    public GameObject getGun(){
+        return _gun;
+    }
 }

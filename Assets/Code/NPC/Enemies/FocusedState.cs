@@ -13,7 +13,7 @@ public class FocusedState : BaseState
     private Vector2 direction;
     private Vector2 _scale;
     private Rigidbody2D rb;
-    private RaycastHit2D hit;
+    private RaycastHit2D focusRC;
 
     public override void EnterState(StateManager npc, GameObject player)
     {
@@ -31,9 +31,9 @@ public class FocusedState : BaseState
         
         if (_flies)
         {
-            hit = Physics2D.Raycast(npc.transform.position, npc.getTarget(player, npc), Mathf.Infinity, LayerMask.GetMask("Ground", "Player"));
+            focusRC = Physics2D.Raycast(npc.transform.position, npc.getTarget(player, npc), Mathf.Infinity, LayerMask.GetMask("Ground", "Player"));
 
-            if (hit.collider != null && hit.collider.CompareTag("Player"))
+            if (focusRC.collider != null && focusRC.collider.CompareTag("Player"))
                 npc.setFocus(npc.checkFocus(_fieldOfView));
 
             if (npc.getFocus())
@@ -60,9 +60,9 @@ public class FocusedState : BaseState
             }
             else
             {
-                hit = Physics2D.Raycast(npc.transform.position, npc.getTarget(player, npc), Mathf.Infinity, LayerMask.GetMask("Ground", "Player"));
+                focusRC = Physics2D.Raycast(npc.transform.position, npc.getTarget(player, npc), Mathf.Infinity, LayerMask.GetMask("Ground", "Player"));
 
-                if (hit.collider != null && hit.collider.CompareTag("Player"))
+                if (focusRC.collider != null && focusRC.collider.CompareTag("Player"))
                     npc.setFocus(npc.checkFocus(_fieldOfView));
 
                 if (npc.getFocus())
