@@ -36,8 +36,7 @@ public class MoveState : BaseState
         
         if (_flies)
         {
-            hit = Physics2D.Raycast(npc.transform.position, player.transform.position - npc.gameObject.transform.position,
-                                    Mathf.Infinity, LayerMask.GetMask("Ground", "Player"));
+            hit = Physics2D.Raycast(npc.transform.position, npc.getTarget(player, npc), Mathf.Infinity, LayerMask.GetMask("Ground", "Player"));
 
             if (hit.collider != null && hit.collider.CompareTag("Player"))
                 _focused = npc.checkFocus(_fieldOfView);
@@ -66,9 +65,8 @@ public class MoveState : BaseState
         } 
         else if (!_flies)
         {
-            hit = Physics2D.Raycast(npc.transform.position, player.transform.position - npc.gameObject.transform.position,
-                                    Mathf.Infinity, LayerMask.GetMask("Ground", "Player"));
-
+            hit = Physics2D.Raycast(npc.transform.position, npc.getTarget(player, npc), Mathf.Infinity, LayerMask.GetMask("Ground", "Player"));
+            
             if (hit.collider != null && hit.collider.CompareTag("Player"))
                 _focused = npc.checkFocus(_fieldOfView);
 

@@ -4,6 +4,8 @@ public class AttackState : BaseState
 {
     private bool _flies;
     private float _timer;
+    private RaycastHit2D hit;
+
 
     public override void EnterState(StateManager npc, GameObject player)
     {
@@ -16,13 +18,18 @@ public class AttackState : BaseState
     {
         if (_flies)
         {
-            if(npc.checkFocus(_fieldOfView))
+            hit = Physics2D.Raycast(npc.transform.position, npc.getTarget(player, npc), Mathf.Infinity, LayerMask.GetMask("Ground", "Player"));
+
+            if (hit.collider != null && hit.collider.CompareTag("Player"))
+                npc.setFocus(npc.checkFocus(_fieldOfView));
+
+            if (npc.getFocus())
             {
                 if (_timer < npc.getShootCooldown())
                     _timer += Time.deltaTime;
                 else
                 {
-                    ShootBullet(npc, player);
+                    npc.ShootBullet(npc, player);
                     _timer = 0;
                 }
             }
@@ -33,31 +40,11 @@ public class AttackState : BaseState
                 npc.SwitchState(npc.idleState);  
             }
         }
+
+        npc.setFocus(false);
     }
 
-    private void ShootBullet(StateManager npc, GameObject player)
-    {
-        Debug.Log("Shoot");
-        GameObject bullet = ObjectPooling.Instance.requestInstance("Bullet");
-
-        if (bullet != null)
-        {
-            bullet.SetActive(true);
-
-            bullet.transform.position = npc.gameObject.transform.position;
-            bullet.transform.rotation = Quaternion.identity;
-
-            Bullet bulletScript = bullet.GetComponent<Bullet>();
-
-            Vector3 directionVector = player.transform.position * npc.getBulletSpeed() * Time.deltaTime;
-            Vector3 originVector = npc.gameObject.transform.position;
-
-
-            bulletScript.shoot(directionVector,originVector,npc.getShootRange(), npc.getDamage());
-
-            bullet.GetComponent<BoxCollider2D>().gameObject.SetActive(true);
-        }   
-    }
+    
 
     public override void OnCollisionEnter(StateManager npc, GameObject player)
     {

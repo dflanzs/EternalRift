@@ -14,6 +14,7 @@ public class StateManager : MonoBehaviour
     [SerializeField] private Transform _playerCollisionCheckerRight; // Position of the player "feet", add a gameobject
     [SerializeField] private Transform _playerCollisionCheckerLeft; // Position of the player "feet", add a gameobject
     [SerializeField] private Transform _fieldOfView; // Position of the player "feet", add a gameobject
+    [SerializeField] private GameObject _gun;
     [SerializeField] private bool flies;
     [SerializeField] private int health;
     [SerializeField] private float _bulletSpeed = 10f;
@@ -73,6 +74,11 @@ public class StateManager : MonoBehaviour
         setGrounded(false);
         return false;
     }
+    public void SwitchState(BaseState state)
+    {
+        currentState = state;
+        state.EnterState(this, _player);
+    }
 
     public bool checkFocus(Transform _fieldOfView)
     {
@@ -112,10 +118,29 @@ public class StateManager : MonoBehaviour
         return playerCollision;
     }
 
-    public void SwitchState(BaseState state)
+    public void ShootBullet(StateManager npc, GameObject player)
     {
-        currentState = state;
-        state.EnterState(this, _player);
+        Debug.Log("Shoot");
+        GameObject bullet = ObjectPooling.Instance.requestInstance("Bullet");
+
+        if (bullet != null)
+        {
+            Debug.Log("Bullet");
+            bullet.SetActive(true);
+
+            bullet.transform.position = _gun.transform.position;
+            bullet.transform.rotation = Quaternion.identity;
+
+            Bullet bulletScript = bullet.GetComponent<Bullet>();
+
+            Vector3 directionVector = getBulletSpeed() * getTarget(player, npc);
+            Vector3 originVector = _gun.transform.position;
+
+
+            bulletScript.shoot(directionVector,originVector,npc.getShootRange(), npc.getDamage());
+
+            bullet.GetComponent<BoxCollider2D>().gameObject.SetActive(true);
+        }   
     }
 
     // Getters and setters
@@ -193,5 +218,9 @@ public class StateManager : MonoBehaviour
     public void setShootCooldown(float shootCooldown)
     {
         _shootCooldown = shootCooldown;
+    }
+
+    public Vector2 getTarget(GameObject player, StateManager npc){
+        return (player.transform.position - npc.gameObject.transform.position).normalized;
     }
 }
