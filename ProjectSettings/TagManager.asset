@@ -15,6 +15,7 @@ TagManager:
   - Ground
   - malo
   - checkpoint
+  - npcCollision
   - cristal
   layers:
   - Default
@@ -23,7 +24,7 @@ TagManager:
   - Ground
   - Water
   - UI
-  - 
+  - Player
   - 
   - 
   - 
