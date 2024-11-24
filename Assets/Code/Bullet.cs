@@ -19,14 +19,11 @@ public class Bullet : MonoBehaviour
     {
         if (checkWallCollision())
         {
-            Debug.Log("checkWallCollision(): true");
             gameObject.SetActive(false);
             _rigid.velocity = Vector2.zero;
         }
         else
         {
-            Debug.Log("checkWallCollision(): false");
-
             if(_originVector == null)
                 return;
 
