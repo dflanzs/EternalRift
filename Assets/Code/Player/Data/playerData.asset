@@ -13,15 +13,17 @@ MonoBehaviour:
   m_Name: playerData
   m_EditorClassIdentifier: 
   movementVelocity: 10
-  jumpVelocity: 20
+  jumpVelocity: 50
   amountOfJumps: 1
+  maxVelocity: 100
   coyoteTime: 0.2
   jumpHeightMultiplier: 0.8
   dashVelocity: 300
   dashCooldown: 1
   dashTime: 0.2
   dashWhileMovingMultiplier: 2.5
-  groundCheckRadius: 1
+  groundCheckRadius: 0.2
   whatIsGround:
     serializedVersion: 2
     m_Bits: 8
+  mutatedJumpMultiplier: 1.5

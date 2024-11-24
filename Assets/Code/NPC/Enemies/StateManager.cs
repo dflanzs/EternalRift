@@ -134,12 +134,12 @@ public class StateManager : MonoBehaviour
     #region Auxiliar Functions
     public void ShootBullet(StateManager npc, GameObject player)
     {
-        Debug.Log("Shoot");
+        //Debug.Log("Shoot");
         GameObject enemyBullet = ObjectPooling.Instance.requestInstance("enemyBullet");
 
         if (enemyBullet != null)
         {
-            Debug.Log("Bullet");
+            //Debug.Log("Bullet");
             enemyBullet.SetActive(true);
 
             enemyBullet.transform.position = _gun.transform.position;
