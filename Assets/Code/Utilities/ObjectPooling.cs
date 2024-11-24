@@ -76,7 +76,7 @@ public class ObjectPooling : MonoBehaviour
             instantiatedPrefab.SetActive(false);
 
             // Metemos los objetos a la lista
-            enemiesPool.Enqueue(instantiatedPrefab);
+            enemyBulletsPool.Enqueue(instantiatedPrefab);
         }
     }
 
@@ -111,7 +111,7 @@ public class ObjectPooling : MonoBehaviour
         } 
         else if(objectType == "enemyBullet")
         {
-            for (int i = 0; i < enemiesPool.Count; i++)
+            for (int i = 0; i < enemyBulletsPool.Count; i++)
             {
                 if (!enemyBulletsPool.Peek().activeSelf)
                 {

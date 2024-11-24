@@ -35,7 +35,6 @@ public class AttackState : BaseState
             }
             else
             {
-                Debug.Log("Exit attackState");
                 npc.setPrevstate(npc.attackState);
                 npc.SwitchState(npc.idleState);  
             }

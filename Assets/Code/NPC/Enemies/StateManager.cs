@@ -122,25 +122,25 @@ public class StateManager : MonoBehaviour
     public void ShootBullet(StateManager npc, GameObject player)
     {
         Debug.Log("Shoot");
-        GameObject bullet = ObjectPooling.Instance.requestInstance("Bullet");
+        GameObject enemyBullet = ObjectPooling.Instance.requestInstance("enemyBullet");
 
-        if (bullet != null)
+        if (enemyBullet != null)
         {
             Debug.Log("Bullet");
-            bullet.SetActive(true);
+            enemyBullet.SetActive(true);
 
-            bullet.transform.position = _gun.transform.position;
-            bullet.transform.rotation = Quaternion.identity;
+            enemyBullet.transform.position = _gun.transform.position;
+            enemyBullet.transform.rotation = Quaternion.identity;
 
-            Bullet bulletScript = bullet.GetComponent<Bullet>();
+            Bullet bulletScript = enemyBullet.GetComponent<Bullet>();
 
             Vector3 directionVector = getBulletSpeed() * getTarget(player, npc);
             Vector3 originVector = _gun.transform.position;
 
 
-            bulletScript.shoot(directionVector,originVector,npc.getShootRange(), npc.getDamage());
+            bulletScript.shoot(directionVector, originVector, npc.getShootRange(), npc.getDamage());
 
-            bullet.GetComponent<BoxCollider2D>().gameObject.SetActive(true);
+            enemyBullet.GetComponent<BoxCollider2D>().gameObject.SetActive(true);
         }   
     }
 
