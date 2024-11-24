@@ -1,9 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
-using System.IO.Pipes;
-using System.Threading;
-using TMPro;
-using UnityEditor.Callbacks;
 using UnityEngine;
 
 public class IdleState : BaseState
@@ -29,9 +23,8 @@ public class IdleState : BaseState
 
     public override void UpdateState(StateManager npc, GameObject player, Transform _groundChecker, Transform _fieldOfView)
     {
-        if (_timer < _watingTime)
-            _timer += Time.deltaTime;
-        else{
+        if (npc.getPrevstate() == npc.attackState)
+        {
             _focused = npc.getFocus();
             
             if (_focused && npc.getPrevstate() != npc.focusedState)
@@ -43,6 +36,25 @@ public class IdleState : BaseState
                 npc.setPrevstate(npc.idleState);
                 npc.setDirection(_direction * -1);
                 npc.SwitchState(npc.moveState); 
+            }
+        }
+        else
+        {
+            if (_timer < _watingTime)
+                _timer += Time.deltaTime;
+            else{
+                _focused = npc.getFocus();
+                
+                if (_focused && npc.getPrevstate() != npc.focusedState)
+                {
+                    npc.SwitchState(npc.focusedState); 
+                }
+                else
+                {
+                    npc.setPrevstate(npc.idleState);
+                    npc.setDirection(_direction * -1);
+                    npc.SwitchState(npc.moveState); 
+                }
             }
         }
     }

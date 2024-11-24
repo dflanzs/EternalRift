@@ -6,19 +6,14 @@ public class AttackState : BaseState
     private bool _flies;
     private float _timer;
     private RaycastHit2D focusRC;
-    private RaycastHit2D[] attackRC;
-    private LayerMask attackableLayer;
-    private Animation animation;
-
 
     public override void EnterState(StateManager npc, GameObject player)
     {
         Debug.Log("enter attack state");
         _flies = npc.getFlies();
-        _timer = 0;
-        attackableLayer = LayerMask.GetMask("Player");
-        animation = npc.gameObject.GetComponent<Animation>();
-        animation["Enemy1"].layer = 0;
+        _timer = npc.getShootCooldown(); // Disparo instantaneo
+        
+
     }
 
     public override void UpdateState(StateManager npc, GameObject player, Transform _groundChecker, Transform _fieldOfView)
@@ -37,6 +32,8 @@ public class AttackState : BaseState
                 else
                 {
                     npc.ShootBullet(npc, player);
+                    player.GetComponent<Player>().Health -= npc.getDamage();
+
                     _timer = 0;
                 }
             }
@@ -48,11 +45,15 @@ public class AttackState : BaseState
         }
         else
         {
-            
-
             if (npc.checkPlayerCollision())
             {
-                attack(npc);
+                if (_timer < npc.getShootCooldown())
+                    _timer += Time.deltaTime;
+                else
+                {
+                    npc.attack(npc, player.GetComponent<Player>());
+                    _timer = 0;
+                }
             }
             else
             {
@@ -62,23 +63,6 @@ public class AttackState : BaseState
         }
 
         npc.setFocus(false);
-    }
-
-    
-    private void attack(StateManager npc)
-    {
-        attackRC = Physics2D.CircleCastAll(npc.getGun().transform.position, npc.getShootRange(), npc.getGun().transform.position, attackableLayer);
-
-
-        for (int i = 0; i < attackRC.Length; i++)
-        {
-            Player playerHit = attackRC[i].collider.gameObject.GetComponent<Player>();
-
-            if (playerHit != null)
-            {
-                animation.Play("Enemy1");
-            }
-        }
     }
 
     private void OnDrawGizmosSelected(StateManager npc) 

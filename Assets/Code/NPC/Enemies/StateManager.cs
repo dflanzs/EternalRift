@@ -2,13 +2,19 @@ using UnityEngine;
 
 public class StateManager : MonoBehaviour
 {
+    // To use animation go to project window, click on the animation file, open debug mode, activate legacy 
+
+    #region States
     public BaseState currentState;
+    private BaseState prevState;
     public IdleState idleState = new IdleState();    
     public MoveState moveState = new MoveState();
     public FocusedState focusedState = new FocusedState(); 
     public AttackState attackState = new AttackState();
     public DeadState deadState = new DeadState();
+    #endregion
 
+    #region Data
     [SerializeField] private GameObject _player;
     [SerializeField] private Transform _groundChecker;
     [SerializeField] private Transform _playerCollisionCheckerRight;
@@ -22,19 +28,23 @@ public class StateManager : MonoBehaviour
     [SerializeField] private float _damage = 10f;
     [SerializeField] private float _shootCooldown = 1f;
 
+    private RaycastHit2D[] attackRC;
+    private LayerMask attackableLayer;
 
-    private BaseState prevState;
     private int direction = -1;
     private bool _focused = false, _grounded = false;
     private readonly float k_GroundedRadius = 0.2f;
+    #endregion
 
-
+    #region State Functions
     void Start()
     {
         // Start in MoveState by default
         currentState = moveState;
         prevState = null;
         currentState.EnterState(this, _player);
+
+        attackableLayer = LayerMask.GetMask("Player");
 
         if(_player == null)
             _player = GameObject.FindGameObjectWithTag("Player");
@@ -63,8 +73,9 @@ public class StateManager : MonoBehaviour
         currentState = state;
         state.EnterState(this, _player);
     }
+    #endregion
 
-    // Checkers
+    #region Checkers
     public bool checkGrounded(Transform _groundChecker)
     {
         Collider2D[] collidersGC = Physics2D.OverlapCircleAll(_groundChecker.position, k_GroundedRadius);
@@ -118,7 +129,9 @@ public class StateManager : MonoBehaviour
 
         return playerCollision;
     }
+    #endregion
 
+    #region Auxiliar Functions
     public void ShootBullet(StateManager npc, GameObject player)
     {
         Debug.Log("Shoot");
@@ -144,7 +157,29 @@ public class StateManager : MonoBehaviour
         }   
     }
 
-    // Getters and setters
+    public void attack(StateManager npc, Player player)
+    {
+        Animation animation = npc.gameObject.GetComponent<Animation>();
+        animation["Enemy1"].layer = 0;
+
+        bool _hit = false;
+        attackRC = Physics2D.CircleCastAll(npc.getGun().transform.position, npc.getShootRange(), npc.getGun().transform.position, attackableLayer);
+
+        for (int i = 0; i < attackRC.Length && !_hit; i++)
+        {
+            if (attackRC[i].collider.gameObject.GetComponent<Player>() != null)
+            {
+                animation.Play("Enemy1");                
+                player.Health -= npc.getDamage();
+
+                // Solo un hit hace daño
+                _hit = true;
+            }
+        }
+    }
+    #endregion
+
+    #region Getters and setters
     public bool getFlies(){
         return flies;
     }
@@ -227,4 +262,5 @@ public class StateManager : MonoBehaviour
     public GameObject getGun(){
         return _gun;
     }
+    #endregion
 }
