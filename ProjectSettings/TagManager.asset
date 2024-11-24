@@ -16,6 +16,7 @@ TagManager:
   - malo
   - checkpoint
   - cristal
+  - cristal_tocho
   layers:
   - Default
   - TransparentFX
