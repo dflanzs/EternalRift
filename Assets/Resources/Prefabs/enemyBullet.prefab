@@ -15,7 +15,7 @@ GameObject:
   - component: {fileID: -795805872326729795}
   m_Layer: 2
   m_Name: enemyBullet
-  m_TagString: malo
+  m_TagString: enemyBullets
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -99,6 +99,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 09c6b59451c411060a5f7ec7bb72b9d0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  k_GroundedRadius: 0.5
   _rigid: {fileID: -4016270751563027530}
 --- !u!50 &-4016270751563027530
 Rigidbody2D:
