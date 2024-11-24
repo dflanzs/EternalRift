@@ -1,9 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
-using System.IO.Pipes;
-using System.Threading;
-using TMPro;
-using UnityEditor.Callbacks;
 using UnityEngine;
 
 public class IdleState : BaseState
