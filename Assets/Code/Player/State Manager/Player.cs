@@ -41,6 +41,7 @@ public class Player : MonoBehaviour
     #region Other Variables
     public Vector2 CurrentVelocity { get; private set; }
     public int FacingDirection { get; private set; }
+    public float Health {get; set;}
 
     // A temporary variable to store the movement of the player 
     private Vector2 workspace;
@@ -68,6 +69,7 @@ public class Player : MonoBehaviour
         DashState = new PlayerDashState(this, StateMachine, playerData, "inAir");
 
         FacingDirection = 1;
+        Health = 100;
     }
 
     void Start()
@@ -143,13 +145,13 @@ public class Player : MonoBehaviour
     {
         if (other.CompareTag("malo"))
         {
-            // Teletransporta al personaje a la última posición segura
+            // Teletransporta al personaje a la ï¿½ltima posiciï¿½n segura
             transform.position = lastSafePosition;
         }
 
         if (other.CompareTag("checkpoint"))
         {
-            // Teletransporta al personaje a la última posición segura
+            // Teletransporta al personaje a la ï¿½ltima posiciï¿½n segura
             lastSafePosition = transform.position;
         }
         if (other.CompareTag("cristal"))

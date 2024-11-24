@@ -4,12 +4,13 @@ using UnityEngine;
 
 public class ObjectPooling : MonoBehaviour
 {
-    [SerializeField] private Queue<GameObject> bulletsPool, enemiesPool;
+    [SerializeField] private Queue<GameObject> bulletsPool, enemiesPool, enemyBulletsPool;
 
-    [SerializeField] private GameObject bulletPrefab, enemy1Prefab, enemy2Prefab;
+    [SerializeField] private GameObject bulletPrefab, enemy1Prefab, enemy2Prefab, enemyBullet;
     
-    public int buleetsPoolSize;
+    public int bulletsPoolSize;
     public int enemiesPoolSize;
+    public int enemyBulletsPoolSize;
 
     private static ObjectPooling poolInstance;
 
@@ -21,8 +22,8 @@ public class ObjectPooling : MonoBehaviour
     void Awake()
     {   
         bulletsPool = new Queue<GameObject>();
-        enemiesPool = new Queue<GameObject>();        
-
+        enemiesPool = new Queue<GameObject>();     
+        enemyBulletsPool = new Queue<GameObject>();
         
         if(poolInstance == null)
         {
@@ -33,7 +34,7 @@ public class ObjectPooling : MonoBehaviour
             Destroy(this);
         }   
         
-        addToPool(buleetsPoolSize, enemiesPoolSize);
+        addToPool(bulletsPoolSize, enemiesPoolSize, enemyBulletsPoolSize);
     }
 
     private GameObject WhichEnemy(){
@@ -48,10 +49,10 @@ public class ObjectPooling : MonoBehaviour
         }
     }
 
-    private void addToPool(int buleetsPoolSize, int enemiesPoolSize)
+    private void addToPool(int bulletsPoolSize, int enemiesPoolSize, int enemyBulletsPoolSize)
     {
-       // Instanciamos cada prefab y los guardamos en la poolç
-        for (int i = 0; i < buleetsPoolSize; i++)
+       // Instanciamos cada prefab y los guardamos en la pool
+        for (int i = 0; i < bulletsPoolSize; i++)
         {
             GameObject instantiatedPrefab = Instantiate(bulletPrefab);
             instantiatedPrefab.SetActive(false);
@@ -67,6 +68,15 @@ public class ObjectPooling : MonoBehaviour
 
             // Metemos los objetos a la lista
             enemiesPool.Enqueue(instantiatedPrefab);
+        }
+
+        for (int i = 0; i < enemyBulletsPoolSize; i++)
+        {
+            GameObject instantiatedPrefab = Instantiate(enemyBullet);
+            instantiatedPrefab.SetActive(false);
+
+            // Metemos los objetos a la lista
+            enemyBulletsPool.Enqueue(instantiatedPrefab);
         }
     }
 
@@ -99,6 +109,19 @@ public class ObjectPooling : MonoBehaviour
             }
             return null;
         } 
+        else if(objectType == "enemyBullet")
+        {
+            for (int i = 0; i < enemyBulletsPool.Count; i++)
+            {
+                if (!enemyBulletsPool.Peek().activeSelf)
+                {
+                    auxGO = enemyBulletsPool.Dequeue();
+                    enemyBulletsPool.Enqueue(auxGO);
+                    return auxGO;
+                }
+            }
+            return null;
+        }
         else
         {
             return null;

@@ -3,47 +3,44 @@ using UnityEngine;
 
 public class FocusedState : BaseState
 {
-    [SerializeField] private float speed = 5f;
-    [SerializeField] private float _maxVelocity = 15f;
-    [SerializeField] private float _accel = 20f;
+    [SerializeField] private readonly float speed = 5f;
+    [SerializeField] private readonly float _maxVelocity = 15f;
+    [SerializeField] private readonly float _accel = 20f;
 
-    private float _currentSpeed;
-    private bool _focused, _grounded, _playerCollision;
-    private int _prevDirection;
-    private Rigidbody2D rb;
     private bool _flies;
-    private Vector2 _scale;
-    private RaycastHit2D hit;
+    private int _prevDirection;
+    private float _currentSpeed;
     private Vector2 direction;
+    private Vector2 _scale;
+    private Rigidbody2D rb;
+    private RaycastHit2D focusRC;
 
     public override void EnterState(StateManager npc, GameObject player)
     {
         rb = npc.gameObject.GetComponent<Rigidbody2D>();
 
         _flies = npc.getFlies();
-        _focused = npc.getFocus();
-        _grounded = npc.getGrounded();
         _prevDirection = npc.getDirection();
     }
 
     public override void UpdateState(StateManager npc, GameObject player, Transform _groundChecker, Transform _fieldOfView)
     {
         _prevDirection = npc.getDirection();
-        _playerCollision = npc.checkPlayerCollision();
         
-        _grounded = npc.checkGrounded(_groundChecker);
+        npc.setGrounded(npc.checkGrounded(_groundChecker));
         
         if (_flies)
         {
-            hit = Physics2D.Raycast(npc.transform.position, player.transform.position - npc.gameObject.transform.position,
-                                    Mathf.Infinity, LayerMask.GetMask("Ground", "Player"));
+            focusRC = Physics2D.Raycast(npc.transform.position, npc.getTarget(player, npc), Mathf.Infinity, LayerMask.GetMask("Ground", "Player"));
 
-            if (hit.collider != null && hit.collider.CompareTag("Player"))
-                _focused = npc.checkFocus(_fieldOfView);
+            if (focusRC.collider != null && focusRC.collider.CompareTag("Player"))
+                npc.setFocus(npc.checkFocus(_fieldOfView));
 
-            if (_focused)
+            if (npc.getFocus())
             {
                 rb.velocity = new Vector2(0, rb.velocity.y);
+                npc.setPrevstate(npc.focusedState);
+                npc.SwitchState(npc.attackState);
             }
             else
             {
@@ -54,7 +51,7 @@ public class FocusedState : BaseState
         }
         else if(!_flies)
         {
-            if (_playerCollision)
+            if (npc.checkPlayerCollision())
             {
                 rb.velocity = new Vector2(0, rb.velocity.y);
 
@@ -63,15 +60,14 @@ public class FocusedState : BaseState
             }
             else
             {
-                hit = Physics2D.Raycast(npc.transform.position, player.transform.position - npc.gameObject.transform.position,
-                                        Mathf.Infinity, LayerMask.GetMask("Ground", "Player"));
+                focusRC = Physics2D.Raycast(npc.transform.position, npc.getTarget(player, npc), Mathf.Infinity, LayerMask.GetMask("Ground", "Player"));
 
-                if (hit.collider != null && hit.collider.CompareTag("Player"))
-                    _focused = npc.checkFocus(_fieldOfView);
+                if (focusRC.collider != null && focusRC.collider.CompareTag("Player"))
+                    npc.setFocus(npc.checkFocus(_fieldOfView));
 
-                if (_focused)
+                if (npc.getFocus())
                 {
-                    if (_grounded)
+                    if (npc.getGrounded())
                     {
                         if (player.transform.position.x <= npc.transform.position.x)
                         {
@@ -99,7 +95,7 @@ public class FocusedState : BaseState
                         rb.velocity = new Vector2(_prevDirection*Mathf.Clamp(_currentSpeed, -_maxVelocity, _maxVelocity), rb.velocity.y); 
 
                     }
-                    else if(!_grounded)
+                    else
                     {
                         rb.velocity = new Vector2(0, rb.velocity.y);
 
