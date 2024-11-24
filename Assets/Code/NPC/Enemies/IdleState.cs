@@ -15,7 +15,8 @@ public class IdleState : BaseState
     private float _watingTime = 3;
     private float _timer;
 
-    public override void EnterState(StateManager npc, GameObject player){
+    public override void EnterState(StateManager npc, GameObject player)
+    {
         _timer = 0;
         
         _focused = npc.getFocus();
@@ -26,8 +27,8 @@ public class IdleState : BaseState
         rb.velocity = new Vector2( rb.velocity.x * _velocity.x, rb.velocity.y);
     }
 
-    public override void UpdateState(StateManager npc, GameObject player, Transform _groundChecker, Transform _fieldOfView){
-        
+    public override void UpdateState(StateManager npc, GameObject player, Transform _groundChecker, Transform _fieldOfView)
+    {
         if (_timer < _watingTime)
             _timer += Time.deltaTime;
         else{

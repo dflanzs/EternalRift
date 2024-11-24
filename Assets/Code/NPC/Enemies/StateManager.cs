@@ -13,9 +13,14 @@ public class StateManager : MonoBehaviour
     [SerializeField] private Transform _groundChecker; // Position of the player "feet", add a gameobject
     [SerializeField] private Transform _playerCollisionCheckerRight; // Position of the player "feet", add a gameobject
     [SerializeField] private Transform _playerCollisionCheckerLeft; // Position of the player "feet", add a gameobject
-    [SerializeField] private Transform _filedOfView; // Position of the player "feet", add a gameobject
+    [SerializeField] private Transform _fieldOfView; // Position of the player "feet", add a gameobject
     [SerializeField] private bool flies;
     [SerializeField] private int health;
+    [SerializeField] private float _bulletSpeed = 10f;
+    [SerializeField] private float _shootRange = 10f;
+    [SerializeField] private float _damage = 10f;
+    [SerializeField] private float _shootCooldown = 0.5f;
+
 
     private BaseState prevState;
     private int direction = -1;
@@ -32,12 +37,12 @@ public class StateManager : MonoBehaviour
 
         if(_player == null)
             _player = GameObject.FindGameObjectWithTag("Player");
-    
     }
 
     void Update()
     {
         Collider2D[] collidersNPC = Physics2D.OverlapCircleAll(transform.position, 1);
+
         for(int i = 0; i < collidersNPC.Length; i++){
             if(collidersNPC[i].gameObject.CompareTag("Bullet")){
                 health -= (int) collidersNPC[i].gameObject.GetComponent<Bullet>().Damage;
@@ -46,7 +51,7 @@ public class StateManager : MonoBehaviour
         }
 
         if (health > 0)
-            currentState.UpdateState(this, _player, _groundChecker, _filedOfView);
+            currentState.UpdateState(this, _player, _groundChecker, _fieldOfView);
         
         else if (health <= 0)
             SwitchState(deadState);
@@ -151,5 +156,42 @@ public class StateManager : MonoBehaviour
     }
     public void setPrevstate(BaseState newState){
         prevState = newState;
+    }
+
+    // Shooting
+    public float getBulletSpeed()
+    {
+        return _bulletSpeed;
+    }
+    public void setBulletSpeed(float bulletSpeed)
+    {
+        _bulletSpeed = bulletSpeed;
+    }
+
+    public float getShootRange()
+    {
+        return _shootRange;
+    }
+    public void setShootRange(float shootRange)
+    {
+        _shootRange = shootRange;
+    }
+
+    public float getDamage()
+    {
+        return _damage;
+    }
+    public void setDamage(float damage)
+    {
+        _damage = damage;
+    }
+
+    public float getShootCooldown()
+    {
+        return _shootCooldown;
+    }
+    public void setShootCooldown(float shootCooldown)
+    {
+        _shootCooldown = shootCooldown;
     }
 }

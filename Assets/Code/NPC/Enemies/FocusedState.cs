@@ -44,6 +44,8 @@ public class FocusedState : BaseState
             if (_focused)
             {
                 rb.velocity = new Vector2(0, rb.velocity.y);
+                npc.setPrevstate(npc.focusedState);
+                npc.SwitchState(npc.attackState);
             }
             else
             {
