@@ -4,23 +4,23 @@ public class StateManager : MonoBehaviour
 {
     public BaseState currentState;
     public IdleState idleState = new IdleState();    
-    public FocusedState focusedState = new FocusedState(); 
-    public DeadState deadState = new DeadState();
     public MoveState moveState = new MoveState();
+    public FocusedState focusedState = new FocusedState(); 
     public AttackState attackState = new AttackState();
+    public DeadState deadState = new DeadState();
 
     [SerializeField] private GameObject _player;
-    [SerializeField] private Transform _groundChecker; // Position of the player "feet", add a gameobject
-    [SerializeField] private Transform _playerCollisionCheckerRight; // Position of the player "feet", add a gameobject
-    [SerializeField] private Transform _playerCollisionCheckerLeft; // Position of the player "feet", add a gameobject
-    [SerializeField] private Transform _fieldOfView; // Position of the player "feet", add a gameobject
+    [SerializeField] private Transform _groundChecker;
+    [SerializeField] private Transform _playerCollisionCheckerRight;
+    [SerializeField] private Transform _playerCollisionCheckerLeft;
+    [SerializeField] private Transform _fieldOfView;
     [SerializeField] private GameObject _gun;
     [SerializeField] private bool flies;
     [SerializeField] private int health;
     [SerializeField] private float _bulletSpeed = 10f;
     [SerializeField] private float _shootRange = 10f;
     [SerializeField] private float _damage = 10f;
-    [SerializeField] private float _shootCooldown = 0.5f;
+    [SerializeField] private float _shootCooldown = 1f;
 
 
     private BaseState prevState;
@@ -58,6 +58,12 @@ public class StateManager : MonoBehaviour
             SwitchState(deadState);
     }
 
+    public void SwitchState(BaseState state)
+    {
+        currentState = state;
+        state.EnterState(this, _player);
+    }
+
     // Checkers
     public bool checkGrounded(Transform _groundChecker)
     {
@@ -73,11 +79,6 @@ public class StateManager : MonoBehaviour
 
         setGrounded(false);
         return false;
-    }
-    public void SwitchState(BaseState state)
-    {
-        currentState = state;
-        state.EnterState(this, _player);
     }
 
     public bool checkFocus(Transform _fieldOfView)
@@ -183,6 +184,10 @@ public class StateManager : MonoBehaviour
         prevState = newState;
     }
 
+    public Vector2 getTarget(GameObject player, StateManager npc){
+        return (player.transform.position - npc.gameObject.transform.position).normalized;
+    }
+    
     // Shooting
     public float getBulletSpeed()
     {
@@ -218,9 +223,5 @@ public class StateManager : MonoBehaviour
     public void setShootCooldown(float shootCooldown)
     {
         _shootCooldown = shootCooldown;
-    }
-
-    public Vector2 getTarget(GameObject player, StateManager npc){
-        return (player.transform.position - npc.gameObject.transform.position).normalized;
     }
 }

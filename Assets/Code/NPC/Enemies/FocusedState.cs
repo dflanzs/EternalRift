@@ -3,33 +3,29 @@ using UnityEngine;
 
 public class FocusedState : BaseState
 {
-    [SerializeField] private float speed = 5f;
-    [SerializeField] private float _maxVelocity = 15f;
-    [SerializeField] private float _accel = 20f;
+    [SerializeField] private readonly float speed = 5f;
+    [SerializeField] private readonly float _maxVelocity = 15f;
+    [SerializeField] private readonly float _accel = 20f;
 
-    private float _currentSpeed;
-    private bool _focused, _grounded, _playerCollision;
-    private int _prevDirection;
-    private Rigidbody2D rb;
     private bool _flies;
-    private Vector2 _scale;
-    private RaycastHit2D hit;
+    private int _prevDirection;
+    private float _currentSpeed;
     private Vector2 direction;
+    private Vector2 _scale;
+    private Rigidbody2D rb;
+    private RaycastHit2D hit;
 
     public override void EnterState(StateManager npc, GameObject player)
     {
         rb = npc.gameObject.GetComponent<Rigidbody2D>();
 
         _flies = npc.getFlies();
-        _focused = npc.getFocus();
-        _grounded = npc.getGrounded();
         _prevDirection = npc.getDirection();
     }
 
     public override void UpdateState(StateManager npc, GameObject player, Transform _groundChecker, Transform _fieldOfView)
     {
         _prevDirection = npc.getDirection();
-        _playerCollision = npc.checkPlayerCollision();
         
         npc.setGrounded(npc.checkGrounded(_groundChecker));
         
@@ -55,7 +51,7 @@ public class FocusedState : BaseState
         }
         else if(!_flies)
         {
-            if (_playerCollision)
+            if (npc.checkPlayerCollision())
             {
                 rb.velocity = new Vector2(0, rb.velocity.y);
 
