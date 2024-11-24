@@ -384,7 +384,7 @@ MonoBehaviour:
   _groundChecker: {fileID: 6788737050541098393}
   _playerCollisionCheckerRight: {fileID: 5600432348404806501}
   _playerCollisionCheckerLeft: {fileID: 5880136701096498954}
-  _fieldOfView: {fileID: 0}
+  _fieldOfView: {fileID: 4112436093051482115}
   _gun: {fileID: 5528387681031065679}
   flies: 0
   health: 10

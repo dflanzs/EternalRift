@@ -8,6 +8,7 @@ public class AttackState : BaseState
     private RaycastHit2D focusRC;
     private RaycastHit2D[] attackRC;
     private LayerMask attackableLayer;
+    private Animation animation;
 
 
     public override void EnterState(StateManager npc, GameObject player)
@@ -16,6 +17,8 @@ public class AttackState : BaseState
         _flies = npc.getFlies();
         _timer = 0;
         attackableLayer = LayerMask.GetMask("Player");
+        animation = npc.gameObject.GetComponent<Animation>();
+        animation["Enemy1"].layer = 0;
     }
 
     public override void UpdateState(StateManager npc, GameObject player, Transform _groundChecker, Transform _fieldOfView)
@@ -73,7 +76,7 @@ public class AttackState : BaseState
 
             if (playerHit != null)
             {
-                // damage
+                animation.Play("Enemy1");
             }
         }
     }
