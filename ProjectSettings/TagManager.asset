@@ -16,6 +16,7 @@ TagManager:
   - malo
   - checkpoint
   - npcCollision
+  - cristal
   layers:
   - Default
   - TransparentFX

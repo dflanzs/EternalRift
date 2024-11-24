@@ -20,6 +20,11 @@ public class Player : MonoBehaviour
 
     #endregion
 
+    #region Mutation Variables
+    public bool IsMutated { get; private set; } 
+    public float MutatedJumpForceMultiplier = 1.5f; 
+    #endregion
+
     #region Components
     public PlayerInputHandler InputHandler { get; private set; }
 
@@ -67,7 +72,7 @@ public class Player : MonoBehaviour
 
     void Start()
     {
-
+        ResetMutation();
         StateMachine.Initialize(IdleState);
     }
 
@@ -147,7 +152,30 @@ public class Player : MonoBehaviour
             // Teletransporta al personaje a la última posición segura
             lastSafePosition = transform.position;
         }
+        if (other.CompareTag("cristal"))
+        {
+            MutationBar mutationBar = FindObjectOfType<MutationBar>();
+            if (mutationBar != null)
+            {
+                mutationBar.AddCharge(5f); // Suma 10 puntos o el valor que corresponda
+                
+            }
+
+            Destroy(other.gameObject); // Eliminar el cristal
+        }
+        if (other.CompareTag("cristal_tocho"))
+        {
+            MutationBar mutationBar = FindObjectOfType<MutationBar>();
+            if (mutationBar != null)
+            {
+                mutationBar.AddCharge(10f); // Suma 10 puntos o el valor que corresponda
+
+            }
+
+            Destroy(other.gameObject); // Eliminar el cristal
+        }
     }
+    
     private void AnimationTrigger() => StateMachine.CurrentState.AnimationTrigger();
 
     private void AnimationFinishTrigger() => StateMachine.CurrentState.AnimationFinishTrigger();
@@ -157,6 +185,21 @@ public class Player : MonoBehaviour
         FacingDirection *= -1;
         transform.Rotate(0.0f, 180.0f, 0.0f);
     }
+    public void ActivateMutation()
+    {
+        if (!IsMutated) // Solo activar si aún no está activa
+        {
+            IsMutated = true;
+            playerData.jumpVelocity *= MutatedJumpForceMultiplier;
+        }
+    }
+    void ResetMutation()
+    {
+        IsMutated = false;
+        MutatedJumpForceMultiplier = 1.5f;  // Restablecer al valor predeterminado
+        playerData.jumpVelocity = 20f;  // Restablecer el valor original de jumpVelocity
+    }
+
     #endregion
 
 

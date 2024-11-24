@@ -28,4 +28,7 @@ public class PlayerData : ScriptableObject
     public float groundCheckRadius = 0.3f;
     public LayerMask whatIsGround;
 
+    [Header("Mutation State")]
+    public float mutatedJumpMultiplier = 1.5f;
+
 }
