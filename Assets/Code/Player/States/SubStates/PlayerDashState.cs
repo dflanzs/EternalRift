@@ -31,10 +31,13 @@ public class PlayerDashState : PlayerAbilityState
     {
         base.LogicUpdate();
 
-        if (Time.time >= lastDashTime + playerData.dashTime)
+        if (!isExitingState)
         {
-            isAbilityDone = true;
-            lastDashTime = Time.time;
+            if (Time.time >= lastDashTime + playerData.dashTime)
+            {
+                isAbilityDone = true;
+                lastDashTime = Time.time;
+            }
         }
 
     }

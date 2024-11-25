@@ -15,14 +15,16 @@ public class Player : MonoBehaviour
     public PlayerLandState LandState { get; private set; }
     public PlayerInAirState InAirState { get; private set; }
     public PlayerDashState DashState { get; private set; }
+    public PlayerCrouchIdleState CrouchIdleState { get; private set; }
+    public PlayerCrouchMoveState CrouchMoveState { get; private set; }
 
     [SerializeField] private PlayerData playerData;
 
     #endregion
 
     #region Mutation Variables
-    public bool IsMutated { get; private set; } 
-    public float MutatedJumpForceMultiplier = 1.5f; 
+    public bool IsMutated { get; private set; }
+    public float MutatedJumpForceMultiplier = 1.5f;
     #endregion
 
     #region Components
@@ -31,17 +33,19 @@ public class Player : MonoBehaviour
     public Animator Anim { get; private set; }
 
     public Rigidbody2D RB { get; private set; }
+    public BoxCollider2D MovementCollider { get; private set; }
     #endregion
 
     #region Check Transforms
     [SerializeField] private Transform groundCheck;
-    
+    [SerializeField] private Transform ceilingCheck;
+
     #endregion
 
     #region Other Variables
     public Vector2 CurrentVelocity { get; private set; }
     public int FacingDirection { get; private set; }
-    public float Health {get; set;}
+    public float Health { get; set; }
 
     // A temporary variable to store the movement of the player 
     private Vector2 workspace;
@@ -54,6 +58,7 @@ public class Player : MonoBehaviour
     void Awake()
     {
         RB = GetComponent<Rigidbody2D>();
+        MovementCollider = GetComponent<BoxCollider2D>();
 
         InputHandler = GetComponent<PlayerInputHandler>();
 
@@ -61,12 +66,15 @@ public class Player : MonoBehaviour
 
         StateMachine = new PlayerStateMachine();
 
+
         IdleState = new PlayerIdleState(this, StateMachine, playerData, "idle");
         MoveState = new PlayerMoveState(this, StateMachine, playerData, "move");
         JumpState = new PlayerJumpState(this, StateMachine, playerData, "inAir");
         InAirState = new PlayerInAirState(this, StateMachine, playerData, "inAir");
         LandState = new PlayerLandState(this, StateMachine, playerData, "land");
         DashState = new PlayerDashState(this, StateMachine, playerData, "inAir");
+        CrouchIdleState = new PlayerCrouchIdleState(this, StateMachine, playerData, "crouchIdle");
+        CrouchMoveState = new PlayerCrouchMoveState(this, StateMachine, playerData, "crouchMove");
 
         FacingDirection = 1;
         Health = 100;
@@ -74,6 +82,8 @@ public class Player : MonoBehaviour
 
     void Start()
     {
+
+
         ResetMutation();
         StateMachine.Initialize(IdleState);
     }
@@ -119,6 +129,13 @@ public class Player : MonoBehaviour
         CurrentVelocity = workspace;
     }
 
+    public void SetVelocityZero()
+    {
+        workspace.Set(0, 0);
+        RB.velocity = workspace;
+        CurrentVelocity = workspace;
+    }
+
     #endregion
 
     #region Check Functions
@@ -135,12 +152,29 @@ public class Player : MonoBehaviour
         return Physics2D.OverlapCircle(groundCheck.position, playerData.groundCheckRadius, playerData.whatIsGround);
     }
 
-   
+    public bool CheckIfTouchingCeiling()
+    {
+        return Physics2D.OverlapCircle(ceilingCheck.position, playerData.groundCheckRadius, playerData.whatIsGround);
+    }
+
+
 
     #endregion
 
-
     #region Other Functions
+
+    public void SetColliderHeight(float height)
+    {
+        Vector2 center = MovementCollider.offset;
+        workspace.Set(MovementCollider.size.x, height);
+
+        center.y += (height - MovementCollider.size.y) / 2;
+
+        MovementCollider.size = workspace;
+        MovementCollider.offset = center;
+    }
+
+
     private void OnTriggerEnter2D(Collider2D other)
     {
         if (other.CompareTag("malo"))
@@ -160,7 +194,7 @@ public class Player : MonoBehaviour
             if (mutationBar != null)
             {
                 mutationBar.AddCharge(5f); // Suma 10 puntos o el valor que corresponda
-                
+
             }
 
             Destroy(other.gameObject); // Eliminar el cristal
@@ -177,7 +211,7 @@ public class Player : MonoBehaviour
             Destroy(other.gameObject); // Eliminar el cristal
         }
     }
-    
+
     private void AnimationTrigger() => StateMachine.CurrentState.AnimationTrigger();
 
     private void AnimationFinishTrigger() => StateMachine.CurrentState.AnimationFinishTrigger();
@@ -189,7 +223,7 @@ public class Player : MonoBehaviour
     }
     public void ActivateMutation()
     {
-        if (!IsMutated) // Solo activar si aún no está activa
+        if (!IsMutated) // Solo activar si aï¿½n no estï¿½ activa
         {
             IsMutated = true;
             playerData.jumpVelocity *= MutatedJumpForceMultiplier;
