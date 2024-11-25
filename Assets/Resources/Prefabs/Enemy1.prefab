@@ -392,6 +392,7 @@ MonoBehaviour:
   _shootRange: 1
   _damage: 10
   _shootCooldown: 1
+  _crystal: {fileID: 5877597639303525373, guid: 88b452f0cd8a1cf4892afe1c649d4cd5, type: 3}
 --- !u!1 &5528387681031065679
 GameObject:
   m_ObjectHideFlags: 0

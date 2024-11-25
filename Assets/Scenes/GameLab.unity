@@ -954,8 +954,10 @@ MonoBehaviour:
   bulletPrefab: {fileID: 5574008668113540788, guid: 70ad070ea6ec495bc965bfacf091a2ab, type: 3}
   enemy1Prefab: {fileID: 0}
   enemy2Prefab: {fileID: 0}
-  buleetsPoolSize: 50
+  enemyBullet: {fileID: 0}
+  bulletsPoolSize: 10
   enemiesPoolSize: 0
+  enemyBulletsPoolSize: 0
 --- !u!4 &939735100
 Transform:
   m_ObjectHideFlags: 0

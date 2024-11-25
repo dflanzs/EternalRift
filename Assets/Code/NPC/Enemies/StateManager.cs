@@ -27,6 +27,9 @@ public class StateManager : MonoBehaviour
     [SerializeField] private float _shootRange = 10f;
     [SerializeField] private float _damage = 10f;
     [SerializeField] private float _shootCooldown = 1f;
+    
+    [SerializeField] private GameObject _crystal;
+    public GameObject Crystal { get { return _crystal;} }
 
     private RaycastHit2D[] attackRC;
     private LayerMask attackableLayer;
