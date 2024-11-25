@@ -24,6 +24,12 @@ public class PlayerData : ScriptableObject
     public float dashTime = 0.2f;
     public float dashWhileMovingMultiplier = 2.5f;
 
+    [Header("Crouch State")]
+    public float crouchMovementVelocity = 5f;
+    public float crouchColliderHeight = 1f;
+    public float standColliderHeight = 2f;
+    public float ceilingCheckRadius = 0.2f;
+
     [Header("Check Variables")]
     public float groundCheckRadius = 0.3f;
     public LayerMask whatIsGround;
