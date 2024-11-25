@@ -17,6 +17,9 @@ TagManager:
   - checkpoint
   - cristal
   - cristal_tocho
+  - ButtonOpen
+  - puerta
+  - final
   layers:
   - Default
   - TransparentFX

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.SceneManagement;
+using UnityEngine.Tilemaps;
 
 public class Player : MonoBehaviour
 {
@@ -22,7 +23,10 @@ public class Player : MonoBehaviour
 
     #region Mutation Variables
     public bool IsMutated { get; private set; } 
-    public float MutatedJumpForceMultiplier = 1.5f; 
+    public float MutatedJumpForceMultiplier = 1.5f;
+    [SerializeField] private Tilemap tilemap;  // El Tilemap donde están los botones
+    [SerializeField] private Tile openButtonTile;  // Tile de botón abierto
+    [SerializeField] private Tile closedButtonTile; // Tile de botón cerrado
     #endregion
 
     #region Components
@@ -174,6 +178,13 @@ public class Player : MonoBehaviour
 
             Destroy(other.gameObject); // Eliminar el cristal
         }
+        if (other.CompareTag("puerta"))
+        {
+            // Teletransporta al personaje a la última posición segura
+            transform.position = lastSafePosition;
+        }
+
+
     }
     
     private void AnimationTrigger() => StateMachine.CurrentState.AnimationTrigger();
