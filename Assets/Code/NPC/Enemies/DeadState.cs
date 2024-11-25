@@ -1,6 +1,5 @@
 using System;
 using UnityEngine;
-//using System.Random;
 
 public class DeadState : BaseState
 {
@@ -19,7 +18,6 @@ public class DeadState : BaseState
         System.Random rnd = new System.Random();
 
         int numCrystals = rnd.Next(MAX_CRYSTALS - 1);
-        Debug.Log(numCrystals);
 
         GameObject crystal = npc.Crystal;
         Quaternion rot = npc.transform.rotation;
