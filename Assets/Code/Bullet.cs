@@ -39,7 +39,10 @@ public class Bullet : MonoBehaviour
 
     private void OnTriggerEnter2D(Collider2D collider)
     {
-        if(!collider.gameObject.CompareTag("Player") && !collider.gameObject.CompareTag("fieldOfView") )
+        //Seria conveniente cambiar esta cosa que mete miedo al diablo
+        if(!collider.gameObject.CompareTag("Player") 
+            && !collider.gameObject.CompareTag("fieldOfView") 
+            && !collider.gameObject.CompareTag("npcCollision") )
         {
             //collider.gameObject.SetActive(false); Cuando metamos a los enemigos comprobamos si es un enemigo
             _rigid.velocity = Vector2.zero;
