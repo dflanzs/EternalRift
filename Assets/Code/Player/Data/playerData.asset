@@ -18,9 +18,9 @@ MonoBehaviour:
   maxVelocity: 100
   coyoteTime: 0.2
   jumpHeightMultiplier: 0.8
-  dashVelocity: 300
+  dashVelocity: 15
   dashCooldown: 1
-  dashTime: 0.2
+  dashTime: 3
   dashWhileMovingMultiplier: 2.5
   crouchMovementVelocity: 5
   crouchColliderHeight: 1

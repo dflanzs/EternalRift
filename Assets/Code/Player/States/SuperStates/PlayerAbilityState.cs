@@ -7,6 +7,7 @@ public class PlayerAbilityState : PlayerState
 
     protected bool isAbilityDone;
     private bool isGrounded;
+    private bool isTouchingCeiling;
 
     public PlayerAbilityState(Player player, PlayerStateMachine stateMachine, PlayerData playerData, string animBoolName) : base(player, stateMachine, playerData, animBoolName)
     {
@@ -18,6 +19,7 @@ public class PlayerAbilityState : PlayerState
         base.DoChecks();
 
         isGrounded = player.CheckIfGrounded();
+        isTouchingCeiling = player.CheckIfTouchingCeiling();
     }
 
     public override void Enter()
@@ -36,9 +38,13 @@ public class PlayerAbilityState : PlayerState
         base.LogicUpdate();
         if (isAbilityDone)
         {
-            if (isGrounded && player.CurrentVelocity.y < 0.01f)
+            if (isGrounded && isTouchingCeiling)
             {
-                stateMachine.ChangeState(player.IdleState);
+                stateMachine.ChangeState(player.CrouchIdleState);
+            }
+            else if (isGrounded && player.CurrentVelocity.y < 0.01f)
+            {
+                stateMachine.ChangeState(player.MoveState);
             }
             else
             {

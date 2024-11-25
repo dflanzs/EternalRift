@@ -8,6 +8,7 @@ public class PlayerDashState : PlayerAbilityState
 
     public bool CanDash { get; private set; }
     private float lastDashTime;
+    private float dashStartTime;
     private Vector2 dashDirection;
 
     public PlayerDashState(Player player, PlayerStateMachine stateMachine, PlayerData playerData, string animBoolName) : base(player, stateMachine, playerData, animBoolName)
@@ -22,22 +23,32 @@ public class PlayerDashState : PlayerAbilityState
         player.InputHandler.UseDashInput();
 
         dashDirection = Vector2.right * player.FacingDirection;
+        dashStartTime = Time.time;
 
         player.SetVelocity(playerData.dashVelocity, dashDirection);
+        player.SetColliderHeight(playerData.crouchColliderHeight);
 
+    }
+
+    public override void Exit()
+    {
+        base.Exit();
+
+        player.SetColliderHeight(playerData.standColliderHeight);
     }
 
     public override void LogicUpdate()
     {
         base.LogicUpdate();
 
+        if (Time.time >= dashStartTime + playerData.dashTime)
+        {
+            isAbilityDone = true;
+        }
+
         if (!isExitingState)
         {
-            if (Time.time >= lastDashTime + playerData.dashTime)
-            {
-                isAbilityDone = true;
-                lastDashTime = Time.time;
-            }
+            player.SetVelocity(playerData.dashVelocity, dashDirection);
         }
 
     }
