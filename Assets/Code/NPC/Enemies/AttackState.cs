@@ -9,11 +9,9 @@ public class AttackState : BaseState
 
     public override void EnterState(StateManager npc, GameObject player)
     {
-        Debug.Log("enter attack state");
         _flies = npc.getFlies();
         _timer = npc.getShootCooldown(); // Disparo instantaneo
-        
-
+        npc.setFocus(true);
     }
 
     public override void UpdateState(StateManager npc, GameObject player, Transform _groundChecker, Transform _fieldOfView)
@@ -22,7 +20,7 @@ public class AttackState : BaseState
         {
             focusRC = Physics2D.Raycast(npc.transform.position, npc.getTarget(player, npc), Mathf.Infinity, LayerMask.GetMask("Ground", "Player"));
 
-            if (focusRC.collider != null && focusRC.collider.CompareTag("Player"))
+            if (focusRC.collider != null && focusRC.collider.CompareTag("Player") || focusRC.collider.CompareTag("npcCollision"))
                 npc.setFocus(npc.checkFocus(_fieldOfView));
 
             if (npc.getFocus())
@@ -57,6 +55,7 @@ public class AttackState : BaseState
             }
             else
             {
+                npc.setFocus(false);
                 npc.setPrevstate(npc.attackState);
                 npc.SwitchState(npc.idleState);  
             }

@@ -21,19 +21,22 @@ public class FocusedState : BaseState
 
         _flies = npc.getFlies();
         _prevDirection = npc.getDirection();
+
+        npc.setFocus(false);
+        npc.setGrounded(false);
     }
 
     public override void UpdateState(StateManager npc, GameObject player, Transform _groundChecker, Transform _fieldOfView)
     {
         _prevDirection = npc.getDirection();
         
-        npc.setGrounded(npc.checkGrounded(_groundChecker));
+        npc.checkGrounded(_groundChecker);
         
         if (_flies)
         {
             focusRC = Physics2D.Raycast(npc.transform.position, npc.getTarget(player, npc), Mathf.Infinity, LayerMask.GetMask("Ground", "Player"));
 
-            if (focusRC.collider != null && focusRC.collider.CompareTag("Player"))
+            if (focusRC.collider != null && focusRC.collider.CompareTag("Player") || focusRC.collider.CompareTag("npcCollision"))
                 npc.setFocus(npc.checkFocus(_fieldOfView));
 
             if (npc.getFocus())
@@ -62,7 +65,7 @@ public class FocusedState : BaseState
             {
                 focusRC = Physics2D.Raycast(npc.transform.position, npc.getTarget(player, npc), Mathf.Infinity, LayerMask.GetMask("Ground", "Player"));
 
-                if (focusRC.collider != null && focusRC.collider.CompareTag("Player"))
+                if (focusRC.collider != null && (focusRC.collider.CompareTag("Player") || focusRC.collider.CompareTag("npcCollision")))
                     npc.setFocus(npc.checkFocus(_fieldOfView));
 
                 if (npc.getFocus())
@@ -71,11 +74,9 @@ public class FocusedState : BaseState
                     {
                         if (player.transform.position.x <= npc.transform.position.x)
                         {
-                            Debug.Log("Changing irection");
                             _scale = npc.transform.localScale;
                             _scale.x = 1;
                         } else if (player.transform.position.x > npc.transform.position.x){
-                            Debug.Log("Changing irection");
                             _scale = npc.transform.localScale;
                             _scale.x = -1;
                         }
