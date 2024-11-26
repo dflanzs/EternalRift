@@ -41,7 +41,7 @@ public class MoveState : BaseState
         {
             focusRC = Physics2D.Raycast(npc.transform.position, npc.getTarget(player, npc), Mathf.Infinity, LayerMask.GetMask("Ground", "Player"));
 
-            if (focusRC.collider != null && focusRC.collider.CompareTag("Player"))
+            if (focusRC.collider != null && focusRC.collider.CompareTag("Player") || focusRC.collider.CompareTag("npcCollision"))
                 _focused = npc.checkFocus(_fieldOfView);
 
             if (_focused)

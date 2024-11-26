@@ -208,7 +208,7 @@ MonoBehaviour:
   _bulletSpeed: 10
   _shootRange: 10
   _damage: 10
-  _shootCooldown: 0.5
+  _shootCooldown: 3
   _crystal: {fileID: 5877597639303525373, guid: 88b452f0cd8a1cf4892afe1c649d4cd5, type: 3}
 --- !u!1 &3382274159780466978
 GameObject:
