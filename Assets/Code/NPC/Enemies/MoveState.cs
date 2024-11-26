@@ -24,9 +24,12 @@ public class MoveState : BaseState
             npc.transform.localScale = scale;
         }
 
-        _grounded = npc.getGrounded();
+        Debug.Log("Enter moveState");
+
+        npc.setFocus(false);
+        npc.setGrounded(false);
+
         _direction = npc.getDirection();
-        _focused = npc.getFocus();
         _flies = npc.getFlies();
     }
 
@@ -67,7 +70,9 @@ public class MoveState : BaseState
         {
             focusRC = Physics2D.Raycast(npc.transform.position, npc.getTarget(player, npc), Mathf.Infinity, LayerMask.GetMask("Ground", "Player"));
 
-            if (focusRC.collider != null && focusRC.collider.CompareTag("Player"))
+            if (focusRC.collider != null)
+
+            if (focusRC.collider != null && (focusRC.collider.CompareTag("Player") || focusRC.collider.CompareTag("npcCollision")))
                 _focused = npc.checkFocus(_fieldOfView);
 
             if (_focused)

@@ -12,8 +12,7 @@ public class AttackState : BaseState
         Debug.Log("enter attack state");
         _flies = npc.getFlies();
         _timer = npc.getShootCooldown(); // Disparo instantaneo
-        
-
+        npc.setFocus(true);
     }
 
     public override void UpdateState(StateManager npc, GameObject player, Transform _groundChecker, Transform _fieldOfView)
@@ -57,6 +56,7 @@ public class AttackState : BaseState
             }
             else
             {
+                npc.setFocus(false);
                 npc.setPrevstate(npc.attackState);
                 npc.SwitchState(npc.idleState);  
             }

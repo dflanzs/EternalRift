@@ -226,6 +226,7 @@ GameObject:
   - component: {fileID: 439042832008912666}
   - component: {fileID: 2742934597668316294}
   - component: {fileID: 6363785699124382527}
+  - component: {fileID: 4633544021894873109}
   m_Layer: 0
   m_Name: Enemy1
   m_TagString: npc
@@ -393,6 +394,22 @@ MonoBehaviour:
   _damage: 10
   _shootCooldown: 1
   _crystal: {fileID: 5877597639303525373, guid: 88b452f0cd8a1cf4892afe1c649d4cd5, type: 3}
+--- !u!111 &4633544021894873109
+Animation:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3029641940581615907}
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Animation: {fileID: 7400000, guid: b53b8fe86beed95ef9730a1181eede3f, type: 2}
+  m_Animations:
+  - {fileID: 7400000, guid: b53b8fe86beed95ef9730a1181eede3f, type: 2}
+  m_WrapMode: 0
+  m_PlayAutomatically: 1
+  m_AnimatePhysics: 0
+  m_CullingType: 0
 --- !u!1 &5528387681031065679
 GameObject:
   m_ObjectHideFlags: 0

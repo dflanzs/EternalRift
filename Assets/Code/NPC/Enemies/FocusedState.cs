@@ -21,13 +21,18 @@ public class FocusedState : BaseState
 
         _flies = npc.getFlies();
         _prevDirection = npc.getDirection();
+
+        Debug.Log("Enter focusedState");
+
+        npc.setFocus(false);
+        npc.setGrounded(false);
     }
 
     public override void UpdateState(StateManager npc, GameObject player, Transform _groundChecker, Transform _fieldOfView)
     {
         _prevDirection = npc.getDirection();
         
-        npc.setGrounded(npc.checkGrounded(_groundChecker));
+        npc.checkGrounded(_groundChecker);
         
         if (_flies)
         {
@@ -62,7 +67,7 @@ public class FocusedState : BaseState
             {
                 focusRC = Physics2D.Raycast(npc.transform.position, npc.getTarget(player, npc), Mathf.Infinity, LayerMask.GetMask("Ground", "Player"));
 
-                if (focusRC.collider != null && focusRC.collider.CompareTag("Player"))
+                if (focusRC.collider != null && (focusRC.collider.CompareTag("Player") || focusRC.collider.CompareTag("npcCollision")))
                     npc.setFocus(npc.checkFocus(_fieldOfView));
 
                 if (npc.getFocus())
