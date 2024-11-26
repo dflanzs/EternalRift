@@ -4,6 +4,7 @@ public class Bullet : MonoBehaviour
     private float _range;
     [SerializeField] private float k_GroundedRadius= 2f;
     private float _damage;
+    private  bool _shotByPlayer;
     public float Damage { get { return _damage; } }
 
     private Vector3 _originVector;
@@ -29,26 +30,47 @@ public class Bullet : MonoBehaviour
 
             Vector2 dist = transform.position - _originVector;
             
+
+            Collider2D[] collisions = Physics2D.OverlapCircleAll(transform.position, k_GroundedRadius);
+        
+            bool collision = false;
+
+            if (_shotByPlayer)
+            {    
+                Debug.Log("Shot by player, must disappear");
+                    
+                for(int i = 0; i < collisions.Length && !collision;  i++){
+                    if(collisions[i].gameObject.CompareTag("npc")){
+                        collision = true;
+                    }
+                }
+                //  Disparos por el player solo para los enemigos
+                if(collision)
+                {
+                    gameObject.SetActive(false);
+                    _rigid.velocity = Vector2.zero;
+                }
+            }
+            else
+            {
+                for(int i = 0; i < collisions.Length && !collision;  i++){
+                if(collisions[i].gameObject.CompareTag("Player")){
+                    collision = true;
+                }
+            }
+                if (collision)
+                {
+                    Debug.Log("Shot by enemy, must disappear");
+                    gameObject.SetActive(false);
+                    _rigid.velocity = Vector2.zero;
+                }
+            }
+            
             // Si la bala ha recorrido mas distancia que el rango de la bala la sacamos de la pool
             if(dist.magnitude >= _range){
                 gameObject.SetActive(false);
                 _rigid.velocity = Vector2.zero;
             }
-        }
-    }
-
-    private void OnTriggerEnter2D(Collider2D collider)
-    {
-        //Seria conveniente cambiar esta cosa que mete miedo al diablo
-        if(!collider.gameObject.CompareTag("Player") 
-            && !collider.gameObject.CompareTag("fieldOfView") 
-            && !collider.gameObject.CompareTag("npcCollision") )
-        {
-            //collider.gameObject.SetActive(false); Cuando metamos a los enemigos comprobamos si es un enemigo
-            _rigid.velocity = Vector2.zero;
-            
-            if(!collider.gameObject.CompareTag("npc"))
-                gameObject.SetActive(false);
         }
     }
 
@@ -72,5 +94,9 @@ public class Bullet : MonoBehaviour
         }
 
         return false;
+    }
+
+    public void setWhoShot(bool player){
+        _shotByPlayer = player;
     }
 }

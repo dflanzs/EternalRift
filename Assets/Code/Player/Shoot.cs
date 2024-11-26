@@ -51,7 +51,7 @@ public class Shoot : MonoBehaviour
 
                 Vector3 directionVector = _gun.transform.right * (weapon._speed + Math.Abs(player.CurrentVelocity.magnitude));
                 Vector3 originVector = _gun.transform.position;
-
+                bulletScript.setWhoShot(true); // true si es el jugador, false si es un NPC
 
                 bulletScript.shoot(directionVector,originVector,weapon._range,weapon._damage);
 

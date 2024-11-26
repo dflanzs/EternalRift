@@ -149,7 +149,8 @@ public class StateManager : MonoBehaviour
             enemyBullet.transform.rotation = Quaternion.identity;
 
             Bullet bulletScript = enemyBullet.GetComponent<Bullet>();
-
+            bulletScript.setWhoShot(false);
+            
             Vector3 directionVector = getBulletSpeed() * getTarget(player, npc);
             Vector3 originVector = _gun.transform.position;
 
