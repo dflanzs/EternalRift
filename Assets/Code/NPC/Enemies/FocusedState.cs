@@ -22,8 +22,6 @@ public class FocusedState : BaseState
         _flies = npc.getFlies();
         _prevDirection = npc.getDirection();
 
-        Debug.Log("Enter focusedState");
-
         npc.setFocus(false);
         npc.setGrounded(false);
     }
@@ -76,11 +74,9 @@ public class FocusedState : BaseState
                     {
                         if (player.transform.position.x <= npc.transform.position.x)
                         {
-                            Debug.Log("Changing irection");
                             _scale = npc.transform.localScale;
                             _scale.x = 1;
                         } else if (player.transform.position.x > npc.transform.position.x){
-                            Debug.Log("Changing irection");
                             _scale = npc.transform.localScale;
                             _scale.x = -1;
                         }

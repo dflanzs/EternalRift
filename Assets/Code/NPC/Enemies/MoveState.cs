@@ -24,8 +24,6 @@ public class MoveState : BaseState
             npc.transform.localScale = scale;
         }
 
-        Debug.Log("Enter moveState");
-
         npc.setFocus(false);
         npc.setGrounded(false);
 

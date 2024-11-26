@@ -37,7 +37,6 @@ public class Bullet : MonoBehaviour
 
             if (_shotByPlayer)
             {    
-                Debug.Log("Shot by player, must disappear");
                     
                 for(int i = 0; i < collisions.Length && !collision;  i++){
                     if(collisions[i].gameObject.CompareTag("npc")){
@@ -60,7 +59,6 @@ public class Bullet : MonoBehaviour
             }
                 if (collision)
                 {
-                    Debug.Log("Shot by enemy, must disappear");
                     gameObject.SetActive(false);
                     _rigid.velocity = Vector2.zero;
                 }

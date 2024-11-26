@@ -9,7 +9,6 @@ public class AttackState : BaseState
 
     public override void EnterState(StateManager npc, GameObject player)
     {
-        Debug.Log("enter attack state");
         _flies = npc.getFlies();
         _timer = npc.getShootCooldown(); // Disparo instantaneo
         npc.setFocus(true);
