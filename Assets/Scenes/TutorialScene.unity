@@ -25137,6 +25137,9 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 3907452991622423516, guid: abf6b26570e24404baa46261c0d5ca43, type: 3}
       insertIndex: -1
       addedObject: {fileID: 2052434952}
+    - targetCorrespondingSourceObject: {fileID: 3907452991622423516, guid: abf6b26570e24404baa46261c0d5ca43, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 2052434953}
   m_SourcePrefab: {fileID: 100100000, guid: abf6b26570e24404baa46261c0d5ca43, type: 3}
 --- !u!4 &627713406 stripped
 Transform:
@@ -40619,11 +40622,25 @@ MonoBehaviour:
   healthBar: {fileID: 1554090837}
   fallThreshold: 15
   fallDamagePerUnit: 1
+  accessibilityOptions: {fileID: 0}
   groundCheck: {fileID: 627713406}
   groundCheckRadius: 0.2
   groundLayer:
     serializedVersion: 2
     m_Bits: 8
+--- !u!114 &2052434953
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1118497574}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8a6644db834f5914c88c9c928ee5d60c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  fallDamageEnabled: 1
 --- !u!1 &2072266405
 GameObject:
   m_ObjectHideFlags: 0

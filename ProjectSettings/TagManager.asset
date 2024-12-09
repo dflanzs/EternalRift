@@ -17,6 +17,8 @@ TagManager:
   - checkpoint
   - npcCollision
   - cristal
+  - enemyBullets
+  - cristal_tocho
   layers:
   - Default
   - TransparentFX
@@ -25,7 +27,7 @@ TagManager:
   - Water
   - UI
   - Player
-  - 
+  - Enemy
   - 
   - 
   - 
