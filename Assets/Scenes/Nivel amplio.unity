@@ -50743,6 +50743,18 @@ MonoBehaviour:
   maxHealth: 100
   currentHealth: 100
   healthBar: {fileID: 2066864252}
+  fallThreshold: 15
+  fallDamagePerUnit: 1
+  groundCheck: {fileID: 2526375175532440108}
+  groundCheckRadius: 0.2
+  groundLayer:
+    serializedVersion: 2
+    m_Bits: 8
+--- !u!4 &2526375175532440108 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 1905046544460231677, guid: abf6b26570e24404baa46261c0d5ca43, type: 3}
+  m_PrefabInstance: {fileID: 2526375175532440105}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &6257520155183940255
 PrefabInstance:
   m_ObjectHideFlags: 0
