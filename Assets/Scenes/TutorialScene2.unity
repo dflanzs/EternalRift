@@ -38690,6 +38690,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Player
       objectReference: {fileID: 0}
+    - target: {fileID: 4187580123899886668, guid: abf6b26570e24404baa46261c0d5ca43, type: 3}
+      propertyPath: accessibilityOptions
+      value: 
+      objectReference: {fileID: 2052434947}
     - target: {fileID: 5656525533175678811, guid: abf6b26570e24404baa46261c0d5ca43, type: 3}
       propertyPath: m_LocalPosition.x
       value: 137.58
@@ -50005,7 +50009,7 @@ MonoBehaviour:
   healthBar: {fileID: 1125997093}
   fallThreshold: 15
   fallDamagePerUnit: 1
-  accessibilityOptions: {fileID: 0}
+  accessibilityOptions: {fileID: 2052434947}
   groundCheck: {fileID: 627713406}
   groundCheckRadius: 0.2
   groundLayer:
@@ -50024,6 +50028,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   fallDamageEnabled: 1
+  autoShootEnabled: 1
 --- !u!1660057539 &9223372036854775807
 SceneRoots:
   m_ObjectHideFlags: 0

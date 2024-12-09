@@ -122,11 +122,6 @@ NavMeshSettings:
     debug:
       m_Flags: 0
   m_NavMeshData: {fileID: 0}
---- !u!1 &4103299 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 8165883850531986992, guid: abf6b26570e24404baa46261c0d5ca43, type: 3}
-  m_PrefabInstance: {fileID: 2526375175532440105}
-  m_PrefabAsset: {fileID: 0}
 --- !u!4 &89802224 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 29237159779215392, guid: abf6b26570e24404baa46261c0d5ca43, type: 3}
@@ -2852,36 +2847,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   fallDamageEnabled: 1
   autoShootEnabled: 1
---- !u!114 &1959376443 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 5073718179109900588, guid: abf6b26570e24404baa46261c0d5ca43, type: 3}
-  m_PrefabInstance: {fileID: 2526375175532440105}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 404929867}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 45f5c6fe674e50b4c9035b31b2e3d5d1, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
---- !u!114 &1959376447
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 404929867}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 806d2c4a4b0122967be268e8f51f5ac3, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  player: {fileID: 1959376443}
-  _gun: {fileID: 4103299}
-  _bulletPrefab: {fileID: 5574008668113540788, guid: 70ad070ea6ec495bc965bfacf091a2ab, type: 3}
-  weapon: {fileID: 11400000, guid: 7b375264aaec1cf2590b660da0fff54e, type: 2}
-  accessibilityOptions: {fileID: 1959376436}
-  detectionRange: 5
-  enemyTag: npc
 --- !u!1 &2019334122
 GameObject:
   m_ObjectHideFlags: 0
@@ -3465,7 +3430,7 @@ PrefabInstance:
     - target: {fileID: 4187580123899886668, guid: abf6b26570e24404baa46261c0d5ca43, type: 3}
       propertyPath: weapon
       value: 
-      objectReference: {fileID: 11400000, guid: 7b375264aaec1cf2590b660da0fff54e, type: 2}
+      objectReference: {fileID: 0}
     - target: {fileID: 4187580123899886668, guid: abf6b26570e24404baa46261c0d5ca43, type: 3}
       propertyPath: autoShootEnabled
       value: 1
@@ -3536,9 +3501,6 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 3907452991622423516, guid: abf6b26570e24404baa46261c0d5ca43, type: 3}
       insertIndex: -1
       addedObject: {fileID: 1959376436}
-    - targetCorrespondingSourceObject: {fileID: 3907452991622423516, guid: abf6b26570e24404baa46261c0d5ca43, type: 3}
-      insertIndex: -1
-      addedObject: {fileID: 1959376447}
   m_SourcePrefab: {fileID: 100100000, guid: abf6b26570e24404baa46261c0d5ca43, type: 3}
 --- !u!1660057539 &9223372036854775807
 SceneRoots:
