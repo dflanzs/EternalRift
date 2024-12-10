@@ -45,7 +45,6 @@ public class Player : MonoBehaviour
     #region Other Variables
     public Vector2 CurrentVelocity { get; private set; }
     public int FacingDirection { get; private set; }
-    public float Health { get; set; }
 
     // A temporary variable to store the movement of the player 
     private Vector2 workspace;
@@ -77,7 +76,6 @@ public class Player : MonoBehaviour
         CrouchMoveState = new PlayerCrouchMoveState(this, StateMachine, playerData, "crouchMove");
 
         FacingDirection = 1;
-        Health = 100;
     }
 
     void Start()
