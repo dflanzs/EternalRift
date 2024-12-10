@@ -7,11 +7,13 @@ public class PlayerGroundedState : PlayerState
 
     // Input variables
     public int xInput;
+    public int yInput;
     public bool JumpInput;
     public bool dashInput;
 
     // Check variables
     private bool isGrounded;
+    protected bool isTouchingCeiling;
 
     public PlayerGroundedState(Player player, PlayerStateMachine stateMachine, PlayerData playerData, string animBoolName) : base(player, stateMachine, playerData, animBoolName)
     {
@@ -22,6 +24,7 @@ public class PlayerGroundedState : PlayerState
         base.DoChecks();
 
         isGrounded = player.CheckIfGrounded();
+        isTouchingCeiling = player.CheckIfTouchingCeiling();
     }
 
     public override void Enter()
@@ -42,6 +45,7 @@ public class PlayerGroundedState : PlayerState
         base.LogicUpdate();
 
         xInput = player.InputHandler.NormalizedInputX;
+        yInput = player.InputHandler.NormalizedInputY;
         JumpInput = player.InputHandler.JumpInput;
         dashInput = player.InputHandler.DashInput;
 

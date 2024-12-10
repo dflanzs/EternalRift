@@ -15,6 +15,9 @@ TagManager:
   - Ground
   - malo
   - checkpoint
+  - npcCollision
+  - cristal
+  - cristal_tocho
   layers:
   - Default
   - TransparentFX
@@ -22,7 +25,7 @@ TagManager:
   - Ground
   - Water
   - UI
-  - 
+  - Player
   - 
   - 
   - 

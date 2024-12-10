@@ -1,27 +1,45 @@
-using System.Collections;
-using System.IO.Pipes;
-using Unity.VisualScripting;
 using UnityEngine;
 
 public class StateManager : MonoBehaviour
 {
-    public BaseState currentState;
-    public IdleState idleState = new IdleState();    
-    public FocusedState focusedState = new FocusedState(); 
-    public DeadState deadState = new DeadState();
-    public MoveState moveState = new MoveState();
+    // To use animation go to project window, click on the animation file, open debug mode, activate legacy 
 
+    #region States
+    public BaseState currentState;
+    private BaseState prevState;
+    public IdleState idleState = new IdleState();    
+    public MoveState moveState = new MoveState();
+    public FocusedState focusedState = new FocusedState(); 
+    public AttackState attackState = new AttackState();
+    public DeadState deadState = new DeadState();
+    #endregion
+
+    #region Data
     [SerializeField] private GameObject _player;
-    [SerializeField] private Transform _groundChecker; // Position of the player "feet", add a gameobject
-    [SerializeField] private Transform _filedOfView; // Position of the player "feet", add a gameobject
+    [SerializeField] private Transform _groundChecker;
+    [SerializeField] private Transform _playerCollisionCheckerRight;
+    [SerializeField] private Transform _playerCollisionCheckerLeft;
+    [SerializeField] private Transform _fieldOfView;
+    [SerializeField] private GameObject _gun;
     [SerializeField] private bool flies;
     [SerializeField] private int health;
+    [SerializeField] private float _bulletSpeed = 10f;
+    [SerializeField] private float _shootRange = 10f;
+    [SerializeField] private float _damage = 10f;
+    [SerializeField] private float _shootCooldown = 1f;
+    
+    [SerializeField] private GameObject _crystal;
+    public GameObject Crystal { get { return _crystal;} }
 
-    private BaseState prevState;
+    private RaycastHit2D[] attackRC;
+    private LayerMask attackableLayer;
+
     private int direction = -1;
-    private bool _focused = false;
+    private bool _focused = false, _grounded = false;
+    private readonly float k_GroundedRadius = 0.2f;
+    #endregion
 
-
+    #region State Functions
     void Start()
     {
         // Start in MoveState by default
@@ -29,14 +47,16 @@ public class StateManager : MonoBehaviour
         prevState = null;
         currentState.EnterState(this, _player);
 
+        attackableLayer = LayerMask.GetMask("Player");
+
         if(_player == null)
             _player = GameObject.FindGameObjectWithTag("Player");
-    
     }
 
     void Update()
     {
         Collider2D[] collidersNPC = Physics2D.OverlapCircleAll(transform.position, 1);
+
         for(int i = 0; i < collidersNPC.Length; i++){
             if(collidersNPC[i].gameObject.CompareTag("Bullet")){
                 health -= (int) collidersNPC[i].gameObject.GetComponent<Bullet>().Damage;
@@ -45,7 +65,7 @@ public class StateManager : MonoBehaviour
         }
 
         if (health > 0)
-            currentState.UpdateState(this, _player, _groundChecker, _filedOfView);
+            currentState.UpdateState(this, _player, _groundChecker, _fieldOfView);
         
         else if (health <= 0)
             SwitchState(deadState);
@@ -56,22 +76,138 @@ public class StateManager : MonoBehaviour
         currentState = state;
         state.EnterState(this, _player);
     }
+    #endregion
 
-    // Getters and setters
+    #region Checkers
+    public bool checkGrounded(Transform _groundChecker)
+    {
+        Collider2D[] collidersGC = Physics2D.OverlapCircleAll(_groundChecker.position, k_GroundedRadius);
+
+        // Check if the player is touching ground
+        for(int i = 0;i < collidersGC.Length && !_grounded;i++){
+            if(collidersGC[i].gameObject.CompareTag("Platform")){
+                setGrounded(true);
+                return true;
+            }
+        }
+
+        setGrounded(false);
+        return false;
+    }
+
+    public bool checkFocus(Transform _fieldOfView)
+    {
+        Collider2D[] collidersFOV = Physics2D.OverlapCircleAll(_fieldOfView.position, _fieldOfView.gameObject.GetComponent<CircleCollider2D>().radius);
+    
+        for(int i = 0; i < collidersFOV.Length && !_focused; i++){
+            
+            if(collidersFOV[i].gameObject.CompareTag("Player")){
+                setFocus(true);
+                return true;
+            }
+        }
+
+        setFocus(false);
+        return false;
+    }
+    
+    public bool checkPlayerCollision()
+    {
+        Collider2D[] colliderLeft = Physics2D.OverlapCircleAll(_playerCollisionCheckerLeft.position, k_GroundedRadius);
+        Collider2D[] colliderRight = Physics2D.OverlapCircleAll(_playerCollisionCheckerRight.position, k_GroundedRadius);
+        
+        bool playerCollision = false;
+
+        for(int i = 0; i < colliderLeft.Length && !playerCollision;  i++){
+            if(colliderLeft[i].gameObject.CompareTag("Player")){
+                playerCollision = true;
+            }
+        }
+        
+        for(int i = 0; i < colliderRight.Length && !playerCollision;  i++){
+            if(colliderRight[i].gameObject.CompareTag("Player")){
+                playerCollision = true;
+            }
+        }
+
+        return playerCollision;
+    }
+    #endregion
+
+    #region Auxiliar Functions
+    public void ShootBullet(StateManager npc, GameObject player)
+    {
+        //Debug.Log("Shoot");
+        GameObject enemyBullet = ObjectPooling.Instance.requestInstance("enemyBullet");
+
+        if (enemyBullet != null)
+        {
+            //Debug.Log("Bullet");
+            enemyBullet.SetActive(true);
+
+            enemyBullet.transform.position = _gun.transform.position;
+            enemyBullet.transform.rotation = Quaternion.identity;
+
+            Bullet bulletScript = enemyBullet.GetComponent<Bullet>();
+            bulletScript.setWhoShot(false);
+            
+            Vector3 directionVector = getBulletSpeed() * getTarget(player, npc);
+            Vector3 originVector = _gun.transform.position;
+
+
+            bulletScript.shoot(directionVector, originVector, npc.getShootRange(), npc.getDamage());
+
+            enemyBullet.GetComponent<BoxCollider2D>().gameObject.SetActive(true);
+        }   
+    }
+
+    public void attack(StateManager npc, PlayerHealth player)
+    {
+        Animation animation = npc.gameObject.GetComponent<Animation>();
+        //animation["Enemy1"].layer = 0;
+
+        bool _hit = false;
+        attackRC = Physics2D.CircleCastAll(npc.getGun().transform.position, npc.getShootRange(), npc.getGun().transform.position, attackableLayer);
+
+        for (int i = 0; i < attackRC.Length && !_hit; i++)
+        {
+            if (attackRC[i].collider.gameObject.GetComponent<Player>() != null)
+            {
+                //animation.Play("Enemy1");
+                //TODO: Añadir knockback al jugador y un efecto visual                
+                player.TakeDamage((int)npc.getDamage());
+
+                // Solo un hit hace daño
+                _hit = true;
+            }
+        }
+    }
+    #endregion
+
+    #region Getters and setters
     public bool getFlies(){
         return flies;
     }
-    public int getDirection(){
-        return direction;
+
+    public bool getGrounded(){
+        return _grounded;
     }
-    public void setDirection(int direction){
-        this.direction = direction;
+    public void setGrounded(bool focused){
+        _grounded = focused;
     }
+
     public bool getFocus(){
         return _focused;
     }
     public void setFocus(bool focused){
         _focused = focused;
+    }
+
+    public int getDirection(){
+        return direction;
+    }
+    public void setDirection(int direction){
+        this.direction = direction;
     }
 
     public int getHealth(){
@@ -80,6 +216,7 @@ public class StateManager : MonoBehaviour
     public void setHealth(int health){
         this.health = health;
     }
+
     public BaseState getPrevstate(){
         return prevState;
     }
@@ -87,17 +224,48 @@ public class StateManager : MonoBehaviour
         prevState = newState;
     }
 
-/*     public bool getGrounded(){
-        Collider2D[] collidersGC = Physics2D.OverlapCircleAll(_groundChecker.position, k_GroundedRadius);
+    public Vector2 getTarget(GameObject player, StateManager npc){
+        return (player.transform.position - npc.gameObject.transform.position).normalized;
+    }
+    
+    // Shooting
+    public float getBulletSpeed()
+    {
+        return _bulletSpeed;
+    }
+    public void setBulletSpeed(float bulletSpeed)
+    {
+        _bulletSpeed = bulletSpeed;
+    }
 
-        // Check if the player is touching ground
-        for(int i = 0;i < collidersGC.Length && !_grounded;i++){
-            if(collidersGC[i].gameObject.CompareTag("Platform")){
-                _grounded = true;
-            }
-        }
+    public float getShootRange()
+    {
+        return _shootRange;
+    }
+    public void setShootRange(float shootRange)
+    {
+        _shootRange = shootRange;
+    }
 
-        return _grounded;
-    } */
+    public float getDamage()
+    {
+        return _damage;
+    }
+    public void setDamage(float damage)
+    {
+        _damage = damage;
+    }
 
+    public float getShootCooldown()
+    {
+        return _shootCooldown;
+    }
+    public void setShootCooldown(float shootCooldown)
+    {
+        _shootCooldown = shootCooldown;
+    }
+    public GameObject getGun(){
+        return _gun;
+    }
+    #endregion
 }

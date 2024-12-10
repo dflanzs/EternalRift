@@ -15,13 +15,19 @@ MonoBehaviour:
   movementVelocity: 10
   jumpVelocity: 20
   amountOfJumps: 1
+  maxVelocity: 100
   coyoteTime: 0.2
   jumpHeightMultiplier: 0.8
-  dashVelocity: 300
+  dashVelocity: 15
   dashCooldown: 1
-  dashTime: 0.2
+  dashTime: 3
   dashWhileMovingMultiplier: 2.5
-  groundCheckRadius: 1
+  crouchMovementVelocity: 5
+  crouchColliderHeight: 1
+  standColliderHeight: 2
+  ceilingCheckRadius: 0.2
+  groundCheckRadius: 0.3
   whatIsGround:
     serializedVersion: 2
     m_Bits: 8
+  mutatedJumpMultiplier: 1.5

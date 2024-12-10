@@ -2,8 +2,9 @@ using UnityEngine;
 public class Bullet : MonoBehaviour
 {
     private float _range;
-
+    [SerializeField] private float k_GroundedRadius= 2f;
     private float _damage;
+    private  bool _shotByPlayer;
     public float Damage { get { return _damage; } }
 
     private Vector3 _originVector;
@@ -15,28 +16,59 @@ public class Bullet : MonoBehaviour
         _rigid = GetComponent<Rigidbody2D>();
     }
 
-    void Update(){
-        if(_originVector == null)
-            return;
-
-        Vector2 dist = transform.position - _originVector;
-        
-        // Si la bala ha recorrido mas distancia que el rango de la bala la sacamos de la pool
-        if(dist.magnitude >= _range){
+    void Update()
+    {
+        if (checkWallCollision())
+        {
             gameObject.SetActive(false);
             _rigid.velocity = Vector2.zero;
         }
-    }
-
-    private void OnTriggerEnter2D(Collider2D collider)
-    {
-        if(!collider.gameObject.CompareTag("Player") && !collider.gameObject.CompareTag("fieldOfView") )
+        else
         {
-            //collider.gameObject.SetActive(false); Cuando metamos a los enemigos comprobamos si es un enemigo
-            _rigid.velocity = Vector2.zero;
+            if(_originVector == null)
+                return;
+
+            Vector2 dist = transform.position - _originVector;
             
-            if(!collider.gameObject.CompareTag("npc"))
+
+            Collider2D[] collisions = Physics2D.OverlapCircleAll(transform.position, k_GroundedRadius);
+        
+            bool collision = false;
+
+            if (_shotByPlayer)
+            {    
+                    
+                for(int i = 0; i < collisions.Length && !collision;  i++){
+                    if(collisions[i].gameObject.CompareTag("npc")){
+                        collision = true;
+                    }
+                }
+                //  Disparos por el player solo para los enemigos
+                if(collision)
+                {
+                    gameObject.SetActive(false);
+                    _rigid.velocity = Vector2.zero;
+                }
+            }
+            else
+            {
+                for(int i = 0; i < collisions.Length && !collision;  i++){
+                if(collisions[i].gameObject.CompareTag("Player")){
+                    collision = true;
+                }
+            }
+                if (collision)
+                {
+                    gameObject.SetActive(false);
+                    _rigid.velocity = Vector2.zero;
+                }
+            }
+            
+            // Si la bala ha recorrido mas distancia que el rango de la bala la sacamos de la pool
+            if(dist.magnitude >= _range){
                 gameObject.SetActive(false);
+                _rigid.velocity = Vector2.zero;
+            }
         }
     }
 
@@ -47,5 +79,22 @@ public class Bullet : MonoBehaviour
         _originVector = originVector;
 
         _rigid.velocity = movement;
+    }
+    private bool checkWallCollision()
+    {
+        Collider2D[] collidersGC = Physics2D.OverlapCircleAll(transform.position, k_GroundedRadius);
+
+        // Check if the player is touching ground
+        for(int i = 0; i < collidersGC.Length; i++)
+        {
+            if(collidersGC[i].gameObject.CompareTag("Platform"))
+                return true;
+        }
+
+        return false;
+    }
+
+    public void setWhoShot(bool player){
+        _shotByPlayer = player;
     }
 }
