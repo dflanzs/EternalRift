@@ -17,6 +17,7 @@ TagManager:
   - checkpoint
   - npcCollision
   - cristal
+  - cristal_tocho
   layers:
   - Default
   - TransparentFX
