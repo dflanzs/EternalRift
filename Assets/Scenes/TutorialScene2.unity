@@ -39545,6 +39545,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Player
       objectReference: {fileID: 0}
+    - target: {fileID: 4187580123899886668, guid: abf6b26570e24404baa46261c0d5ca43, type: 3}
+      propertyPath: accessibilityOptions
+      value: 
+      objectReference: {fileID: 2052434947}
     - target: {fileID: 5656525533175678811, guid: abf6b26570e24404baa46261c0d5ca43, type: 3}
       propertyPath: m_LocalPosition.x
       value: 137.58
@@ -39607,6 +39611,9 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 3907452991622423516, guid: abf6b26570e24404baa46261c0d5ca43, type: 3}
       insertIndex: -1
       addedObject: {fileID: 2052434946}
+    - targetCorrespondingSourceObject: {fileID: 3907452991622423516, guid: abf6b26570e24404baa46261c0d5ca43, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 2052434947}
   m_SourcePrefab: {fileID: 100100000, guid: abf6b26570e24404baa46261c0d5ca43, type: 3}
 --- !u!4 &627713406 stripped
 Transform:
@@ -53060,6 +53067,7 @@ MonoBehaviour:
   healthBar: {fileID: 1125997093}
   fallThreshold: 15
   fallDamagePerUnit: 1
+  accessibilityOptions: {fileID: 2052434947}
   groundCheck: {fileID: 627713406}
   groundCheckRadius: 0.2
   groundLayer:
@@ -53409,6 +53417,20 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2120655077}
   m_CullTransparentMesh: 1
+--- !u!114 &2052434947
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 748755795}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8a6644db834f5914c88c9c928ee5d60c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  fallDamageEnabled: 1
+  autoShootEnabled: 1
 --- !u!1660057539 &9223372036854775807
 SceneRoots:
   m_ObjectHideFlags: 0

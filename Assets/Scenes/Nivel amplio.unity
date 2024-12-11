@@ -50748,6 +50748,10 @@ PrefabInstance:
       propertyPath: weapon
       value: 
       objectReference: {fileID: 11400000, guid: d40afa61a62f57e088c338b9c1f3b39f, type: 2}
+    - target: {fileID: 4187580123899886668, guid: abf6b26570e24404baa46261c0d5ca43, type: 3}
+      propertyPath: accessibilityOptions
+      value: 
+      objectReference: {fileID: 2526375175532440109}
     - target: {fileID: 5656525533175678811, guid: abf6b26570e24404baa46261c0d5ca43, type: 3}
       propertyPath: m_LocalPosition.x
       value: -15.43
@@ -50819,6 +50823,9 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 3907452991622423516, guid: abf6b26570e24404baa46261c0d5ca43, type: 3}
       insertIndex: -1
       addedObject: {fileID: 2526375175532440107}
+    - targetCorrespondingSourceObject: {fileID: 3907452991622423516, guid: abf6b26570e24404baa46261c0d5ca43, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 2526375175532440109}
   m_SourcePrefab: {fileID: 100100000, guid: abf6b26570e24404baa46261c0d5ca43, type: 3}
 --- !u!1 &2526375175532440106 stripped
 GameObject:
@@ -50842,6 +50849,7 @@ MonoBehaviour:
   healthBar: {fileID: 2066864252}
   fallThreshold: 15
   fallDamagePerUnit: 1
+  accessibilityOptions: {fileID: 2526375175532440109}
   groundCheck: {fileID: 2526375175532440108}
   groundCheckRadius: 0.2
   groundLayer:
@@ -50852,6 +50860,20 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 1905046544460231677, guid: abf6b26570e24404baa46261c0d5ca43, type: 3}
   m_PrefabInstance: {fileID: 2526375175532440105}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &2526375175532440109
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2526375175532440106}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8a6644db834f5914c88c9c928ee5d60c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  fallDamageEnabled: 1
+  autoShootEnabled: 1
 --- !u!1001 &6257520155183940255
 PrefabInstance:
   m_ObjectHideFlags: 0

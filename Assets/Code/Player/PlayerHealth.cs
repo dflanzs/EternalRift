@@ -15,6 +15,10 @@ public class PlayerHealth : MonoBehaviour
     private float startFallHeight;
     private bool isFalling;
 
+    // para medidas de accesibilidad
+    [SerializeField] private AccessibilityOptions accessibilityOptions; 
+
+
     // GroundCheck variables
     [SerializeField] private Transform groundCheck;
     [SerializeField] private float groundCheckRadius = 0.2f;
@@ -73,6 +77,11 @@ public class PlayerHealth : MonoBehaviour
 
     private void HandleFallDamage()
     {
+
+        if (!accessibilityOptions.fallDamageEnabled)
+        return; // No aplicar daño si la opción de recibir daño está desactivada
+
+
         if (!IsGrounded() && !isFalling)
         {
             // El jugador empieza a caer
