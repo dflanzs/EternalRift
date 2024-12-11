@@ -39,7 +39,7 @@ public class PlayerHealth : MonoBehaviour
 
 
     // Método para recibir daño
-    private void TakeDamage(int damage)
+    public void TakeDamage(int damage)
     {
         currentHealth -= damage;
         currentHealth = Mathf.Clamp(currentHealth, 0, maxHealth);
@@ -114,10 +114,10 @@ public class PlayerHealth : MonoBehaviour
         }
 
         // Daño por contacto con enemigo
-        if (collision.gameObject.CompareTag("npc") || collision.gameObject.CompareTag("enemyBullets"))
+        /*if (collision.gameObject.CompareTag("npc") || collision.gameObject.CompareTag("enemyBullets"))
         {
             TakeDamage(20); // Ajustar el daño según sea necesario
-        }
+        }*/
     }
 
     // Daño por contacto con lava en escena principal.

@@ -78,9 +78,9 @@ GameObject:
   - component: {fileID: 1618723617311984231}
   - component: {fileID: 6609076093823694751}
   - component: {fileID: 2498776788758663547}
-  - component: {fileID: 6633698736415679836}
   - component: {fileID: 8684919792034323307}
   - component: {fileID: 5934387845021701356}
+  - component: {fileID: 6948520352744369455}
   m_Layer: 6
   m_Name: Player
   m_TagString: Player
@@ -302,18 +302,6 @@ MonoBehaviour:
   m_DefaultActionMap: Player
   m_SplitScreenIndex: -1
   m_Camera: {fileID: 0}
---- !u!114 &6633698736415679836
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3907452991622423516}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: c2503dc1c2cd4e645ba4e46f036007ec, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!114 &8684919792034323307
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -371,6 +359,28 @@ BoxCollider2D:
   serializedVersion: 2
   m_Size: {x: 1, y: 1.8}
   m_EdgeRadius: 0
+--- !u!114 &6948520352744369455
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3907452991622423516}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3b3cba5509b8fc244a234b05a09fb511, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  maxHealth: 100
+  currentHealth: 100
+  healthBar: {fileID: 0}
+  fallThreshold: 15
+  fallDamagePerUnit: 1
+  groundCheck: {fileID: 1905046544460231677}
+  groundCheckRadius: 0.2
+  groundLayer:
+    serializedVersion: 2
+    m_Bits: 8
 --- !u!1 &8165883850531986992
 GameObject:
   m_ObjectHideFlags: 0
