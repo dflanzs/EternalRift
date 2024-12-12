@@ -1,17 +1,24 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class DeactivatedState : BaseState
 {
-
     private Rigidbody2D rb;
-    private bool playerIsNear;
+    private Vector2 _lastPosition;
+    private bool _flies;
+    private int _health;
 
     public override void EnterState(StateManager npc, GameObject player)
     {
-        npc.gameObject.SetActive(false);
+        rb = npc.GetComponent<Rigidbody2D>();
+
+        // Guardar características
+        _lastPosition = npc.transform.position;
+        _flies = npc.getFlies();
+        _health = npc.getHealth();
+
+        // Desactiamos
         rb.velocity = new Vector2(0, rb.velocity.y);
+        npc.gameObject.SetActive(false);
     }
 
     public override void UpdateState(StateManager npc, GameObject player, Transform _groundChecker, Transform _fieldOfView) { }

@@ -1,3 +1,6 @@
+using System;
+using System.IO.Pipes;
+using Unity.VisualScripting.YamlDotNet.RepresentationModel;
 using UnityEngine;
 
 public class StateManager : MonoBehaviour
@@ -12,6 +15,7 @@ public class StateManager : MonoBehaviour
     public FocusedState focusedState = new FocusedState(); 
     public AttackState attackState = new AttackState();
     public DeadState deadState = new DeadState();
+    public DeactivatedState deactivatedState = new DeactivatedState();
     #endregion
 
     #region Data
@@ -42,8 +46,8 @@ public class StateManager : MonoBehaviour
     #region State Functions
     void Start()
     {
-        // Start in MoveState by default
-        currentState = moveState;
+        // Start in DeactivatedState by default
+        currentState = deactivatedState;
         prevState = null;
         currentState.EnterState(this, _player);
 
@@ -55,20 +59,27 @@ public class StateManager : MonoBehaviour
 
     void Update()
     {
-        Collider2D[] collidersNPC = Physics2D.OverlapCircleAll(transform.position, 1);
-
-        for(int i = 0; i < collidersNPC.Length; i++){
-            if(collidersNPC[i].gameObject.CompareTag("Bullet")){
-                health -= (int) collidersNPC[i].gameObject.GetComponent<Bullet>().Damage;
-                collidersNPC[i].gameObject.SetActive(false);
-            }
+        if (playerIsNear(transform.position))
+        {
+            deactivatedState.UpdateState(this, _player, _groundChecker, _fieldOfView);    
         }
+        else 
+        {
+            Collider2D[] collidersNPC = Physics2D.OverlapCircleAll(transform.position, 1);
 
-        if (health > 0)
-            currentState.UpdateState(this, _player, _groundChecker, _fieldOfView);
-        
-        else if (health <= 0)
-            SwitchState(deadState);
+            for(int i = 0; i < collidersNPC.Length; i++){
+                if(collidersNPC[i].gameObject.CompareTag("Bullet")){
+                    health -= (int) collidersNPC[i].gameObject.GetComponent<Bullet>().Damage;
+                    collidersNPC[i].gameObject.SetActive(false);
+                }
+            }
+
+            if (health > 0)
+                currentState.UpdateState(this, _player, _groundChecker, _fieldOfView);
+            
+            else if (health <= 0)
+                SwitchState(deadState);
+        }
     }
 
     public void SwitchState(BaseState state)
@@ -132,6 +143,16 @@ public class StateManager : MonoBehaviour
 
         return playerCollision;
     }
+
+    public bool playerIsNear(Vector2 _lastPosition)
+    {
+        if (Math.Abs(_player.transform.position.x - _lastPosition.x) >= 30 ||
+            Math.Abs(_player.transform.position.y - _lastPosition.y) >= 30)
+        {
+            return false;
+        }
+        return true;
+    }
     #endregion
 
     #region Auxiliar Functions
@@ -188,6 +209,9 @@ public class StateManager : MonoBehaviour
         return flies;
     }
 
+    public void setFlies(bool _flies){
+        flies = _flies;
+    }
     public bool getGrounded(){
         return _grounded;
     }
