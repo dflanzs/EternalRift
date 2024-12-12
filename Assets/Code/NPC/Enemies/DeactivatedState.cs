@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class DeactivatedState : MonoBehaviour
+public class DeactivatedState : BaseState
 {
 
     private Rigidbody2D rb;
@@ -10,7 +10,7 @@ public class DeactivatedState : MonoBehaviour
 
     public override void EnterState(StateManager npc, GameObject player)
     {
-        npc.GameObject.SetActive(false);
+        npc.gameObject.SetActive(false);
         rb.velocity = new Vector2(0, rb.velocity.y);
     }
 
