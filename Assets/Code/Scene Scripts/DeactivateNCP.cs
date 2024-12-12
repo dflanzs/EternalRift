@@ -29,32 +29,35 @@ public class DeactivateNCP : MonoBehaviour
     }
 
     void Update()
-{
-    Debug.Log("Checking enemies near player...");
-    foreach (StateManager enemySM in npcList)
     {
-        if (playerIsNear(enemySM.getStartingPosition()))
+        Debug.Log("Checking enemies near player...");
+        foreach (StateManager enemySM in npcList)
         {
-            Debug.Log("Requesting Instance...");
-
-            GameObject enemy = ObjectPooling.Instance.requestInstance("Enemy");
-
-            if (enemy != null)
+            if (playerIsNear(enemySM.getStartingPosition()) && !enemySM.gameObject.activeSelf)
             {
-                enemy.SetActive(true);
-                StateManager npc = enemy.GetComponent<StateManager>();
+                Debug.Log("Requesting Instance...");
 
-                // Restaurar la posición inicial desde el diccionario
-                enemy.transform.position = ObjectPooling.Instance.enemiesPool[enemy];
-                npc.setHealth(enemySM.getHealth());
-                npc.setFlies(enemySM.getFlies());
+                GameObject enemy = ObjectPooling.Instance.requestInstance("Enemy");
 
-                npc.setPrevstate(npc.deactivatedState);
-                npc.SwitchState(npc.idleState);
+                if (enemy != null)
+                {
+                    enemy.SetActive(true);
+                    StateManager npc = enemy.GetComponent<StateManager>();
+
+                    // Restaurar la posición inicial desde el diccionario
+                    enemy.transform.position = enemySM.getStartingPosition();
+                    npc.setHealth(enemySM.getHealth());
+                    npc.setFlies(enemySM.getFlies());
+
+                    npc.setPrevstate(npc.deactivatedState);
+                    npc.SwitchState(npc.idleState);
+
+                    // Marcar el enemigo original como activo para evitar duplicados
+                    enemySM.gameObject.SetActive(true);
+                }
             }
         }
     }
-}
 
     private bool playerIsNear(Vector2 _lastPosition)
     {
