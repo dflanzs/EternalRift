@@ -16,6 +16,8 @@ public class Player : MonoBehaviour
     public PlayerLandState LandState { get; private set; }
     public PlayerInAirState InAirState { get; private set; }
     public PlayerDashState DashState { get; private set; }
+    public PlayerCrouchIdleState CrouchIdleState { get; private set; }
+    public PlayerCrouchMoveState CrouchMoveState { get; private set; }
 
     [SerializeField] private PlayerData playerData;
 
@@ -24,9 +26,9 @@ public class Player : MonoBehaviour
     #region Mutation Variables
     public bool IsMutated { get; private set; } 
     public float MutatedJumpForceMultiplier = 1.5f;
-    [SerializeField] private Tilemap tilemap;  // El Tilemap donde están los botones
-    [SerializeField] private Tile openButtonTile;  // Tile de botón abierto
-    [SerializeField] private Tile closedButtonTile; // Tile de botón cerrado
+    [SerializeField] private Tilemap tilemap;  // El Tilemap donde estï¿½n los botones
+    [SerializeField] private Tile openButtonTile;  // Tile de botï¿½n abierto
+    [SerializeField] private Tile closedButtonTile; // Tile de botï¿½n cerrado
     #endregion
 
     #region Components
@@ -35,11 +37,13 @@ public class Player : MonoBehaviour
     public Animator Anim { get; private set; }
 
     public Rigidbody2D RB { get; private set; }
+    public BoxCollider2D MovementCollider { get; private set; }
     #endregion
 
     #region Check Transforms
     [SerializeField] private Transform groundCheck;
-    
+    [SerializeField] private Transform ceilingCheck;
+
     #endregion
 
     #region Other Variables
@@ -57,6 +61,7 @@ public class Player : MonoBehaviour
     void Awake()
     {
         RB = GetComponent<Rigidbody2D>();
+        MovementCollider = GetComponent<BoxCollider2D>();
 
         InputHandler = GetComponent<PlayerInputHandler>();
 
@@ -64,18 +69,23 @@ public class Player : MonoBehaviour
 
         StateMachine = new PlayerStateMachine();
 
+
         IdleState = new PlayerIdleState(this, StateMachine, playerData, "idle");
         MoveState = new PlayerMoveState(this, StateMachine, playerData, "move");
         JumpState = new PlayerJumpState(this, StateMachine, playerData, "inAir");
         InAirState = new PlayerInAirState(this, StateMachine, playerData, "inAir");
         LandState = new PlayerLandState(this, StateMachine, playerData, "land");
-        DashState = new PlayerDashState(this, StateMachine, playerData, "inAir");
+        DashState = new PlayerDashState(this, StateMachine, playerData, "dashing");
+        CrouchIdleState = new PlayerCrouchIdleState(this, StateMachine, playerData, "crouchIdle");
+        CrouchMoveState = new PlayerCrouchMoveState(this, StateMachine, playerData, "crouchMove");
 
         FacingDirection = 1;
     }
 
     void Start()
     {
+
+
         ResetMutation();
         StateMachine.Initialize(IdleState);
 
@@ -88,7 +98,7 @@ public class Player : MonoBehaviour
             // Restaura la escena actual
             SceneManager.LoadScene(SceneManager.GetActiveScene().name);
         }
-        // Comprobar si se está presionando el botón "shift"
+        // Comprobar si se estï¿½ presionando el botï¿½n "shift"
         if (Input.GetButtonDown("shift")) // Detecta cuando se presiona
         {
             StartSprint();
@@ -131,6 +141,13 @@ public class Player : MonoBehaviour
         CurrentVelocity = workspace;
     }
 
+    public void SetVelocityZero()
+    {
+        workspace.Set(0, 0);
+        RB.velocity = workspace;
+        CurrentVelocity = workspace;
+    }
+
     #endregion
 
     #region Check Functions
@@ -147,23 +164,40 @@ public class Player : MonoBehaviour
         return Physics2D.OverlapCircle(groundCheck.position, playerData.groundCheckRadius, playerData.whatIsGround);
     }
 
-   
+    public bool CheckIfTouchingCeiling()
+    {
+        return Physics2D.OverlapCircle(ceilingCheck.position, playerData.groundCheckRadius, playerData.whatIsGround);
+    }
+
+
 
     #endregion
 
-
     #region Other Functions
+
+    public void SetColliderHeight(float height)
+    {
+        Vector2 center = MovementCollider.offset;
+        workspace.Set(MovementCollider.size.x, height);
+
+        center.y += (height - MovementCollider.size.y) / 2;
+
+        MovementCollider.size = workspace;
+        MovementCollider.offset = center;
+    }
+
+
     private void OnTriggerEnter2D(Collider2D other)
     {
         if (other.CompareTag("malo"))
         {
-            // Teletransporta al personaje a la última posición segura
+            // Teletransporta al personaje a la ï¿½ltima posiciï¿½n segura
             transform.position = lastSafePosition;
         }
 
         if (other.CompareTag("checkpoint"))
         {
-            // Teletransporta al personaje a la última posición segura
+            // Teletransporta al personaje a la ï¿½ltima posiciï¿½n segura
             lastSafePosition = transform.position;
         }
         if (other.CompareTag("cristal"))
@@ -172,7 +206,7 @@ public class Player : MonoBehaviour
             if (mutationBar != null)
             {
                 mutationBar.AddCharge(5f); // Suma 10 puntos o el valor que corresponda
-                
+
             }
 
             Destroy(other.gameObject); // Eliminar el cristal
@@ -190,13 +224,13 @@ public class Player : MonoBehaviour
         }
         if (other.CompareTag("puerta"))
         {
-            // Teletransporta al personaje a la última posición segura
+            // Teletransporta al personaje a la ï¿½ltima posiciï¿½n segura
             transform.position = lastSafePosition;
         }
 
 
     }
-    
+
     private void AnimationTrigger() => StateMachine.CurrentState.AnimationTrigger();
 
     private void AnimationFinishTrigger() => StateMachine.CurrentState.AnimationFinishTrigger();
@@ -208,7 +242,7 @@ public class Player : MonoBehaviour
     }
     public void ActivateMutation()
     {
-        if (!IsMutated) // Solo activar si aún no está activa
+        if (!IsMutated) // Solo activar si aï¿½n no estï¿½ activa
         {
             IsMutated = true;
             playerData.jumpVelocity *= MutatedJumpForceMultiplier;

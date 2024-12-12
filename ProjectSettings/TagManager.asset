@@ -15,6 +15,7 @@ TagManager:
   - Ground
   - malo
   - checkpoint
+  - npcCollision
   - cristal
   - cristal_tocho
   - ButtonOpen
@@ -27,8 +28,8 @@ TagManager:
   - Ground
   - Water
   - UI
-  - 
-  - 
+  - Player
+  - Enemy
   - 
   - 
   - 
