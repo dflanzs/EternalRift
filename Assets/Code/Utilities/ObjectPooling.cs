@@ -4,7 +4,8 @@ using UnityEngine;
 
 public class ObjectPooling : MonoBehaviour
 {
-    [SerializeField] private Queue<GameObject> bulletsPool, enemiesPool, enemyBulletsPool;
+    [SerializeField] private Queue<GameObject> bulletsPool, enemyBulletsPool;
+    public Dictionary<GameObject, Vector2> enemiesPool;
 
     [SerializeField] private GameObject bulletPrefab, enemy1Prefab, enemy2Prefab, enemyBullet;
     
@@ -22,7 +23,7 @@ public class ObjectPooling : MonoBehaviour
     void Awake()
     {   
         bulletsPool = new Queue<GameObject>();
-        enemiesPool = new Queue<GameObject>();     
+        enemiesPool = new Dictionary<GameObject, Vector2>();     
         enemyBulletsPool = new Queue<GameObject>();
         
         if(poolInstance == null)
@@ -51,7 +52,7 @@ public class ObjectPooling : MonoBehaviour
 
     private void addToPool(int bulletsPoolSize, int enemiesPoolSize, int enemyBulletsPoolSize)
     {
-       // Instanciamos cada prefab y los guardamos en la pool
+        // Instanciamos cada prefab y los guardamos en la pool
         for (int i = 0; i < bulletsPoolSize; i++)
         {
             GameObject instantiatedPrefab = Instantiate(bulletPrefab);
@@ -61,13 +62,19 @@ public class ObjectPooling : MonoBehaviour
             bulletsPool.Enqueue(instantiatedPrefab);
         }
 
-        for (int i = 0; i < enemiesPoolSize; i++)
+        for (int i = 0; i < enemiesPoolSize / 2; i++)
         {
-            GameObject instantiatedPrefab = Instantiate(WhichEnemy());
+            GameObject instantiatedPrefab = Instantiate(enemy1Prefab);
             instantiatedPrefab.SetActive(false);
 
-            // Metemos los objetos a la lista
-            enemiesPool.Enqueue(instantiatedPrefab);
+            // Metemos los objetos al diccionario con su posición inicial
+            enemiesPool.Add(instantiatedPrefab, instantiatedPrefab.transform.position);
+
+            instantiatedPrefab = Instantiate(enemy2Prefab);
+            instantiatedPrefab.SetActive(false);
+
+            // Metemos los objetos al diccionario con su posición inicial
+            enemiesPool.Add(instantiatedPrefab, instantiatedPrefab.transform.position);
         }
 
         for (int i = 0; i < enemyBulletsPoolSize; i++)
@@ -83,7 +90,7 @@ public class ObjectPooling : MonoBehaviour
     public GameObject requestInstance(string objectType)
     {
         GameObject auxGO;
-        if(objectType == "Bullet")
+        if (objectType == "Bullet")
         {
             for (int i = 0; i < bulletsPool.Count; i++)
             {
@@ -95,21 +102,20 @@ public class ObjectPooling : MonoBehaviour
                 }
             }
             return null;
-        } 
+        }
         else if (objectType == "Enemy")
         {
-            for (int i = 0; i < enemiesPool.Count; i++)
+            foreach (var enemy in enemiesPool)
             {
-                if (!enemiesPool.Peek().activeSelf)
+                if (!enemy.Key.activeSelf)
                 {
-                    auxGO = enemiesPool.Dequeue();
-                    enemiesPool.Enqueue(auxGO);
+                    auxGO = enemy.Key;
                     return auxGO;
                 }
             }
             return null;
-        } 
-        else if(objectType == "enemyBullet")
+        }
+        else if (objectType == "enemyBullet")
         {
             for (int i = 0; i < enemyBulletsPool.Count; i++)
             {

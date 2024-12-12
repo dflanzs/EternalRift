@@ -31,23 +31,24 @@ public class StateManager : MonoBehaviour
     [SerializeField] private float _shootRange = 10f;
     [SerializeField] private float _damage = 10f;
     [SerializeField] private float _shootCooldown = 1f;
-    
     [SerializeField] private GameObject _crystal;
-    public GameObject Crystal { get { return _crystal;} }
 
+    public GameObject Crystal { get { return _crystal;} }
     private RaycastHit2D[] attackRC;
     private LayerMask attackableLayer;
-
     private int direction = -1;
-    private bool _focused = false, _grounded = false;
+    private bool _focused = false, _grounded = false, _found = false;
     private readonly float k_GroundedRadius = 0.2f;
+    private Vector2 _startingPosition;
     #endregion
 
     #region State Functions
     void Start()
     {
-        // Start in DeactivatedState by default
-        currentState = deactivatedState;
+        //Guardamos la posicion inicial para el objectPooling
+        _startingPosition = transform.position;
+
+        currentState = moveState;
         prevState = null;
         currentState.EnterState(this, _player);
 
@@ -59,9 +60,9 @@ public class StateManager : MonoBehaviour
 
     void Update()
     {
-        if (playerIsNear(transform.position))
+        if (!playerIsNear(transform.position))
         {
-            deactivatedState.UpdateState(this, _player, _groundChecker, _fieldOfView);    
+            deactivatedState.EnterState(this, _player);    
         }
         else 
         {
@@ -289,6 +290,15 @@ public class StateManager : MonoBehaviour
     }
     public GameObject getGun(){
         return _gun;
+    }
+    public bool getFound(){
+        return _found;
+    }
+    public void setFound(bool found){
+        _found = found;
+    }
+    public Vector2 getStartingPosition(){
+        return _startingPosition;
     }
     #endregion
 }
