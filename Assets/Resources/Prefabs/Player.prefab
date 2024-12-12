@@ -79,9 +79,8 @@ GameObject:
   - component: {fileID: 6609076093823694751}
   - component: {fileID: 2498776788758663547}
   - component: {fileID: 8684919792034323307}
-  - component: {fileID: 214473327964914681}
   - component: {fileID: 5934387845021701356}
-  - component: {fileID: 6948520352744369455}
+  - component: {fileID: 4002940706388455317}
   m_Layer: 6
   m_Name: Player
   m_TagString: Player
@@ -150,7 +149,7 @@ SpriteRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 1
-  m_Sprite: {fileID: -9095717837082945937, guid: 207ee8102dd4143d288186ef0be518ee, type: 3}
+  m_Sprite: {fileID: 21300000, guid: 46429e0d3e78b8a499440cd57509aa26, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
@@ -238,9 +237,8 @@ MonoBehaviour:
   playerData: {fileID: 11400000, guid: f44a0ce5a9b83a948a2dfaa764e2ce41, type: 2}
   MutatedJumpForceMultiplier: 1.5
   tilemap: {fileID: 0}
-  openButtonTile: {fileID: 0}
-  closedButtonTile: {fileID: 0}
-  MutatedJumpForceMultiplier: 1.5
+  openButtonTile: {fileID: 11400000, guid: 48c368ebd5ff0b942bf207bde1eeb977, type: 2}
+  closedButtonTile: {fileID: 11400000, guid: 41b58566a0b90004994eb0b067909b61, type: 2}
   groundCheck: {fileID: 1905046544460231677}
   ceilingCheck: {fileID: 1882797590386934059}
 --- !u!95 &1618723617311984231
@@ -319,20 +317,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0954c38efd4e78940bd9d7a553fe8ffc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
---- !u!114 &214473327964914681
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3907452991622423516}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 8a6644db834f5914c88c9c928ee5d60c, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  fallDamageEnabled: 0
-  autoShootEnabled: 0
 --- !u!61 &5934387845021701356
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -369,7 +353,7 @@ BoxCollider2D:
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
     pivot: {x: 0.5, y: 0.5}
-    oldSize: {x: 1, y: 2}
+    oldSize: {x: 2.1333334, y: 2.5333333}
     newSize: {x: 1, y: 2}
     adaptiveTilingThreshold: 0.5
     drawMode: 0
@@ -378,7 +362,7 @@ BoxCollider2D:
   serializedVersion: 2
   m_Size: {x: 1, y: 1.8}
   m_EdgeRadius: 0
---- !u!114 &6948520352744369455
+--- !u!114 &4002940706388455317
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -395,7 +379,7 @@ MonoBehaviour:
   healthBar: {fileID: 0}
   fallThreshold: 15
   fallDamagePerUnit: 1
-  accessibilityOptions: {fileID: 0}
+  fallDamageEnabled: 1
   groundCheck: {fileID: 1905046544460231677}
   groundCheckRadius: 0.2
   groundLayer:
@@ -442,7 +426,7 @@ SpriteRenderer:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 8165883850531986992}
-  m_Enabled: 1
+  m_Enabled: 0
   m_CastShadows: 0
   m_ReceiveShadows: 0
   m_DynamicOccludee: 1
@@ -503,7 +487,7 @@ MonoBehaviour:
   _gun: {fileID: 8165883850531986992}
   _bulletPrefab: {fileID: 5574008668113540788, guid: 70ad070ea6ec495bc965bfacf091a2ab, type: 3}
   weapon: {fileID: 0}
-  accessibilityOptions: {fileID: 0}
+  autoShootEnabled: 1
   detectionRange: 10
   enemyTag: npc
 --- !u!114 &6097214014951737960
