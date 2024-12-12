@@ -78,6 +78,7 @@ public class Player : MonoBehaviour
     {
         ResetMutation();
         StateMachine.Initialize(IdleState);
+
     }
 
     void Update()
@@ -86,6 +87,15 @@ public class Player : MonoBehaviour
         {
             // Restaura la escena actual
             SceneManager.LoadScene(SceneManager.GetActiveScene().name);
+        }
+        // Comprobar si se está presionando el botón "shift"
+        if (Input.GetButtonDown("shift")) // Detecta cuando se presiona
+        {
+            StartSprint();
+        }
+        else if (Input.GetButtonUp("shift")) // Detecta cuando se suelta
+        {
+            StopSprint();
         }
 
         CurrentVelocity = RB.velocity;
@@ -209,6 +219,19 @@ public class Player : MonoBehaviour
         IsMutated = false;
         MutatedJumpForceMultiplier = 1.5f;  // Restablecer al valor predeterminado
         playerData.jumpVelocity = 20f;  // Restablecer el valor original de jumpVelocity
+        playerData.movementVelocity = 8f;
+    }
+
+    private void StartSprint()
+    {
+        // Aumentar la velocidad del ScriptableObject
+        playerData.movementVelocity = 14f;
+    }
+
+    private void StopSprint()
+    {
+        // Restaurar la velocidad original
+        playerData.movementVelocity = 8f;
     }
 
     #endregion

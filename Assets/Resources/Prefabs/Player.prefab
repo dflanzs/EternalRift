@@ -201,6 +201,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   playerData: {fileID: 11400000, guid: f44a0ce5a9b83a948a2dfaa764e2ce41, type: 2}
+  MutatedJumpForceMultiplier: 1.5
+  tilemap: {fileID: 0}
+  openButtonTile: {fileID: 0}
+  closedButtonTile: {fileID: 0}
   groundCheck: {fileID: 1905046544460231677}
 --- !u!95 &1618723617311984231
 Animator:
