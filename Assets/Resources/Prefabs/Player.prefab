@@ -79,6 +79,7 @@ GameObject:
   - component: {fileID: 6609076093823694751}
   - component: {fileID: 2498776788758663547}
   - component: {fileID: 8684919792034323307}
+  - component: {fileID: 214473327964914681}
   - component: {fileID: 5934387845021701356}
   - component: {fileID: 6948520352744369455}
   m_Layer: 6
@@ -314,6 +315,20 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0954c38efd4e78940bd9d7a553fe8ffc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &214473327964914681
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3907452991622423516}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8a6644db834f5914c88c9c928ee5d60c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  fallDamageEnabled: 0
+  autoShootEnabled: 0
 --- !u!61 &5934387845021701356
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -376,6 +391,7 @@ MonoBehaviour:
   healthBar: {fileID: 0}
   fallThreshold: 15
   fallDamagePerUnit: 1
+  accessibilityOptions: {fileID: 0}
   groundCheck: {fileID: 1905046544460231677}
   groundCheckRadius: 0.2
   groundLayer:
@@ -483,6 +499,9 @@ MonoBehaviour:
   _gun: {fileID: 8165883850531986992}
   _bulletPrefab: {fileID: 5574008668113540788, guid: 70ad070ea6ec495bc965bfacf091a2ab, type: 3}
   weapon: {fileID: 0}
+  accessibilityOptions: {fileID: 0}
+  detectionRange: 10
+  enemyTag: npc
 --- !u!114 &6097214014951737960
 MonoBehaviour:
   m_ObjectHideFlags: 0

@@ -16,7 +16,8 @@ public class PlayerHealth : MonoBehaviour
     private bool isFalling;
 
     // para medidas de accesibilidad
-    [SerializeField] private AccessibilityOptions accessibilityOptions; 
+    [SerializeField] private bool fallDamageEnabled = true;
+
 
 
     // GroundCheck variables
@@ -30,13 +31,21 @@ public class PlayerHealth : MonoBehaviour
     {
         currentHealth = maxHealth;
         rb = GetComponent<Rigidbody2D>();
+
+        
     }
 
     void Update()
     {
-        HandleFallDamage();
+            HandleFallDamage();
+        
     }
 
+    // Método que se conecta al botón en el panel de UI
+    public void ToggleFallDamage(bool isEnabled)
+    {
+        fallDamageEnabled = isEnabled;
+    }
 
     // Método para recibir daño
     public void TakeDamage(int damage)
@@ -69,6 +78,7 @@ public class PlayerHealth : MonoBehaviour
         }
     }
 
+    
     // Método para verificar si el jugador está tocando el suelo
     private bool IsGrounded()
     {
@@ -78,8 +88,8 @@ public class PlayerHealth : MonoBehaviour
     private void HandleFallDamage()
     {
 
-        if (!accessibilityOptions.fallDamageEnabled)
-        return; // No aplicar daño si la opción de recibir daño está desactivada
+        if (!fallDamageEnabled)
+            return; // No aplicar daño si la opción de recibir daño está desactivada
 
 
         if (!IsGrounded() && !isFalling)
@@ -100,7 +110,7 @@ public class PlayerHealth : MonoBehaviour
             {
                 int damage = Mathf.CeilToInt((fallDistance - fallThreshold) * fallDamagePerUnit);
                 TakeDamage(damage);
-                Debug.Log($"Daño por caída: {damage}. Distancia de caída: {fallDistance}");
+                
             }
         }
     }
@@ -123,6 +133,9 @@ public class PlayerHealth : MonoBehaviour
     // Daño por contacto con lava en escena principal.
     private void OnTriggerEnter2D(Collider2D other)
     {
+        if (!fallDamageEnabled)
+            return; // No aplicar daño si la opción de recibir daño está desactivada
+            
         if (other.CompareTag("malo"))
         {
             TakeDamage(10); // Ajustar el daño según sea necesario

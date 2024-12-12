@@ -15,7 +15,7 @@ public class Shoot : MonoBehaviour
     private bool shootInput;
 
     // Para habilitar disparo automático (accesibilidad)
-    [SerializeField] private AccessibilityOptions accessibilityOptions;
+    [SerializeField] private bool autoShootEnabled = true;
 
     // Rango de detección de enemigos
     [SerializeField] private float detectionRange = 10f;
@@ -43,10 +43,17 @@ public class Shoot : MonoBehaviour
         }
 
         // Detectar disparo automático
-        if (accessibilityOptions.autoShootEnabled)
+        if (autoShootEnabled)
         {
             DetectAndShootEnemy();
         }
+    }
+
+    // Método para cambiar el estado del disparo automático desde la UI
+    public void ToggleAutoShoot(bool isEnabled)
+    {
+        autoShootEnabled = isEnabled;
+        Debug.Log($"Disparo automático {(autoShootEnabled ? "activado" : "desactivado")}");
     }
 
     private void DetectAndShootEnemy()
@@ -105,15 +112,9 @@ public class Shoot : MonoBehaviour
                 bullet.GetComponent<BoxCollider2D>().gameObject.SetActive(true);
                 cooldownCounter = weapon._cooldown;
 
-                Debug.Log($"Disparo realizado. Disparo Automático: {accessibilityOptions.autoShootEnabled}");
+                Debug.Log($"Disparo realizado. Disparo Automático: {autoShootEnabled}");
             }
         }
     }
 
-    private void OnDrawGizmosSelected()
-    {
-        // Visualizar el rango de detección en la escena
-        Gizmos.color = Color.red;
-        Gizmos.DrawWireSphere(transform.position, detectionRange);
-    }
 }
