@@ -17,8 +17,10 @@ TagManager:
   - checkpoint
   - npcCollision
   - cristal
-  - enemyBullets
   - cristal_tocho
+  - ButtonOpen
+  - puerta
+  - final
   layers:
   - Default
   - TransparentFX
