@@ -4,6 +4,8 @@ public class GameManager : MonoBehaviour
 {
     public static GameManager Instance;
     public bool hasWeapon = false;
+    public bool autoShoot = false;
+    public bool fallDamage = false;
 
     private void Awake()
     {

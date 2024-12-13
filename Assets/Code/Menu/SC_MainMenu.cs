@@ -6,11 +6,14 @@ public class SC_MainMenu : MonoBehaviour
 {
     public GameObject MainMenu;
     public GameObject OptionMenu;
+    [SerializeField] private PlayerData data;
 
     // Start is called before the first frame update
     void Start()
     {
         MainMenuButton();
+        data.currentCharge = 0;
+        GameManager.Instance.hasWeapon = false;
     }
 
     public void PlayNowButton()

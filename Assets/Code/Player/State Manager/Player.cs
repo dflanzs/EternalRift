@@ -19,7 +19,7 @@ public class Player : MonoBehaviour
     public PlayerCrouchIdleState CrouchIdleState { get; private set; }
     public PlayerCrouchMoveState CrouchMoveState { get; private set; }
 
-    [SerializeField] private PlayerData playerData;
+    [SerializeField] public PlayerData playerData;
 
     #endregion
 
@@ -37,7 +37,7 @@ public class Player : MonoBehaviour
     public Animator Anim { get; private set; }
 
     public Rigidbody2D RB { get; private set; }
-    public BoxCollider2D MovementCollider { get; private set; }
+    public CapsuleCollider2D MovementCollider { get; private set; }
     #endregion
 
     #region Check Transforms
@@ -61,7 +61,7 @@ public class Player : MonoBehaviour
     void Awake()
     {
         RB = GetComponent<Rigidbody2D>();
-        MovementCollider = GetComponent<BoxCollider2D>();
+        MovementCollider = GetComponent<CapsuleCollider2D>();
 
         InputHandler = GetComponent<PlayerInputHandler>();
 

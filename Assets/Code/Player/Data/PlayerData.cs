@@ -36,5 +36,6 @@ public class PlayerData : ScriptableObject
 
     [Header("Mutation State")]
     public float mutatedJumpMultiplier = 1.5f;
+    public float currentCharge = 0;
 
 }

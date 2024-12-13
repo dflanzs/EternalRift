@@ -14,9 +14,6 @@ public class Shoot : MonoBehaviour
     public float CooldownCounter { set { cooldownCounter = value; } }
     private bool shootInput;
 
-    // Para habilitar disparo automático (accesibilidad)
-    [SerializeField] private bool autoShootEnabled = true;
-
     // Rango de detección de enemigos
     [SerializeField] private float detectionRange = 10f;
 
@@ -24,7 +21,7 @@ public class Shoot : MonoBehaviour
     [SerializeField] private string enemyTag = "npc";
 
     private Transform nearestEnemy; // Referencia al enemigo más cercano
-
+    
     private void Update()
     {
         // Reduce el cooldown
@@ -43,17 +40,10 @@ public class Shoot : MonoBehaviour
         }
 
         // Detectar disparo automático
-        if (autoShootEnabled)
+        if (GameManager.Instance.autoShoot)
         {
             DetectAndShootEnemy();
         }
-    }
-
-    // Método para cambiar el estado del disparo automático desde la UI
-    public void ToggleAutoShoot(bool isEnabled)
-    {
-        autoShootEnabled = isEnabled;
-        Debug.Log($"Disparo automático {(autoShootEnabled ? "activado" : "desactivado")}");
     }
 
     private void DetectAndShootEnemy()
@@ -112,7 +102,7 @@ public class Shoot : MonoBehaviour
                 bullet.GetComponent<BoxCollider2D>().gameObject.SetActive(true);
                 cooldownCounter = weapon._cooldown;
 
-                Debug.Log($"Disparo realizado. Disparo Automático: {autoShootEnabled}");
+                //Debug.Log($"Disparo realizado. Disparo Automático: {autoShootEnabled}");
             }
         }
     }

@@ -16,5 +16,5 @@ MonoBehaviour:
   artwork: {fileID: 0}
   _damage: 10
   _cooldown: 0.25
-  _speed: 3
-  _range: 5
+  _speed: 25
+  _range: 17

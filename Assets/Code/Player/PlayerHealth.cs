@@ -16,7 +16,6 @@ public class PlayerHealth : MonoBehaviour
     private bool isFalling;
 
     // para medidas de accesibilidad
-    [SerializeField] private bool fallDamageEnabled = true;
 
 
 
@@ -31,20 +30,11 @@ public class PlayerHealth : MonoBehaviour
     {
         currentHealth = maxHealth;
         rb = GetComponent<Rigidbody2D>();
-
-        
     }
 
     void Update()
     {
-            HandleFallDamage();
-        
-    }
-
-    // Método que se conecta al botón en el panel de UI
-    public void ToggleFallDamage(bool isEnabled)
-    {
-        fallDamageEnabled = isEnabled;
+        HandleFallDamage();
     }
 
     // Método para recibir daño
@@ -94,7 +84,7 @@ public class PlayerHealth : MonoBehaviour
     private void HandleFallDamage()
     {
 
-        if (!fallDamageEnabled)
+        if (GameManager.Instance.fallDamage)
             return; // No aplicar daño si la opción de recibir daño está desactivada
 
 
@@ -130,16 +120,19 @@ public class PlayerHealth : MonoBehaviour
         }
 
         // Daño por contacto con enemigo
-        /*if (collision.gameObject.CompareTag("npc") || collision.gameObject.CompareTag("enemyBullets"))
+        if (collision.gameObject.CompareTag("npc"))
         {
             TakeDamage(20); // Ajustar el daño según sea necesario
-        }*/
+        } else if(collision.gameObject.CompareTag("enemyBullets")) {
+            Bullet bullet = collision.gameObject.GetComponent<Bullet>();
+            TakeDamage((int) bullet.Damage);
+        }
     }
 
     // Daño por contacto con lava en escena principal.
     private void OnTriggerEnter2D(Collider2D other)
     {
-        if (!fallDamageEnabled)
+        if (GameManager.Instance.fallDamage)
             return; // No aplicar daño si la opción de recibir daño está desactivada
             
         if (other.CompareTag("malo"))

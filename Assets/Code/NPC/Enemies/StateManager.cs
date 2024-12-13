@@ -199,7 +199,6 @@ public class StateManager : MonoBehaviour
             {
                 //animation.Play("Enemy1");
                 //TODO: Añadir knockback al jugador y un efecto visual                
-                player.TakeDamage((int)npc.getDamage());
 
                 // Solo un hit hace daño
                 _hit = true;
