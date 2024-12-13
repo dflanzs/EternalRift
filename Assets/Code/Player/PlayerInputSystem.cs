@@ -176,6 +176,17 @@ public partial class @PlayerInputSystem: IInputActionCollection2, IDisposable
                     ""isPartOfComposite"": true
                 },
                 {
+                    ""name"": ""down"",
+                    ""id"": ""36bce813-9dae-49a7-929e-e4c8dbf98518"",
+                    ""path"": ""<Keyboard>/s"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": "";Keyboard"",
+                    ""action"": ""Move"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": true
+                },
+                {
                     ""name"": ""right"",
                     ""id"": ""d791c106-5cf5-4003-918f-a6eb0232f8b7"",
                     ""path"": ""<Keyboard>/d"",

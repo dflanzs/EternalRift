@@ -8,6 +8,8 @@ public class PlayerState
     protected PlayerStateMachine stateMachine;
     protected PlayerData playerData;
 
+    protected bool isExitingState;
+
 
     protected float startTime;
     private string animBoolName;
@@ -28,14 +30,15 @@ public class PlayerState
         DoChecks();
         // player.Anim.SetBool(animBoolName, true);
         startTime = Time.time;
-        //Debug.Log(animBoolName);
         isAnimationFinished = false;
+        isExitingState = false;
     }
 
     // Exit is called when the state is exited
     public virtual void Exit()
     {
         player.Anim.SetBool(animBoolName, false);
+        isExitingState = true;
     }
 
     // Update is called once per frame
