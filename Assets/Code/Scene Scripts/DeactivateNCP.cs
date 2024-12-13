@@ -55,10 +55,14 @@ namespace DeactivatedNPCns
                 DeactivatedNPCclass deactivatedNPC = npcList[i];
                 if (playerIsNear(deactivatedNPC.position) && !deactivatedNPC.isActivated)
                 {
-                    if (deactivatedNPC.flies)
+                    if (deactivatedNPC.flies){
+                        Debug.Log("Enemy2");
                         enemy = ObjectPooling.Instance.requestInstance("Enemy2");
-                    else
+                    }
+                    else{
+                        Debug.Log("Enemy1");
                         enemy = ObjectPooling.Instance.requestInstance("Enemy1");
+                    }
 
                     if (enemy != null)
                     {

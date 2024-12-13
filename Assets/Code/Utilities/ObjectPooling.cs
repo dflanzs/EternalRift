@@ -77,7 +77,7 @@ public class ObjectPooling : MonoBehaviour
             instantiatedPrefab.SetActive(false);
 
             // Metemos los objetos a la lista
-            enemy1Pool.Enqueue(instantiatedPrefab);
+            enemy2Pool.Enqueue(instantiatedPrefab);
         }
 
         for (int i = 0; i < enemyBulletsPoolSize; i++)
@@ -128,7 +128,7 @@ public class ObjectPooling : MonoBehaviour
                 {
                     auxGO = enemy2Pool.Dequeue();
                     enemy2Pool.Enqueue(auxGO);
-                    
+
                     return auxGO;
                 }
             }
