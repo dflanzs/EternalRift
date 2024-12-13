@@ -19,7 +19,7 @@ public class StateManager : MonoBehaviour
     #endregion
 
     #region Data
-    [SerializeField] private GameObject _player;
+    /* [SerializeField] */ private GameObject _player;
     [SerializeField] private Transform _groundChecker;
     [SerializeField] private Transform _playerCollisionCheckerRight;
     [SerializeField] private Transform _playerCollisionCheckerLeft;
@@ -54,7 +54,9 @@ public class StateManager : MonoBehaviour
         currentState.EnterState(this, _player);
 
         attackableLayer = LayerMask.GetMask("Player");
+    }
 
+    private void OnEnable() {
         if(_player == null)
             _player = GameObject.FindGameObjectWithTag("Player");
     }
@@ -300,6 +302,12 @@ public class StateManager : MonoBehaviour
     }
     public Vector2 getStartingPosition(){
         return _startingPosition;
+    }
+    public void setPlayer(GameObject player){
+        if (player.CompareTag("Player"))
+        {
+            this._player = player;
+        }
     }
 
     [Serializable]

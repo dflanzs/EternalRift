@@ -114,6 +114,7 @@ public class ObjectPooling : MonoBehaviour
                 {
                     auxGO = enemy1Pool.Dequeue();
                     enemy1Pool.Enqueue(auxGO);
+
                     return auxGO;
                 }
             }
@@ -127,6 +128,7 @@ public class ObjectPooling : MonoBehaviour
                 {
                     auxGO = enemy2Pool.Dequeue();
                     enemy2Pool.Enqueue(auxGO);
+                    
                     return auxGO;
                 }
             }
