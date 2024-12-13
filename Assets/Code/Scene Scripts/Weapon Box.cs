@@ -4,7 +4,7 @@ using System.Collections;
 
 public class WeaponBox : MonoBehaviour
 {
-    public GameObject messageText;  // Asigna el objeto de texto de la UI en el Inspector
+   
 
     private void Start()
     {

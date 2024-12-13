@@ -9,34 +9,36 @@ public class MutationBar : MonoBehaviour
 
     [SerializeField] private Player player; // Arrastra tu jugador desde el Inspector
     public MutationBarUi mutationBarUi; // Referencia a la UI
-    // Start is called before the first frame update
+
+    private static MutationBar instance; // Singleton para preservar el estado
+
+    void Awake()
+    {
+        if (instance == null)
+        {
+            instance = this;
+            DontDestroyOnLoad(gameObject); // Este objeto no se destruirÃ¡ al cambiar de escena
+        }
+        else
+        {
+            Destroy(gameObject); // Evitar duplicados
+        }
+    }
+
     void Start()
     {
-        
+        mutationBarUi.UpdateBar(currentCharge, maxCharge); // Asegura que la UI refleje el progreso actual
     }
-
-    // Update is called once per frame
-    void Update()
-    {
-       
-    }
-
-
 
     public void AddCharge(float amount)
     {
-      
         currentCharge += amount;
-        
-            mutationBarUi.UpdateBar(currentCharge, maxCharge);
-        
+        mutationBarUi.UpdateBar(currentCharge, maxCharge);
 
         if (currentCharge >= maxCharge)
         {
-            
             currentCharge = maxCharge;
 
-            // Llama directamente a la función de mutación del jugador
             if (player != null)
             {
                 player.ActivateMutation();
