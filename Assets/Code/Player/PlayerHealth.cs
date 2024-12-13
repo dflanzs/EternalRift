@@ -66,6 +66,12 @@ public class PlayerHealth : MonoBehaviour
     private void Die()
     {
         Debug.Log("El jugador ha muerto.");
+        
+        MutationBar mutationBar = FindObjectOfType<MutationBar>();
+    if (mutationBar != null)
+    {
+        mutationBar.ResetCharge();
+    }
         SceneManager.LoadScene(SceneManager.GetActiveScene().name); // Vuelve a empezar la escena inicial
     }
 
