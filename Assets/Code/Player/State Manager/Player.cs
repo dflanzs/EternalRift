@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.SceneManagement;
+using UnityEngine.Tilemaps;
 
 public class Player : MonoBehaviour
 {
@@ -23,8 +24,11 @@ public class Player : MonoBehaviour
     #endregion
 
     #region Mutation Variables
-    public bool IsMutated { get; private set; }
+    public bool IsMutated { get; private set; } 
     public float MutatedJumpForceMultiplier = 1.5f;
+    [SerializeField] private Tilemap tilemap;  // El Tilemap donde est�n los botones
+    [SerializeField] private Tile openButtonTile;  // Tile de bot�n abierto
+    [SerializeField] private Tile closedButtonTile; // Tile de bot�n cerrado
     #endregion
 
     #region Components
@@ -45,7 +49,6 @@ public class Player : MonoBehaviour
     #region Other Variables
     public Vector2 CurrentVelocity { get; private set; }
     public int FacingDirection { get; private set; }
-    public float Health { get; set; }
 
     // A temporary variable to store the movement of the player 
     private Vector2 workspace;
@@ -77,7 +80,6 @@ public class Player : MonoBehaviour
         CrouchMoveState = new PlayerCrouchMoveState(this, StateMachine, playerData, "crouchMove");
 
         FacingDirection = 1;
-        Health = 100;
     }
 
     void Start()
@@ -86,6 +88,7 @@ public class Player : MonoBehaviour
 
         ResetMutation();
         StateMachine.Initialize(IdleState);
+
     }
 
     void Update()
@@ -94,6 +97,15 @@ public class Player : MonoBehaviour
         {
             // Restaura la escena actual
             SceneManager.LoadScene(SceneManager.GetActiveScene().name);
+        }
+        // Comprobar si se est� presionando el bot�n "shift"
+        if (Input.GetButtonDown("shift")) // Detecta cuando se presiona
+        {
+            StartSprint();
+        }
+        else if (Input.GetButtonUp("shift")) // Detecta cuando se suelta
+        {
+            StopSprint();
         }
 
         CurrentVelocity = RB.velocity;
@@ -210,6 +222,13 @@ public class Player : MonoBehaviour
 
             Destroy(other.gameObject); // Eliminar el cristal
         }
+        if (other.CompareTag("puerta"))
+        {
+            // Teletransporta al personaje a la �ltima posici�n segura
+            transform.position = lastSafePosition;
+        }
+
+
     }
 
     private void AnimationTrigger() => StateMachine.CurrentState.AnimationTrigger();
@@ -234,6 +253,19 @@ public class Player : MonoBehaviour
         IsMutated = false;
         MutatedJumpForceMultiplier = 1.5f;  // Restablecer al valor predeterminado
         playerData.jumpVelocity = 20f;  // Restablecer el valor original de jumpVelocity
+        playerData.movementVelocity = 8f;
+    }
+
+    private void StartSprint()
+    {
+        // Aumentar la velocidad del ScriptableObject
+        playerData.movementVelocity = 14f;
+    }
+
+    private void StopSprint()
+    {
+        // Restaurar la velocidad original
+        playerData.movementVelocity = 8f;
     }
 
     #endregion

@@ -19,6 +19,9 @@ TagManager:
   - cristal
   - cristal_tocho
   - enemyBullets
+  - ButtonOpen
+  - puerta
+  - final
   layers:
   - Default
   - TransparentFX
@@ -27,7 +30,7 @@ TagManager:
   - Water
   - UI
   - Player
-  - 
+  - Enemy
   - 
   - 
   - 

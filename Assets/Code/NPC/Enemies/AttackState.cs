@@ -30,7 +30,8 @@ public class AttackState : BaseState
                 else
                 {
                     npc.ShootBullet(npc, player);
-                    player.GetComponent<Player>().Health -= npc.getDamage();
+                    //player.GetComponent<Player>().Health -= npc.getDamage();
+                    npc.attack(npc, player.GetComponent<PlayerHealth>());
 
                     _timer = 0;
                 }
@@ -49,7 +50,7 @@ public class AttackState : BaseState
                     _timer += Time.deltaTime;
                 else
                 {
-                    npc.attack(npc, player.GetComponent<Player>());
+                    npc.attack(npc, player.GetComponent<PlayerHealth>());
                     _timer = 0;
                 }
             }

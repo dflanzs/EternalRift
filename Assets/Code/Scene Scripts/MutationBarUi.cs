@@ -22,7 +22,7 @@ public class MutationBarUi : MonoBehaviour
     {
         if (mutationBarFill != null)
         {
-            Debug.Log("AUMENTeE");
+            //Debug.Log("AUMENTeE");
             float fillAmount = currentCharge / maxCharge;
             mutationBarFill.fillAmount = fillAmount; // Actualiza el progreso visual
         }
