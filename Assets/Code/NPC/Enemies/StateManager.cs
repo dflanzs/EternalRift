@@ -1,3 +1,4 @@
+using System;
 using UnityEngine;
 
 public class StateManager : MonoBehaviour
@@ -12,6 +13,7 @@ public class StateManager : MonoBehaviour
     public FocusedState focusedState = new FocusedState(); 
     public AttackState attackState = new AttackState();
     public DeadState deadState = new DeadState();
+    public DeactivatedState deactivatedState = new DeactivatedState();
     #endregion
 
     #region Data
@@ -27,48 +29,60 @@ public class StateManager : MonoBehaviour
     [SerializeField] private float _shootRange = 10f;
     [SerializeField] private float _damage = 10f;
     [SerializeField] private float _shootCooldown = 1f;
-    
     [SerializeField] private GameObject _crystal;
-    public GameObject Crystal { get { return _crystal;} }
 
+    private int hashCode;
+    public DeactivatedNPCns.DeactivateNCP.DeactivatedNPCclass deactivatedNPC;
+    public GameObject Crystal { get { return _crystal;} }
     private RaycastHit2D[] attackRC;
     private LayerMask attackableLayer;
-
     private int direction = -1;
-    private bool _focused = false, _grounded = false;
+    private bool _focused = false, _grounded = false, _found = false;
     private readonly float k_GroundedRadius = 0.2f;
+    private Vector2 _startingPosition;
     #endregion
 
     #region State Functions
     void Start()
     {
-        // Start in MoveState by default
+        //Guardamos la posicion inicial para el objectPooling
+        _startingPosition = transform.position;
+        hashCode = this.gameObject.GetHashCode();
         currentState = moveState;
         prevState = null;
         currentState.EnterState(this, _player);
 
         attackableLayer = LayerMask.GetMask("Player");
+    }
 
+    private void OnEnable() {
         if(_player == null)
             _player = GameObject.FindGameObjectWithTag("Player");
     }
 
     void Update()
     {
-        Collider2D[] collidersNPC = Physics2D.OverlapCircleAll(transform.position, 1);
-
-        for(int i = 0; i < collidersNPC.Length; i++){
-            if(collidersNPC[i].gameObject.CompareTag("Bullet")){
-                health -= (int) collidersNPC[i].gameObject.GetComponent<Bullet>().Damage;
-                collidersNPC[i].gameObject.SetActive(false);
-            }
+        if (!playerIsNear(transform.position))
+        {
+            deactivatedState.EnterState(this, _player);    
         }
+        else 
+        {
+            Collider2D[] collidersNPC = Physics2D.OverlapCircleAll(transform.position, 1);
 
-        if (health > 0)
-            currentState.UpdateState(this, _player, _groundChecker, _fieldOfView);
-        
-        else if (health <= 0)
-            SwitchState(deadState);
+            for(int i = 0; i < collidersNPC.Length; i++){
+                if(collidersNPC[i].gameObject.CompareTag("Bullet")){
+                    health -= (int) collidersNPC[i].gameObject.GetComponent<Bullet>().Damage;
+                    collidersNPC[i].gameObject.SetActive(false);
+                }
+            }
+
+            if (health > 0)
+                currentState.UpdateState(this, _player, _groundChecker, _fieldOfView);
+            
+            else if (health <= 0)
+                SwitchState(deadState);
+        }
     }
 
     public void SwitchState(BaseState state)
@@ -132,13 +146,23 @@ public class StateManager : MonoBehaviour
 
         return playerCollision;
     }
+
+    public bool playerIsNear(Vector2 _lastPosition)
+    {
+        if (Math.Abs(_player.transform.position.x - _lastPosition.x) >= 30 ||
+            Math.Abs(_player.transform.position.y - _lastPosition.y) >= 30)
+        {
+            return false;
+        }
+        return true;
+    }
     #endregion
 
     #region Auxiliar Functions
     public void ShootBullet(StateManager npc, GameObject player)
     {
         //Debug.Log("Shoot");
-        GameObject enemyBullet = ObjectPooling.Instance.requestInstance("enemyBullet");
+        GameObject enemyBullet = ObjectPooling.Instance.requestInstance("enemyBullet", 0);
 
         if (enemyBullet != null)
         {
@@ -189,6 +213,9 @@ public class StateManager : MonoBehaviour
         return flies;
     }
 
+    public void setFlies(bool _flies){
+        flies = _flies;
+    }
     public bool getGrounded(){
         return _grounded;
     }
@@ -266,6 +293,69 @@ public class StateManager : MonoBehaviour
     }
     public GameObject getGun(){
         return _gun;
+    }
+    public bool getFound(){
+        return _found;
+    }
+    public void setFound(bool found){
+        _found = found;
+    }
+    public Vector2 getStartingPosition(){
+        return _startingPosition;
+    }
+    public void setPlayer(GameObject player){
+        if (player.CompareTag("Player"))
+        {
+            this._player = player;
+        }
+    }
+
+    [Serializable]
+    public class NPCCharacteristics
+    {
+        public bool flies;
+        public int health;
+        public float bulletSpeed;
+        public float shootRange;
+        public float damage;
+        public float shootCooldown;
+        public GameObject crystal;
+        public int direction;
+        public bool focused;
+        public bool grounded;
+        public bool found;
+        public int hashCode;
+        public Vector2 startingPosition;
+        // Agrega otras características si es necesario
+    }
+
+    public NPCCharacteristics GetAllCharacteristics()
+    {
+        return new NPCCharacteristics
+        {
+            flies = this.getFlies(),
+            health = this.getHealth(),
+            bulletSpeed = this.getBulletSpeed(),
+            shootRange = this.getShootRange(),
+            damage = this.getDamage(),
+            shootCooldown = this.getShootCooldown(),
+            crystal = this._crystal,
+            startingPosition = this._startingPosition,
+            hashCode = this.hashCode
+        };
+    }
+
+    public void SetAllCharacteristics(NPCCharacteristics characteristics)
+    {
+        this.setFlies(characteristics.flies);
+        this.setHealth( characteristics.health);
+        this.setBulletSpeed(characteristics.bulletSpeed);
+        this.setShootRange(characteristics.shootRange);
+        this.setDamage(characteristics.damage);
+        this.setShootCooldown(characteristics.shootCooldown);
+        this._crystal = characteristics.crystal;
+        this._startingPosition = characteristics.startingPosition;
+        this.hashCode = characteristics.hashCode;
     }
     #endregion
 }

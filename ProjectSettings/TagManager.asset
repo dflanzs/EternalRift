@@ -18,6 +18,7 @@ TagManager:
   - npcCollision
   - cristal
   - cristal_tocho
+  - enemyBullets
   - ButtonOpen
   - puerta
   - final
