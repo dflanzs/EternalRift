@@ -8,6 +8,7 @@ public class DeactivateNCP : MonoBehaviour
         public Vector2 position;
         public bool flies;
         public int health;
+        public bool isActivated;
         public StateManager.NPCCharacteristics characteristics;
     }
     private GameObject _player;
@@ -28,7 +29,7 @@ public class DeactivateNCP : MonoBehaviour
             {
                 enemy.GetComponent<StateManager>().setFound(true);
                 
-                deactivatedNPC.characteristics = enemy.GetComponent<StateManager>().GetAllCharacteristics();
+                //deactivatedNPC.characteristics = enemy.GetComponent<StateManager>().GetAllCharacteristics();
 
                 deactivatedNPC.flies = enemy.GetComponent<StateManager>().getFlies();
                 deactivatedNPC.health = enemy.GetComponent<StateManager>().getHealth();
@@ -45,9 +46,10 @@ public class DeactivateNCP : MonoBehaviour
 
     void Update()
     {
-        foreach (DeactivatedNPC deactivatedNPC in npcList)
+        for (int i = 0; i < npcList.Count; i++)
         {
-            if (playerIsNear(deactivatedNPC.position))
+            DeactivatedNPC deactivatedNPC = npcList[i];
+            if (playerIsNear(deactivatedNPC.position) && !deactivatedNPC.isActivated)
             {
                 if (deactivatedNPC.flies)
                     enemy = ObjectPooling.Instance.requestInstance("Enemy2");
@@ -56,11 +58,10 @@ public class DeactivateNCP : MonoBehaviour
 
                 if (enemy != null)
                 {
-                    enemy.SetActive(true);
                     StateManager npc = enemy.GetComponent<StateManager>();
 
                     // Restaurar las características del npc
-                    npc.SetAllCharacteristics(deactivatedNPC.characteristics);
+                    //npc.SetAllCharacteristics(deactivatedNPC.characteristics);
 
                     enemy.transform.position = deactivatedNPC.position;
                     npc.setHealth(deactivatedNPC.health);
@@ -70,7 +71,9 @@ public class DeactivateNCP : MonoBehaviour
                     npc.SwitchState(npc.idleState);
 
                     // Marcar el enemigo original como activo para evitar duplicados
-                    enemy.gameObject.SetActive(true);
+                    enemy.SetActive(true);
+                    deactivatedNPC.isActivated = true;
+                    npcList[i] = deactivatedNPC;
                 }
             }
         }
