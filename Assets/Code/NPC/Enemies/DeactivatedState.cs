@@ -24,6 +24,7 @@ public class DeactivatedState : BaseState
         if (npc.deactivatedNPC != null)
         {
             npc.deactivatedNPC.isActivated = false;
+            npc.deactivatedNPC.flies = npc.getFlies();
         }
     }
 

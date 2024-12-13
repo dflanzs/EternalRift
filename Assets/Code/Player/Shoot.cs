@@ -38,7 +38,7 @@ public class Shoot : MonoBehaviour
 
         if (GameManager.Instance.hasWeapon && cooldownCounter <= 0.0f)
         {
-            GameObject bullet = ObjectPooling.Instance.requestInstance("Bullet");
+            GameObject bullet = ObjectPooling.Instance.requestInstance("Bullet", 0);
 
             if (bullet != null)
             {

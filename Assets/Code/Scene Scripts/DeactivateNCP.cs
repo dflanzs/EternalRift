@@ -32,9 +32,10 @@ namespace DeactivatedNPCns
                 {
                     enemy.GetComponent<StateManager>().setFound(true);
                     
-                    //deactivatedNPC.characteristics = enemy.GetComponent<StateManager>().GetAllCharacteristics();
+                    deactivatedNPC.characteristics = enemy.GetComponent<StateManager>().GetAllCharacteristics();
 
                     deactivatedNPC.flies = enemy.GetComponent<StateManager>().getFlies();
+                    
                     deactivatedNPC.health = enemy.GetComponent<StateManager>().getHealth();
                     deactivatedNPC.position = enemy.GetComponent<StateManager>().getStartingPosition();
 
@@ -53,15 +54,17 @@ namespace DeactivatedNPCns
             for (int i = 0; i < npcList.Count; i++)
             {
                 DeactivatedNPCclass deactivatedNPC = npcList[i];
+
+                Debug.Log("deactivated.flies:" + deactivatedNPC.flies);
                 if (playerIsNear(deactivatedNPC.position) && !deactivatedNPC.isActivated)
                 {
                     if (deactivatedNPC.flies){
                         Debug.Log("Enemy2");
-                        enemy = ObjectPooling.Instance.requestInstance("Enemy2");
+                        enemy = ObjectPooling.Instance.requestInstance("Enemy2", deactivatedNPC.characteristics.hashCode);
                     }
-                    else{
+                    if(!deactivatedNPC.flies){
                         Debug.Log("Enemy1");
-                        enemy = ObjectPooling.Instance.requestInstance("Enemy1");
+                        enemy = ObjectPooling.Instance.requestInstance("Enemy1", deactivatedNPC.characteristics.hashCode);
                     }
 
                     if (enemy != null)
@@ -69,7 +72,7 @@ namespace DeactivatedNPCns
                         StateManager npc = enemy.GetComponent<StateManager>();
 
                         // Restaurar las características del npc
-                        //npc.SetAllCharacteristics(deactivatedNPC.characteristics);
+                        npc.SetAllCharacteristics(deactivatedNPC.characteristics);
 
                         enemy.transform.position = deactivatedNPC.position;
                         npc.setHealth(deactivatedNPC.health);

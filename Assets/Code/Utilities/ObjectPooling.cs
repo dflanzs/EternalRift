@@ -1,13 +1,16 @@
 using System.Collections.Generic;
+using UnityEditorInternal;
 using UnityEngine;
 
 
 public class ObjectPooling : MonoBehaviour
 {
-    [SerializeField] private Queue<GameObject> bulletsPool, enemy1Pool, enemy2Pool, enemyBulletsPool;
+    [SerializeField] private Queue<GameObject> bulletsPool, enemyBulletsPool; 
+    Dictionary<int, GameObject> enemy1Pool, enemy2Pool;
 
     [SerializeField] private GameObject bulletPrefab, enemy1Prefab, enemy2Prefab, enemyBullet;
-    
+    List<int> enemy1Positions = new List<int>();
+    List<int> enemy2Positions = new List<int>();
     public int bulletsPoolSize;
     public int enemiesPoolSize;
     public int enemyBulletsPoolSize;
@@ -22,8 +25,8 @@ public class ObjectPooling : MonoBehaviour
     void Awake()
     {   
         bulletsPool = new Queue<GameObject>();
-        enemy1Pool = new Queue<GameObject>();     
-        enemy2Pool = new Queue<GameObject>();     
+        enemy1Pool = new Dictionary<int, GameObject>();     
+        enemy2Pool = new Dictionary<int, GameObject>();
         enemyBulletsPool = new Queue<GameObject>();
         
         if(poolInstance == null)
@@ -33,21 +36,18 @@ public class ObjectPooling : MonoBehaviour
         else
         {
             Destroy(this);
-        }   
-        
-        addToPool(bulletsPoolSize, enemiesPoolSize, enemyBulletsPoolSize);
-    }
+        }
 
-    private GameObject WhichEnemy(){
-        int selector = Random.Range(-1, 1);
-        
-        if (selector > 0){
-            return enemy1Prefab;
-        }
-        else
+        GameObject[] enemies = GameObject.FindGameObjectsWithTag("npc");
+        foreach (GameObject enemy in enemies)
         {
-            return enemy2Prefab;
+            if (enemy.GetComponent<StateManager>().getFlies())
+                enemy2Positions.Add(enemy.GetHashCode());
+            else
+                enemy1Positions.Add(enemy.GetHashCode());
         }
+
+        addToPool(bulletsPoolSize, enemiesPoolSize, enemyBulletsPoolSize);
     }
 
     private void addToPool(int bulletsPoolSize, int enemiesPoolSize, int enemyBulletsPoolSize)
@@ -62,22 +62,22 @@ public class ObjectPooling : MonoBehaviour
             bulletsPool.Enqueue(instantiatedPrefab);
         }
 
-        for (int i = 0; i < enemiesPoolSize; i++)
+        for (int i = 0; i < enemy1Positions.Count; i++)
         {
             GameObject instantiatedPrefab = Instantiate(enemy1Prefab);
             instantiatedPrefab.SetActive(false);
 
             // Metemos los objetos a la lista
-            enemy1Pool.Enqueue(instantiatedPrefab);
+            enemy1Pool.Add(enemy1Positions[i], instantiatedPrefab);
         }
 
-        for (int i = 0; i < enemiesPoolSize; i++)
+        for (int i = 0; i < enemy2Positions.Count; i++)
         {
             GameObject instantiatedPrefab = Instantiate(enemy2Prefab);
             instantiatedPrefab.SetActive(false);
 
             // Metemos los objetos a la lista
-            enemy2Pool.Enqueue(instantiatedPrefab);
+            enemy2Pool.Add(enemy2Positions[i], instantiatedPrefab);
         }
 
         for (int i = 0; i < enemyBulletsPoolSize; i++)
@@ -90,7 +90,7 @@ public class ObjectPooling : MonoBehaviour
         }
     }
 
-    public GameObject requestInstance(string objectType)
+    public GameObject requestInstance(string objectType, int hashCode)
     {
         GameObject auxGO;
         if(objectType == "Bullet")
@@ -110,11 +110,9 @@ public class ObjectPooling : MonoBehaviour
         {
             for (int i = 0; i < enemy1Pool.Count; i++)
             {
-                if (!enemy1Pool.Peek().activeSelf)
+                enemy1Pool.TryGetValue(hashCode, out auxGO);
+                if (!auxGO.activeSelf)
                 {
-                    auxGO = enemy1Pool.Dequeue();
-                    enemy1Pool.Enqueue(auxGO);
-
                     return auxGO;
                 }
             }
@@ -124,11 +122,9 @@ public class ObjectPooling : MonoBehaviour
         {
             for (int i = 0; i < enemy2Pool.Count; i++)
             {
-                if (!enemy2Pool.Peek().activeSelf)
+                enemy2Pool.TryGetValue(hashCode, out auxGO);
+                if (!auxGO.activeSelf)
                 {
-                    auxGO = enemy2Pool.Dequeue();
-                    enemy2Pool.Enqueue(auxGO);
-
                     return auxGO;
                 }
             }

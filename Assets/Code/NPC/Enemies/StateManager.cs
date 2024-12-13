@@ -2,6 +2,7 @@ using System;
 using UnityEngine;
 using System.Collections.Generic;
 using DeactivatedNPCns;
+using Codice.Client.BaseCommands.Differences;
 
 public class StateManager : MonoBehaviour
 {
@@ -19,7 +20,7 @@ public class StateManager : MonoBehaviour
     #endregion
 
     #region Data
-    /* [SerializeField] */ private GameObject _player;
+    [SerializeField] private GameObject _player;
     [SerializeField] private Transform _groundChecker;
     [SerializeField] private Transform _playerCollisionCheckerRight;
     [SerializeField] private Transform _playerCollisionCheckerLeft;
@@ -33,6 +34,7 @@ public class StateManager : MonoBehaviour
     [SerializeField] private float _shootCooldown = 1f;
     [SerializeField] private GameObject _crystal;
 
+    private int hashCode;
     public DeactivatedNPCns.DeactivateNCP.DeactivatedNPCclass deactivatedNPC;
     public GameObject Crystal { get { return _crystal;} }
     private RaycastHit2D[] attackRC;
@@ -48,7 +50,7 @@ public class StateManager : MonoBehaviour
     {
         //Guardamos la posicion inicial para el objectPooling
         _startingPosition = transform.position;
-
+        hashCode = this.gameObject.GetHashCode();
         currentState = moveState;
         prevState = null;
         currentState.EnterState(this, _player);
@@ -163,7 +165,7 @@ public class StateManager : MonoBehaviour
     public void ShootBullet(StateManager npc, GameObject player)
     {
         //Debug.Log("Shoot");
-        GameObject enemyBullet = ObjectPooling.Instance.requestInstance("enemyBullet");
+        GameObject enemyBullet = ObjectPooling.Instance.requestInstance("enemyBullet", 0);
 
         if (enemyBullet != null)
         {
@@ -324,6 +326,7 @@ public class StateManager : MonoBehaviour
         public bool focused;
         public bool grounded;
         public bool found;
+        public int hashCode;
         public Vector2 startingPosition;
         // Agrega otras características si es necesario
     }
@@ -340,6 +343,7 @@ public class StateManager : MonoBehaviour
             shootCooldown = this.getShootCooldown(),
             crystal = this._crystal,
             startingPosition = this._startingPosition,
+            hashCode = this.hashCode
         };
     }
 
@@ -353,6 +357,7 @@ public class StateManager : MonoBehaviour
         this.setShootCooldown(characteristics.shootCooldown);
         this._crystal = characteristics.crystal;
         this._startingPosition = characteristics.startingPosition;
+        this.hashCode = characteristics.hashCode;
     }
     #endregion
 }
