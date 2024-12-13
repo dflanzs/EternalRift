@@ -4,8 +4,7 @@ using UnityEngine;
 
 public class ObjectPooling : MonoBehaviour
 {
-    [SerializeField] private Queue<GameObject> bulletsPool, enemyBulletsPool;
-    public Dictionary<GameObject, Vector2> enemiesPool;
+    [SerializeField] private Queue<GameObject> bulletsPool, enemyBulletsPool, enemiesPool;
 
     [SerializeField] private GameObject bulletPrefab, enemy1Prefab, enemy2Prefab, enemyBullet;
     
@@ -23,7 +22,7 @@ public class ObjectPooling : MonoBehaviour
     void Awake()
     {   
         bulletsPool = new Queue<GameObject>();
-        enemiesPool = new Dictionary<GameObject, Vector2>();     
+        enemiesPool = new Queue<GameObject>();     
         enemyBulletsPool = new Queue<GameObject>();
         
         if(poolInstance == null)
@@ -36,18 +35,6 @@ public class ObjectPooling : MonoBehaviour
         }   
         
         addToPool(bulletsPoolSize, enemiesPoolSize, enemyBulletsPoolSize);
-    }
-
-    private GameObject WhichEnemy(){
-        int selector = Random.Range(-1, 1);
-        
-        if (selector > 0){
-            return enemy1Prefab;
-        }
-        else
-        {
-            return enemy2Prefab;
-        }
     }
 
     private void addToPool(int bulletsPoolSize, int enemiesPoolSize, int enemyBulletsPoolSize)
@@ -68,13 +55,13 @@ public class ObjectPooling : MonoBehaviour
             instantiatedPrefab.SetActive(false);
 
             // Metemos los objetos al diccionario con su posición inicial
-            enemiesPool.Add(instantiatedPrefab, instantiatedPrefab.transform.position);
+            enemiesPool.Enqueue(instantiatedPrefab);
 
             instantiatedPrefab = Instantiate(enemy2Prefab);
             instantiatedPrefab.SetActive(false);
 
             // Metemos los objetos al diccionario con su posición inicial
-            enemiesPool.Add(instantiatedPrefab, instantiatedPrefab.transform.position);
+            enemiesPool.Enqueue(instantiatedPrefab);
         }
 
         for (int i = 0; i < enemyBulletsPoolSize; i++)
@@ -105,11 +92,12 @@ public class ObjectPooling : MonoBehaviour
         }
         else if (objectType == "Enemy")
         {
-            foreach (var enemy in enemiesPool)
+            for (int i = 0; i < enemiesPool.Count; i++)
             {
-                if (!enemy.Key.activeSelf)
+                if (!enemiesPool.Peek().activeSelf)
                 {
-                    auxGO = enemy.Key;
+                    auxGO = bulletsPool.Dequeue();
+                    bulletsPool.Enqueue(auxGO);
                     return auxGO;
                 }
             }
