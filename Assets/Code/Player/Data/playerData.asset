@@ -31,3 +31,4 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 8
   mutatedJumpMultiplier: 1.5
+  currentCharge: 0
