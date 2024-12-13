@@ -1,8 +1,5 @@
 using System;
 using UnityEngine;
-using System.Collections.Generic;
-using DeactivatedNPCns;
-using Codice.Client.BaseCommands.Differences;
 
 public class StateManager : MonoBehaviour
 {
