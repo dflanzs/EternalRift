@@ -1,5 +1,6 @@
 using UnityEngine;
 using System.Collections.Generic;
+using System.Threading;
 
 namespace DeactivatedNPCns
 {
@@ -22,14 +23,14 @@ namespace DeactivatedNPCns
             npcList = new List<DeactivatedNPCclass>();
             GameObject[] enemies = GameObject.FindGameObjectsWithTag("npc");
             
-            DeactivatedNPCclass deactivatedNPC = new DeactivatedNPCclass();
-
             foreach (GameObject enemy in enemies)
             {
                 Debug.Log($"NPC Starting Position: {enemy.GetComponent<StateManager>().getStartingPosition()}");
 
                 if (!enemy.GetComponent<StateManager>().getFound())
                 {
+                    DeactivatedNPCclass deactivatedNPC = new DeactivatedNPCclass();
+
                     enemy.GetComponent<StateManager>().setFound(true);
                     
                     deactivatedNPC.characteristics = enemy.GetComponent<StateManager>().GetAllCharacteristics();
@@ -51,18 +52,18 @@ namespace DeactivatedNPCns
 
         void Update()
         {
+            Debug.Log("count " + npcList.Count);
             for (int i = 0; i < npcList.Count; i++)
             {
                 DeactivatedNPCclass deactivatedNPC = npcList[i];
 
-                Debug.Log("deactivated.flies:" + deactivatedNPC.flies);
                 if (playerIsNear(deactivatedNPC.position) && !deactivatedNPC.isActivated)
                 {
-                    if (deactivatedNPC.flies){
+                    if (deactivatedNPC.characteristics.flies){
                         Debug.Log("Enemy2");
                         enemy = ObjectPooling.Instance.requestInstance("Enemy2", deactivatedNPC.characteristics.hashCode);
                     }
-                    if(!deactivatedNPC.flies){
+                    if(!deactivatedNPC.characteristics.flies){
                         Debug.Log("Enemy1");
                         enemy = ObjectPooling.Instance.requestInstance("Enemy1", deactivatedNPC.characteristics.hashCode);
                     }
