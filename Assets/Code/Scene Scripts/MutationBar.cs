@@ -45,4 +45,10 @@ public class MutationBar : MonoBehaviour
             }
         }
     }
+
+    public void ResetCharge()
+    {
+        currentCharge = 0f;
+        mutationBarUi.UpdateBar(currentCharge, maxCharge);
+    }
 }
