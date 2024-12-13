@@ -1,7 +1,6 @@
 using System;
-using System.IO.Pipes;
-using Unity.VisualScripting.YamlDotNet.RepresentationModel;
 using UnityEngine;
+using System.Collections.Generic;
 
 public class StateManager : MonoBehaviour
 {
@@ -299,6 +298,51 @@ public class StateManager : MonoBehaviour
     }
     public Vector2 getStartingPosition(){
         return _startingPosition;
+    }
+
+    [Serializable]
+    public class NPCCharacteristics
+    {
+        public bool flies;
+        public int health;
+        public float bulletSpeed;
+        public float shootRange;
+        public float damage;
+        public float shootCooldown;
+        public GameObject crystal;
+        public int direction;
+        public bool focused;
+        public bool grounded;
+        public bool found;
+        public Vector2 startingPosition;
+        // Agrega otras características si es necesario
+    }
+
+    public NPCCharacteristics GetAllCharacteristics()
+    {
+        return new NPCCharacteristics
+        {
+            flies = this.getFlies(),
+            health = this.getHealth(),
+            bulletSpeed = this.getBulletSpeed(),
+            shootRange = this.getShootRange(),
+            damage = this.getDamage(),
+            shootCooldown = this.getShootCooldown(),
+            crystal = this._crystal,
+            startingPosition = this._startingPosition,
+        };
+    }
+
+    public void SetAllCharacteristics(NPCCharacteristics characteristics)
+    {
+        this.setFlies(characteristics.flies);
+        this.setHealth( characteristics.health);
+        this.setBulletSpeed(characteristics.bulletSpeed);
+        this.setShootRange(characteristics.shootRange);
+        this.setDamage(characteristics.damage);
+        this.setShootCooldown(characteristics.shootCooldown);
+        this._crystal = characteristics.crystal;
+        this._startingPosition = characteristics.startingPosition;
     }
     #endregion
 }

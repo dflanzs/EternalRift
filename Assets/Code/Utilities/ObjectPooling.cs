@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class ObjectPooling : MonoBehaviour
 {
-    [SerializeField] private Queue<GameObject> bulletsPool, enemyBulletsPool, enemiesPool;
+    [SerializeField] private Queue<GameObject> bulletsPool, enemy1Pool, enemy2Pool, enemyBulletsPool;
 
     [SerializeField] private GameObject bulletPrefab, enemy1Prefab, enemy2Prefab, enemyBullet;
     
@@ -22,7 +22,8 @@ public class ObjectPooling : MonoBehaviour
     void Awake()
     {   
         bulletsPool = new Queue<GameObject>();
-        enemiesPool = new Queue<GameObject>();     
+        enemy1Pool = new Queue<GameObject>();     
+        enemy2Pool = new Queue<GameObject>();     
         enemyBulletsPool = new Queue<GameObject>();
         
         if(poolInstance == null)
@@ -37,9 +38,21 @@ public class ObjectPooling : MonoBehaviour
         addToPool(bulletsPoolSize, enemiesPoolSize, enemyBulletsPoolSize);
     }
 
+    private GameObject WhichEnemy(){
+        int selector = Random.Range(-1, 1);
+        
+        if (selector > 0){
+            return enemy1Prefab;
+        }
+        else
+        {
+            return enemy2Prefab;
+        }
+    }
+
     private void addToPool(int bulletsPoolSize, int enemiesPoolSize, int enemyBulletsPoolSize)
     {
-        // Instanciamos cada prefab y los guardamos en la pool
+       // Instanciamos cada prefab y los guardamos en la pool
         for (int i = 0; i < bulletsPoolSize; i++)
         {
             GameObject instantiatedPrefab = Instantiate(bulletPrefab);
@@ -49,19 +62,22 @@ public class ObjectPooling : MonoBehaviour
             bulletsPool.Enqueue(instantiatedPrefab);
         }
 
-        for (int i = 0; i < enemiesPoolSize / 2; i++)
+        for (int i = 0; i < enemiesPoolSize; i++)
         {
             GameObject instantiatedPrefab = Instantiate(enemy1Prefab);
             instantiatedPrefab.SetActive(false);
 
-            // Metemos los objetos al diccionario con su posición inicial
-            enemiesPool.Enqueue(instantiatedPrefab);
+            // Metemos los objetos a la lista
+            enemy1Pool.Enqueue(instantiatedPrefab);
+        }
 
-            instantiatedPrefab = Instantiate(enemy2Prefab);
+        for (int i = 0; i < enemiesPoolSize; i++)
+        {
+            GameObject instantiatedPrefab = Instantiate(enemy2Prefab);
             instantiatedPrefab.SetActive(false);
 
-            // Metemos los objetos al diccionario con su posición inicial
-            enemiesPool.Enqueue(instantiatedPrefab);
+            // Metemos los objetos a la lista
+            enemy1Pool.Enqueue(instantiatedPrefab);
         }
 
         for (int i = 0; i < enemyBulletsPoolSize; i++)
@@ -77,7 +93,7 @@ public class ObjectPooling : MonoBehaviour
     public GameObject requestInstance(string objectType)
     {
         GameObject auxGO;
-        if (objectType == "Bullet")
+        if(objectType == "Bullet")
         {
             for (int i = 0; i < bulletsPool.Count; i++)
             {
@@ -89,21 +105,34 @@ public class ObjectPooling : MonoBehaviour
                 }
             }
             return null;
-        }
-        else if (objectType == "Enemy")
+        } 
+        else if (objectType == "Enemy1")
         {
-            for (int i = 0; i < enemiesPool.Count; i++)
+            for (int i = 0; i < enemy1Pool.Count; i++)
             {
-                if (!enemiesPool.Peek().activeSelf)
+                if (!enemy1Pool.Peek().activeSelf)
                 {
-                    auxGO = bulletsPool.Dequeue();
-                    bulletsPool.Enqueue(auxGO);
+                    auxGO = enemy1Pool.Dequeue();
+                    enemy1Pool.Enqueue(auxGO);
                     return auxGO;
                 }
             }
             return null;
-        }
-        else if (objectType == "enemyBullet")
+        } 
+        else if (objectType == "Enemy2")
+        {
+            for (int i = 0; i < enemy2Pool.Count; i++)
+            {
+                if (!enemy2Pool.Peek().activeSelf)
+                {
+                    auxGO = enemy2Pool.Dequeue();
+                    enemy2Pool.Enqueue(auxGO);
+                    return auxGO;
+                }
+            }
+            return null;
+        } 
+        else if(objectType == "enemyBullet")
         {
             for (int i = 0; i < enemyBulletsPool.Count; i++)
             {

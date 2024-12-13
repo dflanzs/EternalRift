@@ -3,24 +3,39 @@ using System.Collections.Generic;
 
 public class DeactivateNCP : MonoBehaviour
 {
-    private GameObject _player;
-    private List<StateManager> npcList;
-
-    void Start()
+    struct DeactivatedNPC
     {
-        Debug.Log("Loading enemies...");
-        ObjectPooling op = ObjectPooling.Instance;
-        
-        npcList = new List<StateManager>();
+        public Vector2 position;
+        public bool flies;
+        public int health;
+        public StateManager.NPCCharacteristics characteristics;
+    }
+    private GameObject _player;
+    private List<DeactivatedNPC> npcList;
+    private GameObject enemy;
+    void Start()
+    {  
+        npcList = new List<DeactivatedNPC>();
         GameObject[] enemies = GameObject.FindGameObjectsWithTag("npc");
         
+        DeactivatedNPC deactivatedNPC = new DeactivatedNPC();
+
         foreach (GameObject enemy in enemies)
         {
-            StateManager enemySM = enemy.GetComponent<StateManager>(); 
-            if (!enemySM.getFound())
+            Debug.Log($"NPC Starting Position: {enemy.GetComponent<StateManager>().getStartingPosition()}");
+
+            if (!enemy.GetComponent<StateManager>().getFound())
             {
-                npcList.Add(enemySM);
-                enemySM.setFound(true);
+                enemy.GetComponent<StateManager>().setFound(true);
+                
+                deactivatedNPC.characteristics = enemy.GetComponent<StateManager>().GetAllCharacteristics();
+
+                deactivatedNPC.flies = enemy.GetComponent<StateManager>().getFlies();
+                deactivatedNPC.health = enemy.GetComponent<StateManager>().getHealth();
+                deactivatedNPC.position = enemy.GetComponent<StateManager>().getStartingPosition();
+
+                npcList.Add(deactivatedNPC);
+                
                 enemy.SetActive(false); // Desactivar el NPC inicialmente
             }
         }
@@ -30,30 +45,32 @@ public class DeactivateNCP : MonoBehaviour
 
     void Update()
     {
-        Debug.Log("Checking enemies near player...");
-        foreach (StateManager enemySM in npcList)
+        foreach (DeactivatedNPC deactivatedNPC in npcList)
         {
-            if (playerIsNear(enemySM.getStartingPosition()) && !enemySM.gameObject.activeSelf)
+            if (playerIsNear(deactivatedNPC.position))
             {
-                Debug.Log("Requesting Instance...");
-
-                GameObject enemy = ObjectPooling.Instance.requestInstance("Enemy");
+                if (deactivatedNPC.flies)
+                    enemy = ObjectPooling.Instance.requestInstance("Enemy2");
+                else
+                    enemy = ObjectPooling.Instance.requestInstance("Enemy1");
 
                 if (enemy != null)
                 {
                     enemy.SetActive(true);
                     StateManager npc = enemy.GetComponent<StateManager>();
 
-                    // Restaurar la posición inicial desde el diccionario
-                    enemy.transform.position = enemySM.getStartingPosition();
-                    npc.setHealth(enemySM.getHealth());
-                    npc.setFlies(enemySM.getFlies());
+                    // Restaurar las características del npc
+                    npc.SetAllCharacteristics(deactivatedNPC.characteristics);
+
+                    enemy.transform.position = deactivatedNPC.position;
+                    npc.setHealth(deactivatedNPC.health);
+                    npc.setFlies(deactivatedNPC.flies);
 
                     npc.setPrevstate(npc.deactivatedState);
                     npc.SwitchState(npc.idleState);
 
                     // Marcar el enemigo original como activo para evitar duplicados
-                    enemySM.gameObject.SetActive(true);
+                    enemy.gameObject.SetActive(true);
                 }
             }
         }
