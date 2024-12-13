@@ -19,6 +19,12 @@ public class DeactivatedState : BaseState
         // Desactiamos
         rb.velocity = new Vector2(0, rb.velocity.y);
         npc.gameObject.SetActive(false);
+
+        // Modificar isActivated
+        if (npc.deactivatedNPC != null)
+        {
+            npc.deactivatedNPC.isActivated = false;
+        }
     }
 
     public override void UpdateState(StateManager npc, GameObject player, Transform _groundChecker, Transform _fieldOfView) { }

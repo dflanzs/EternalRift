@@ -1,6 +1,7 @@
 using System;
 using UnityEngine;
 using System.Collections.Generic;
+using DeactivatedNPCns;
 
 public class StateManager : MonoBehaviour
 {
@@ -32,6 +33,7 @@ public class StateManager : MonoBehaviour
     [SerializeField] private float _shootCooldown = 1f;
     [SerializeField] private GameObject _crystal;
 
+    public DeactivatedNPCns.DeactivateNCP.DeactivatedNPCclass deactivatedNPC;
     public GameObject Crystal { get { return _crystal;} }
     private RaycastHit2D[] attackRC;
     private LayerMask attackableLayer;
