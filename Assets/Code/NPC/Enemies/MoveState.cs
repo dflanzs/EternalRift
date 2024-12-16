@@ -13,7 +13,6 @@ public class MoveState : BaseState
     private bool _flies;
     private RaycastHit2D focusRC;
     private Animation animation;
-    private Animator animator;
 
     public override void EnterState(StateManager npc, GameObject player)
     {

@@ -188,7 +188,7 @@ public class StateManager : MonoBehaviour
     public void attack(StateManager npc, PlayerHealth player)
     {
         Animation animation = npc.gameObject.GetComponent<Animation>();
-        animation["Enemy1"].layer = 0;
+        animation["Enemy1_attack"].layer = 0;
 
         bool _hit = false;
         attackRC = Physics2D.CircleCastAll(npc.getGun().transform.position, npc.getShootRange(), npc.getGun().transform.position, attackableLayer);
