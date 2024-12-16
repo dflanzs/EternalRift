@@ -188,7 +188,7 @@ public class StateManager : MonoBehaviour
     public void attack(StateManager npc, PlayerHealth player)
     {
         Animation animation = npc.gameObject.GetComponent<Animation>();
-        //animation["Enemy1"].layer = 0;
+        animation["Enemy1"].layer = 0;
 
         bool _hit = false;
         attackRC = Physics2D.CircleCastAll(npc.getGun().transform.position, npc.getShootRange(), npc.getGun().transform.position, attackableLayer);
@@ -197,7 +197,7 @@ public class StateManager : MonoBehaviour
         {
             if (attackRC[i].collider.gameObject.GetComponent<Player>() != null)
             {
-                //animation.Play("Enemy1");
+                animation.Play("Enemy1_attack");
                 //TODO: Añadir knockback al jugador y un efecto visual                
 
                 // Solo un hit hace daño

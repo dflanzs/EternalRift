@@ -25,8 +25,6 @@ namespace DeactivatedNPCns
             
             foreach (GameObject enemy in enemies)
             {
-                Debug.Log($"NPC Starting Position: {enemy.GetComponent<StateManager>().getStartingPosition()}");
-
                 if (!enemy.GetComponent<StateManager>().getFound())
                 {
                     DeactivatedNPCclass deactivatedNPC = new DeactivatedNPCclass();
@@ -59,14 +57,10 @@ namespace DeactivatedNPCns
 
                 if (playerIsNear(deactivatedNPC.position) && !deactivatedNPC.isActivated)
                 {
-                    if (deactivatedNPC.characteristics.flies){
-                        Debug.Log("Enemy2");
+                    if (deactivatedNPC.characteristics.flies)
                         enemy = ObjectPooling.Instance.requestInstance("Enemy2", deactivatedNPC.characteristics.hashCode);
-                    }
-                    if(!deactivatedNPC.characteristics.flies){
-                        Debug.Log("Enemy1");
+                    if(!deactivatedNPC.characteristics.flies)
                         enemy = ObjectPooling.Instance.requestInstance("Enemy1", deactivatedNPC.characteristics.hashCode);
-                    }
 
                     if (enemy != null)
                     {
