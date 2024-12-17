@@ -23,6 +23,9 @@ public class IdleState : BaseState
 
     public override void UpdateState(StateManager npc, GameObject player, Transform _groundChecker, Transform _fieldOfView)
     {
+        if (!npc.SpriteAnimator.IsPlaying("idleAnimation"))
+            npc.idle();
+        
         if (npc.getPrevstate() == npc.attackState)
         {
             _focused = npc.getFocus();
@@ -42,7 +45,8 @@ public class IdleState : BaseState
         {
             if (_timer < _watingTime)
                 _timer += Time.deltaTime;
-            else{
+            else
+            {
                 _focused = npc.getFocus();
                 
                 if (_focused && npc.getPrevstate() != npc.focusedState)

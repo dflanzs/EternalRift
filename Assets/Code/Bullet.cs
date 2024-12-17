@@ -7,17 +7,27 @@ public class Bullet : MonoBehaviour
     private  bool _shotByPlayer;
     public float Damage { get { return _damage; } }
 
+    private SpriteAnimator spriteAnimator;
+    private new string animation;
     private Vector3 _originVector;
+    private float _spriteDirection;
 
     [SerializeField] private Rigidbody2D _rigid;
 
     void Start()
     {
         _rigid = GetComponent<Rigidbody2D>();
+        spriteAnimator = GetComponent<SpriteAnimator>();
     }
 
     void Update()
     {
+        if (_shotByPlayer)
+            spriteAnimator.FlipTo(_spriteDirection);
+
+        if (!spriteAnimator.IsPlaying(animation))
+            spriteAnimator.Play(animation, true);
+        
         if (checkWallCollision())
         {
             gameObject.SetActive(false);
@@ -96,5 +106,12 @@ public class Bullet : MonoBehaviour
 
     public void setWhoShot(bool player){
         _shotByPlayer = player;
+    }
+
+    public void setAnimation(string animation, float direction)
+    {
+        this.animation = animation;
+        Debug.Log("Animation set to: " + animation);
+        _spriteDirection = direction;
     }
 }
