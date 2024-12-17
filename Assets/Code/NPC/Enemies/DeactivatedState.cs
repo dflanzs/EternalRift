@@ -11,20 +11,21 @@ public class DeactivatedState : BaseState
     {
         rb = npc.GetComponent<Rigidbody2D>();
 
-        // Guardar características
+        // Save characteristics
         _lastPosition = npc.transform.position;
         _flies = npc.getFlies();
-        _health = npc.getHealth();
+        _health = npc.getHealth(); // Save health
 
-        // Desactiamos
+        // Deactivate
         rb.velocity = new Vector2(0, rb.velocity.y);
         npc.gameObject.SetActive(false);
 
-        // Modificar isActivated
+        // Modify isActivated
         if (npc.deactivatedNPC != null)
         {
             npc.deactivatedNPC.isActivated = false;
             npc.deactivatedNPC.flies = npc.getFlies();
+            npc.deactivatedNPC.health = npc.getHealth(); // Save health to deactivatedNPC
         }
     }
 
