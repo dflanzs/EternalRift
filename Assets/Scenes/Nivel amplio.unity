@@ -66856,7 +66856,7 @@ MonoBehaviour:
   enemy1Prefab: {fileID: 0}
   enemy2Prefab: {fileID: 0}
   enemyBullet: {fileID: 0}
-  bulletsPoolSize: 0
+  bulletsPoolSize: 10
   enemiesPoolSize: 0
   enemyBulletsPoolSize: 0
 --- !u!4 &939735100
@@ -71214,6 +71214,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   hasWeapon: 1
+  autoShoot: 0
+  fallDamage: 0
 --- !u!4 &1556088331
 Transform:
   m_ObjectHideFlags: 0
