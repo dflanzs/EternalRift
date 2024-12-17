@@ -205,7 +205,7 @@ MonoBehaviour:
   _fieldOfView: {fileID: 7368682715003471004}
   _gun: {fileID: 35396805856916910}
   flies: 1
-  health: 10
+  health: 50
   _bulletSpeed: 10
   _shootRange: 10
   _damage: 10
