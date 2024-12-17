@@ -72,8 +72,5 @@ public class AttackState : BaseState
         Gizmos.DrawWireSphere(npc.getGun().transform.position, npc.getShootRange());    
     }
 
-    public override void OnCollisionEnter(StateManager npc, GameObject player)
-    {
-
-    }
+    public override void OnCollisionEnter(StateManager npc, GameObject player) { }
 }
