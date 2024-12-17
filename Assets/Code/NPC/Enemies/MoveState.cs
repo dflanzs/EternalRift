@@ -34,9 +34,6 @@ public class MoveState : BaseState
 
     public override void UpdateState(StateManager npc, GameObject player, Transform _groundChecker, Transform _fieldOfView)
     {   
-        /* if (!npc.SpriteAnimator.IsPlaying("idleAnimation"))
-            npc.idle(); */
-
         _grounded = npc.checkGrounded(_groundChecker);
         
         if (_flies)

@@ -199,6 +199,7 @@ public class StateManager : MonoBehaviour
 
             Bullet bulletScript = enemyBullet.GetComponent<Bullet>();
             bulletScript.setWhoShot(false);
+            bulletScript.setAnimation("bulletAnimation", -1);
             
             Vector3 directionVector = getBulletSpeed() * getTarget(player, npc);
             Vector3 originVector = _gun.transform.position;

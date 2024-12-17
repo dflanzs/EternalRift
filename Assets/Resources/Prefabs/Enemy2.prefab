@@ -212,8 +212,6 @@ MonoBehaviour:
   _shootCooldown: 3
   _crystal: {fileID: 5877597639303525373, guid: 88b452f0cd8a1cf4892afe1c649d4cd5, type: 3}
   attackAnimation: {fileID: 0}
-  idleAnimation: {fileID: 0}
-  walkAnimation: {fileID: 0}
 --- !u!114 &8234191886668359368
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -226,7 +224,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 389ae12084a39ffaf8c0bd92b71a3d87, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  spriteRenderer: {fileID: 0}
+  spriteRenderer: {fileID: 6349921820934199665}
   animations:
   - name: idleAnimation
     fps: 5

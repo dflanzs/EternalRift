@@ -46,7 +46,7 @@ public class SpriteAnimator : MonoBehaviour
  
     public string playAnimationOnStart;
  
-    bool looped;
+    //bool looped;
  
     void Start()
     {
@@ -138,13 +138,13 @@ public class SpriteAnimator : MonoBehaviour
  
     private IEnumerator PlayAnimation(SpriteAnimation animation)
     {
-        Debug.Log("Starting animation: " + animation.name);
+        //Debug.Log("Starting animation: " + animation.name);
         playing = true;
         currentFrame = 0;
 
         while (playing)
         {
-            Debug.Log($"Displaying frame {currentFrame} of {animation.frames.Length}");
+            //Debug.Log($"Displaying frame {currentFrame} of {animation.frames.Length}");
             if (currentFrame >= animation.frames.Length)
             {
                 if (loop)
@@ -169,7 +169,7 @@ public class SpriteAnimator : MonoBehaviour
  
     void NextFrame(SpriteAnimation animation)
     {
-        looped = false;
+        //looped = false;
         currentFrame++;
         foreach (AnimationTrigger animationTrigger in animation.triggers)
         {
