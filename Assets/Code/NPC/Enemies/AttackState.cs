@@ -16,6 +16,9 @@ public class AttackState : BaseState
 
     public override void UpdateState(StateManager npc, GameObject player, Transform _groundChecker, Transform _fieldOfView)
     {
+        if (!npc.SpriteAnimator.IsPlaying("idleAnimation"))
+            npc.idle();
+        
         if (_flies)
         {
             focusRC = Physics2D.Raycast(npc.transform.position, npc.getTarget(player, npc), Mathf.Infinity, LayerMask.GetMask("Ground", "Player"));

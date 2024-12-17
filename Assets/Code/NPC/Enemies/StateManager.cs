@@ -42,6 +42,15 @@ public class StateManager : MonoBehaviour
     private Vector2 _startingPosition;
     #endregion
 
+    #region Animations
+    public AnimationClip attackAnimation;
+
+
+    private SpriteAnimator spriteAnimator;
+    public SpriteAnimator SpriteAnimator {get { return spriteAnimator; } }
+    private new Animation animation;
+    #endregion
+
     #region State Functions
     void Start()
     {
@@ -53,6 +62,15 @@ public class StateManager : MonoBehaviour
         currentState.EnterState(this, _player);
 
         attackableLayer = LayerMask.GetMask("Player");
+
+        // Cargamos las animaciones
+        spriteAnimator = GetComponent<SpriteAnimator>();
+
+        if (!flies)
+        {
+            animation = GetComponent<Animation>();
+            animation.AddClip(attackAnimation, "attackAnimation");
+        }
     }
 
     private void OnEnable() {
@@ -70,8 +88,10 @@ public class StateManager : MonoBehaviour
         {
             Collider2D[] collidersNPC = Physics2D.OverlapCircleAll(transform.position, 1);
 
-            for(int i = 0; i < collidersNPC.Length; i++){
-                if(collidersNPC[i].gameObject.CompareTag("Bullet")){
+            for(int i = 0; i < collidersNPC.Length; i++)
+            {
+                if(collidersNPC[i].gameObject.CompareTag("Bullet"))
+                {
                     health -= (int) collidersNPC[i].gameObject.GetComponent<Bullet>().Damage;
                     collidersNPC[i].gameObject.SetActive(false);
                 }
@@ -98,8 +118,10 @@ public class StateManager : MonoBehaviour
         Collider2D[] collidersGC = Physics2D.OverlapCircleAll(_groundChecker.position, k_GroundedRadius);
 
         // Check if the player is touching ground
-        for(int i = 0;i < collidersGC.Length && !_grounded;i++){
-            if(collidersGC[i].gameObject.CompareTag("Platform")){
+        for(int i = 0;i < collidersGC.Length && !_grounded;i++)
+        {
+            if(collidersGC[i].gameObject.CompareTag("Platform"))
+            {
                 setGrounded(true);
                 return true;
             }
@@ -113,9 +135,10 @@ public class StateManager : MonoBehaviour
     {
         Collider2D[] collidersFOV = Physics2D.OverlapCircleAll(_fieldOfView.position, _fieldOfView.gameObject.GetComponent<CircleCollider2D>().radius);
     
-        for(int i = 0; i < collidersFOV.Length && !_focused; i++){
-            
-            if(collidersFOV[i].gameObject.CompareTag("Player")){
+        for(int i = 0; i < collidersFOV.Length && !_focused; i++)
+        {
+            if(collidersFOV[i].gameObject.CompareTag("Player"))
+            {
                 setFocus(true);
                 return true;
             }
@@ -132,16 +155,18 @@ public class StateManager : MonoBehaviour
         
         bool playerCollision = false;
 
-        for(int i = 0; i < colliderLeft.Length && !playerCollision;  i++){
-            if(colliderLeft[i].gameObject.CompareTag("Player")){
+        for(int i = 0; i < colliderLeft.Length && !playerCollision;  i++)
+        {
+            if(colliderLeft[i].gameObject.CompareTag("Player"))
+            {
                 playerCollision = true;
             }
         }
         
-        for(int i = 0; i < colliderRight.Length && !playerCollision;  i++){
-            if(colliderRight[i].gameObject.CompareTag("Player")){
+        for(int i = 0; i < colliderRight.Length && !playerCollision;  i++)
+        {
+            if(colliderRight[i].gameObject.CompareTag("Player"))
                 playerCollision = true;
-            }
         }
 
         return playerCollision;
@@ -185,25 +210,38 @@ public class StateManager : MonoBehaviour
         }   
     }
 
+    #endregion
+    
+    #region Animation playing
     public void attack(StateManager npc, PlayerHealth player)
     {
-        Animation animation = npc.gameObject.GetComponent<Animation>();
-        animation["Enemy1_attack"].layer = 0;
-
         bool _hit = false;
+        animation.Stop();
         attackRC = Physics2D.CircleCastAll(npc.getGun().transform.position, npc.getShootRange(), npc.getGun().transform.position, attackableLayer);
 
         for (int i = 0; i < attackRC.Length && !_hit; i++)
         {
             if (attackRC[i].collider.gameObject.GetComponent<Player>() != null)
             {
-                animation.Play("Enemy1_attack");
+                animation.Play("attackAnimation");
                 //TODO: Añadir knockback al jugador y un efecto visual                
 
                 // Solo un hit hace daño
                 _hit = true;
             }
         }
+    }
+    public void walk()
+    {
+        //animation.Stop();
+        spriteAnimator.Play("walkAnimation", true);
+        //animation.Play("walkAnimation");
+    }
+
+    public void idle()
+    {
+        //animation.Stop();
+        spriteAnimator.Play("idleAnimation", true);
     }
     #endregion
 

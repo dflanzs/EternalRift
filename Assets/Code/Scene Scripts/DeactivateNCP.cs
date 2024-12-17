@@ -50,7 +50,6 @@ namespace DeactivatedNPCns
 
         void Update()
         {
-            Debug.Log("count " + npcList.Count);
             for (int i = 0; i < npcList.Count; i++)
             {
                 DeactivatedNPCclass deactivatedNPC = npcList[i];

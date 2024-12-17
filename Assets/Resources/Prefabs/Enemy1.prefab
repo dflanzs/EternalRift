@@ -142,7 +142,8 @@ GameObject:
   - component: {fileID: 439042832008912666}
   - component: {fileID: 2742934597668316294}
   - component: {fileID: 6363785699124382527}
-  - component: {fileID: 4633544021894873109}
+  - component: {fileID: 9010704031432317125}
+  - component: {fileID: 7752641578084437706}
   m_Layer: 0
   m_Name: Enemy1
   m_TagString: npc
@@ -310,7 +311,10 @@ MonoBehaviour:
   _damage: 10
   _shootCooldown: 1
   _crystal: {fileID: 5877597639303525373, guid: 88b452f0cd8a1cf4892afe1c649d4cd5, type: 3}
---- !u!111 &4633544021894873109
+  attackAnimation: {fileID: 7400000, guid: c7b7a0e1174e366378ea81c08bf91a33, type: 2}
+  idleAnimation: {fileID: 0}
+  walkAnimation: {fileID: 0}
+--- !u!111 &9010704031432317125
 Animation:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -319,15 +323,53 @@ Animation:
   m_GameObject: {fileID: 3029641940581615907}
   m_Enabled: 1
   serializedVersion: 3
-  m_Animation: {fileID: 7400000, guid: b53b8fe86beed95ef9730a1181eede3f, type: 2}
-  m_Animations:
-  - {fileID: 7400000, guid: c7b7a0e1174e366378ea81c08bf91a33, type: 2}
-  - {fileID: 7400000, guid: 17bba4d1249e1b349b6c6371fcabb005, type: 2}
-  - {fileID: 7400000, guid: 8021925d54dd4fa4883939021c209926, type: 2}
+  m_Animation: {fileID: 0}
+  m_Animations: []
   m_WrapMode: 0
   m_PlayAutomatically: 1
   m_AnimatePhysics: 0
   m_CullingType: 0
+--- !u!114 &7752641578084437706
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3029641940581615907}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 389ae12084a39ffaf8c0bd92b71a3d87, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  spriteRenderer: {fileID: 6349921820934199665}
+  animations:
+  - name: idleAnimation
+    fps: 4
+    frames:
+    - {fileID: 21300000, guid: 2a4649212442902c589a45553699cd04, type: 3}
+    - {fileID: 21300000, guid: f02cadf65a722a20ebad6a96ef5f1cf3, type: 3}
+    - {fileID: 21300000, guid: 824b787caff4a101e836868b89c03b90, type: 3}
+    - {fileID: 21300000, guid: ccbc78c809b3dedb9bd4bfa98c12466c, type: 3}
+    sequenceCode: 0,1,2,3
+    cue: 
+    triggers: []
+  - name: walkAnimation
+    fps: 8
+    frames:
+    - {fileID: 21300000, guid: de7ce9ac5586ea48f8c61a2924b732c4, type: 3}
+    - {fileID: 21300000, guid: dae6136dc4896b7ada8f6623969897c4, type: 3}
+    - {fileID: 21300000, guid: aa1512f7ed35174fb937e046b0c0aed5, type: 3}
+    - {fileID: 21300000, guid: d2a43398bdbbcf93d987f8d2b9451dd9, type: 3}
+    - {fileID: 21300000, guid: 6c9d175fe6be56f29a73b089afcb875c, type: 3}
+    - {fileID: 21300000, guid: 68bc80cfac3d5fa4c94374ea111f0272, type: 3}
+    - {fileID: 21300000, guid: 69410189991070d0c818759adf59ecee, type: 3}
+    - {fileID: 21300000, guid: 23d5eefb849028a50864e2e01d981c45, type: 3}
+    sequenceCode: 0,1,2,3,4,5,6,7
+    cue: 
+    triggers: []
+  loop: 0
+  speedMultiplier: 1
+  playAnimationOnStart: walkAnimation
 --- !u!1 &5528387681031065679
 GameObject:
   m_ObjectHideFlags: 0
