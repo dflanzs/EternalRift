@@ -227,6 +227,11 @@ public class Player : MonoBehaviour
             // Teletransporta al personaje a la �ltima posici�n segura
             transform.position = lastSafePosition;
         }
+        if (other.CompareTag("final"))
+        {
+            // Cambia a la escena "EscenaFinal"
+            SceneManager.LoadScene("copia_escena_1");
+        }
 
 
     }
