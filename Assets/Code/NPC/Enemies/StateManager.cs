@@ -43,9 +43,6 @@ public class StateManager : MonoBehaviour
     #endregion
 
     #region Animations
-    public AnimationClip attackAnimation;
-
-
     private SpriteAnimator spriteAnimator;
     public SpriteAnimator SpriteAnimator {get { return spriteAnimator; } }
     private new Animation animation;
@@ -65,12 +62,6 @@ public class StateManager : MonoBehaviour
 
         // Cargamos las animaciones
         spriteAnimator = GetComponent<SpriteAnimator>();
-
-        if (!flies)
-        {
-            animation = GetComponent<Animation>();
-            animation.AddClip(attackAnimation, "attackAnimation");
-        }
     }
 
     private void OnEnable() {
