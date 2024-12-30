@@ -62,7 +62,7 @@ public class PlayerHealth : MonoBehaviour
     {
         mutationBar.ResetCharge();
     }
-        SceneManager.LoadScene(SceneManager.GetActiveScene().name); // Vuelve a empezar la escena inicial
+        SceneManager.LoadScene("copia_escena_1");
     }
 
     // Actualizar la barra de vida
