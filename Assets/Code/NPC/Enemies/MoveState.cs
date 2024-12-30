@@ -13,7 +13,7 @@ public class MoveState : BaseState
     private int _direction;
     private bool _flies;
     private RaycastHit2D focusRC;
-    private readonly float _waitingTime = 5f;
+    private readonly float _waitingTime = 1f;
     private float _timer;
     private Vector3 _lastPosition;
 
@@ -33,10 +33,12 @@ public class MoveState : BaseState
 
         _direction = npc.getDirection();
         _flies = npc.getFlies();
+
+        _timer = 0;
     }
 
     public override void UpdateState(StateManager npc, GameObject player, Transform _groundChecker, Transform _fieldOfView)
-    {   
+    {
         _grounded = npc.checkGrounded(_groundChecker);
 
         if (_flies)
@@ -58,7 +60,7 @@ public class MoveState : BaseState
             {
                 if (!_grounded)
                 {
-                    // Aplicar velocidad constante hacia el jugador
+                    // Aplicar velocidad constante
                     _currentSpeed = Mathf.MoveTowards(_currentSpeed, speed, _accel * Time.deltaTime);
                     rb.velocity = new Vector2(_direction*Mathf.Clamp(_currentSpeed, -_maxVelocity, _maxVelocity), rb.velocity.y);
                 } 
