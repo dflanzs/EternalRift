@@ -13,7 +13,7 @@ public class MoveState : BaseState
     private int _direction;
     private bool _flies;
     private RaycastHit2D focusRC;
-    private readonly float _waitingTime = 1f;
+    private readonly float _waitingTime = 0.5f;
     private float _timer;
     private Vector3 _lastPosition;
 
@@ -91,6 +91,8 @@ public class MoveState : BaseState
             {
                 if(_grounded)
                 {
+                    // TODO: Change how enemy collisions are handled (rn like walls by waiting, 
+                    // but it shuold be like ground with the function checkCollsiionEnemy() in StateManager)
                     _currentSpeed = Mathf.MoveTowards(_currentSpeed, speed, _accel * Time.deltaTime);
                     rb.velocity = new Vector2(_direction * Mathf.Clamp(_currentSpeed, -_maxVelocity, _maxVelocity), rb.velocity.y);
                     
@@ -117,7 +119,6 @@ public class MoveState : BaseState
 
                     // Update position always
                     _lastPosition = npc.gameObject.transform.position;
-                    
                 }
                 else
                 {

@@ -124,6 +124,30 @@ public class StateManager : MonoBehaviour
         return false;
     }
 
+    public bool checkCollsisionEnemy()
+    {
+        Collider2D[] colliderLeft = Physics2D.OverlapCircleAll(_playerCollisionCheckerLeft.position, k_GroundedRadius);
+        Collider2D[] colliderRight = Physics2D.OverlapCircleAll(_playerCollisionCheckerRight.position, k_GroundedRadius);
+
+        bool enemyCollsion = false;
+
+        for(int i = 0; i < colliderLeft.Length && !enemyCollsion;  i++)
+        {
+            if(colliderLeft[i].gameObject.CompareTag("npc"))
+            {
+                enemyCollsion = true;
+            }
+        }
+        
+        for(int i = 0; i < colliderRight.Length && !enemyCollsion;  i++)
+        {
+            if(colliderRight[i].gameObject.CompareTag("npc"))
+                enemyCollsion = true;
+        }
+
+        return enemyCollsion;
+    }
+
     public bool checkFocus(Transform _fieldOfView)
     {
         Collider2D[] collidersFOV = Physics2D.OverlapCircleAll(_fieldOfView.position, _fieldOfView.gameObject.GetComponent<CircleCollider2D>().radius);
