@@ -1,3 +1,4 @@
+using System.Threading;
 using UnityEngine;
 
 public class MoveState : BaseState
@@ -12,6 +13,9 @@ public class MoveState : BaseState
     private int _direction;
     private bool _flies;
     private RaycastHit2D focusRC;
+    private readonly float _waitingTime = 5f;
+    private float _timer;
+    private Vector3 _lastPosition;
 
     public override void EnterState(StateManager npc, GameObject player)
     {
@@ -34,7 +38,7 @@ public class MoveState : BaseState
     public override void UpdateState(StateManager npc, GameObject player, Transform _groundChecker, Transform _fieldOfView)
     {   
         _grounded = npc.checkGrounded(_groundChecker);
-        
+
         if (_flies)
         {
             if (!npc.SpriteAnimator.IsPlaying("idleAnimation"))
@@ -90,6 +94,28 @@ public class MoveState : BaseState
                     
                     if (!npc.SpriteAnimator.IsPlaying("walkAnimation"))
                         npc.walk();
+
+
+                    if (_lastPosition.Equals(npc.gameObject.transform.position))
+                    {
+                        if (_timer >= _waitingTime)
+                        {
+                            // Enemy is stuck, switch to idle state
+                            npc.setPrevstate(npc.moveState);
+                            npc.SwitchState(npc.idleState);
+                        }    
+                        else
+                        {
+                            // Update timer and last position
+                            _timer += Time.deltaTime;
+                        }
+                    }
+                    else
+                        _timer = 0;
+
+                    // Update position always
+                    _lastPosition = npc.gameObject.transform.position;
+                    
                 }
                 else
                 {

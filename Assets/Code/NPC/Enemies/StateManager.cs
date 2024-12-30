@@ -17,7 +17,7 @@ public class StateManager : MonoBehaviour
     #endregion
 
     #region Data
-    private GameObject _player;
+    [SerializeField] private GameObject _player;
     [SerializeField] private Transform _groundChecker;
     [SerializeField] private Transform _playerCollisionCheckerRight;
     [SerializeField] private Transform _playerCollisionCheckerLeft;
