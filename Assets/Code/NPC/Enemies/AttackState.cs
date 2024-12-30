@@ -10,7 +10,7 @@ public class AttackState : BaseState
     public override void EnterState(StateManager npc, GameObject player)
     {
         _flies = npc.getFlies();
-        _timer = npc.getShootCooldown(); // Disparo instantaneo
+        _timer = npc.getShootCooldown(); // Instant shooting
         npc.setFocus(true);
     }
 

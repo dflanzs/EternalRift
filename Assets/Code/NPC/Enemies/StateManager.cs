@@ -3,8 +3,6 @@ using UnityEngine;
 
 public class StateManager : MonoBehaviour
 {
-    // To use animation go to project window, click on the animation file, open debug mode, activate legacy 
-
     #region States
     public BaseState currentState;
     private BaseState prevState;
@@ -51,16 +49,17 @@ public class StateManager : MonoBehaviour
     #region State Functions
     void Start()
     {
-        //Guardamos la posicion inicial para el objectPooling
+        // Store starting position for object pooling
         _startingPosition = transform.position;
-        hashCode = this.gameObject.GetHashCode();
+        hashCode = gameObject.GetHashCode();
+        
         currentState = moveState;
         prevState = null;
         currentState.EnterState(this, _player);
 
         attackableLayer = LayerMask.GetMask("Player");
 
-        // Cargamos las animaciones
+        // Load animations
         spriteAnimator = GetComponent<SpriteAnimator>();
 
         if(_player == null)

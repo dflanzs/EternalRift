@@ -59,7 +59,7 @@ public class IdleState : BaseState
                 {
                     if (rb.velocity.x == 0)
                     {
-                        // Apply constant speed if it got lost through the state machine
+                        // Apply constant velocity if it got lost through the state machine
                         _currentSpeed = Mathf.MoveTowards(_currentSpeed, speed, _accel * Time.deltaTime);
                         rb.velocity = new Vector2(_direction*Mathf.Clamp(_currentSpeed, -_maxVelocity, _maxVelocity), rb.velocity.y);
                     

@@ -60,7 +60,7 @@ public class MoveState : BaseState
             {
                 if (!_grounded)
                 {
-                    // Aplicar velocidad constante
+                    // Apply constant velocity
                     _currentSpeed = Mathf.MoveTowards(_currentSpeed, speed, _accel * Time.deltaTime);
                     rb.velocity = new Vector2(_direction*Mathf.Clamp(_currentSpeed, -_maxVelocity, _maxVelocity), rb.velocity.y);
                 } 
