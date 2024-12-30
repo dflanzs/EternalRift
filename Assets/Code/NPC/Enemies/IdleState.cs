@@ -4,9 +4,9 @@ public class IdleState : BaseState
 {
     private Rigidbody2D rb;
     private Vector2 _velocity  = new Vector2(0, 0); 
-    private bool _focused = false, _flies;
+    private bool _focused = false;
     private int _direction;
-    private float _watingTime = 3;
+    private readonly float _watingTime = 3;
     private float _timer;
 
     public override void EnterState(StateManager npc, GameObject player)
@@ -14,7 +14,6 @@ public class IdleState : BaseState
         _timer = 0;
         
         _focused = npc.getFocus();
-        _flies = npc.getFlies();
         _direction = npc.getDirection();
         rb = npc.gameObject.GetComponent<Rigidbody2D>();
 

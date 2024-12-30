@@ -17,7 +17,7 @@ public class StateManager : MonoBehaviour
     #endregion
 
     #region Data
-    [SerializeField] private GameObject _player;
+    private GameObject _player;
     [SerializeField] private Transform _groundChecker;
     [SerializeField] private Transform _playerCollisionCheckerRight;
     [SerializeField] private Transform _playerCollisionCheckerLeft;
@@ -62,6 +62,9 @@ public class StateManager : MonoBehaviour
 
         // Cargamos las animaciones
         spriteAnimator = GetComponent<SpriteAnimator>();
+
+        if(_player == null)
+            _player = GameObject.FindGameObjectWithTag("Player");
     }
 
     private void OnEnable() {
@@ -216,9 +219,6 @@ public class StateManager : MonoBehaviour
             if (attackRC[i].collider.gameObject.GetComponent<Player>() != null)
             {
                 animation.Play("attackAnimation");
-                //TODO: Añadir knockback al jugador y un efecto visual                
-
-                // Solo un hit hace daño
                 _hit = true;
             }
         }

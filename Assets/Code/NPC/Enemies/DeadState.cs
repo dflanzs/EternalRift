@@ -4,7 +4,6 @@ using UnityEngine;
 public class DeadState : BaseState
 {
     private Rigidbody2D rb;
-
     [SerializeField] private int MAX_CRYSTALS = 6;
 
     public override void UpdateState(StateManager npc, GameObject player, Transform _groundChecker, Transform _filedOfView){ }
