@@ -28,7 +28,8 @@ public class PlayerState
     public virtual void Enter()
     {
         DoChecks();
-        // player.Anim.SetBool(animBoolName, true);
+        player.Anim.SetBool(animBoolName, true);
+        Debug.Log("Set true: " + animBoolName);
         startTime = Time.time;
         isAnimationFinished = false;
         isExitingState = false;
@@ -44,7 +45,7 @@ public class PlayerState
     // Update is called once per frame
     public virtual void LogicUpdate()
     {
-
+        // Debug.Log("Entering state: " + this.GetType().Name);
     }
 
     // Fixed update is called in sync with physics
