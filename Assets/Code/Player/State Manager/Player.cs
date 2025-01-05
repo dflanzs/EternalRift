@@ -24,7 +24,7 @@ public class Player : MonoBehaviour
     #endregion
 
     #region Mutation Variables
-    public bool IsMutated { get; private set; } 
+    public bool IsMutated { get; private set; }
     public float MutatedJumpForceMultiplier = 1.5f;
     [SerializeField] private Tilemap tilemap;  // El Tilemap donde est�n los botones
     [SerializeField] private Tile openButtonTile;  // Tile de bot�n abierto
@@ -180,7 +180,7 @@ public class Player : MonoBehaviour
         Vector2 center = MovementCollider.offset;
         workspace.Set(MovementCollider.size.x, height);
 
-        center.y += (height - MovementCollider.size.y) / 2;
+        center.y -= (MovementCollider.size.y - height) / 2;
 
         MovementCollider.size = workspace;
         MovementCollider.offset = center;
