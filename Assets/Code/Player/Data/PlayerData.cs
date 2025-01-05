@@ -22,7 +22,6 @@ public class PlayerData : ScriptableObject
     public float dashVelocity = 100f;
     public float dashCooldown = 1f;
     public float dashTime = 0.2f;
-    public float dashWhileMovingMultiplier = 2.5f;
 
     [Header("Crouch State")]
     public float crouchMovementVelocity = 5f;
