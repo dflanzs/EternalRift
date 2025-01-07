@@ -17,10 +17,11 @@ public class ShootTest : MonoBehaviourBaseTest {
         Vector3 direction = new Vector3(dir[0],dir[1],0.0f);
         Vector3 origin = new Vector3(0.0f,0.0f,0.0f);
 
-        Rigidbody2D body = gameObject.AddComponent<Rigidbody2D>();
-        body.gravityScale = 0.0f;  // Desactivar la gravedad
-
-        Bullet bullet = gameObject.AddComponent<Bullet>();
+        //Rigidbody2D body = gameObject.AddComponent<Rigidbody2D>();
+        //body.gravityScale = 0.0f;  // Desactivar la gravedad
+        
+        gameObject = GameObject.Instantiate(Resources.Load<GameObject>("Prefabs/Bullet"));
+        Bullet bullet = gameObject.GetComponent<Bullet>();
 
         yield return new WaitForEndOfFrame();
 
