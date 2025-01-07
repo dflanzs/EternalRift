@@ -120,7 +120,10 @@ public class Shoot : MonoBehaviour
                 bulletScript.shoot(directionVector, originVector, weapon._range, weapon._damage);
 
                 bullet.GetComponent<BoxCollider2D>().gameObject.SetActive(true);
-                cooldownCounter = weapon._cooldown;
+                if(!player.playerData.cooldownWeapons)
+                    cooldownCounter = weapon._cooldown;
+                else
+                    cooldownCounter = weapon._cooldown * player.playerData.cooldownFactor;
 
                 //Debug.Log($"Disparo realizado. Disparo Automático: {autoShootEnabled}");
             }

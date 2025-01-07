@@ -36,6 +36,8 @@ public class PlayerData : ScriptableObject
     [Header("Mutation State")]
     public float mutatedJumpMultiplier = 1.5f;
     public float currentCharge = 0;
+    public bool cooldownWeapons = false;
+    public float cooldownFactor = 0.5f;
 }
 public enum ShootDir {
     UP = 0,
