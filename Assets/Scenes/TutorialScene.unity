@@ -24827,6 +24827,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   hasWeapon: 0
+  autoShoot: 0
+  fallDamage: 0
 --- !u!1 &615236004
 GameObject:
   m_ObjectHideFlags: 0
@@ -24930,6 +24932,18 @@ PrefabInstance:
     - target: {fileID: 4002940706388455317, guid: abf6b26570e24404baa46261c0d5ca43, type: 3}
       propertyPath: healthBar
       value: 
+      objectReference: {fileID: 0}
+    - target: {fileID: 4057797621426394626, guid: abf6b26570e24404baa46261c0d5ca43, type: 3}
+      propertyPath: m_Size.y
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 4057797621426394626, guid: abf6b26570e24404baa46261c0d5ca43, type: 3}
+      propertyPath: m_Enabled
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4057797621426394626, guid: abf6b26570e24404baa46261c0d5ca43, type: 3}
+      propertyPath: m_Offset.y
+      value: -0.21
       objectReference: {fileID: 0}
     - target: {fileID: 4187580123899886668, guid: abf6b26570e24404baa46261c0d5ca43, type: 3}
       propertyPath: autoShootEnabled
@@ -25052,6 +25066,7 @@ PrefabInstance:
     - {fileID: 0}
     - {fileID: 0}
     - {fileID: 4187580123899886668, guid: abf6b26570e24404baa46261c0d5ca43, type: 3}
+    - {fileID: 695691603605233576, guid: abf6b26570e24404baa46261c0d5ca43, type: 3}
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
     m_AddedComponents:
@@ -38871,6 +38886,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 779ebef07490f96489c6ea4ec11ac7ea, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  boxCollider: {fileID: 0}
 --- !u!1 &957221645
 GameObject:
   m_ObjectHideFlags: 0
@@ -39225,7 +39241,6 @@ MonoBehaviour:
   _gun: {fileID: 1271680562}
   _bulletPrefab: {fileID: 5574008668113540788, guid: 70ad070ea6ec495bc965bfacf091a2ab, type: 3}
   weapon: {fileID: 0}
-  autoShootEnabled: 1
   detectionRange: 10
   enemyTag: npc
 --- !u!1 &1394098454
