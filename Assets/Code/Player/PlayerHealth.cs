@@ -1,6 +1,7 @@
 using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.SceneManagement;
+using System.Collections;
 
 public class PlayerHealth : MonoBehaviour
 {
@@ -17,6 +18,12 @@ public class PlayerHealth : MonoBehaviour
 
     // para medidas de accesibilidad
 
+
+    //daño visual
+    public Color damageColor = Color.red; 
+    private SpriteRenderer spriteRenderer;
+    private Color color_original;
+    public float damageEffectDuration = 0.5f;  // Duración del parpadeo
 
 
     // GroundCheck variables
@@ -36,6 +43,11 @@ public class PlayerHealth : MonoBehaviour
     {
         HandleFallDamage();
     }
+    private void Awake()
+    {
+        spriteRenderer = GetComponent<SpriteRenderer>();
+        color_original = spriteRenderer.color;  // Guarda el color original
+    }
 
     // Método para recibir daño
     public void TakeDamage(int damage)
@@ -43,7 +55,7 @@ public class PlayerHealth : MonoBehaviour
         currentHealth -= damage;
         currentHealth = Mathf.Clamp(currentHealth, 0, maxHealth);
         UpdateHealthBar();
-
+        StartCoroutine(FlashDamageEffect());
         Debug.Log($"Daño recibido: {damage}. Vida actual: {currentHealth}");
 
         if (currentHealth <= 0)
@@ -137,11 +149,19 @@ public class PlayerHealth : MonoBehaviour
         if (GameManager.Instance.fallDamage)
             return; // No aplicar daño si la opción de recibir daño está desactivada
             
-        if (other.CompareTag("malo"))
+        if (other.CompareTag("malo") || other.CompareTag("puerta"))
         {
             TakeDamage(10); // Ajustar el daño según sea necesario
         }
     }
+
+    private IEnumerator FlashDamageEffect()
+    {
+        spriteRenderer.color = damageColor;
+        yield return new WaitForSeconds(damageEffectDuration);
+        spriteRenderer.color = color_original;
+    }
+
 
     // Método para recuperar vida (opcional)
     /* 
