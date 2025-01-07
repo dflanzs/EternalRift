@@ -70740,13 +70740,33 @@ PrefabInstance:
       propertyPath: m_Name
       value: boton1 (6)
       objectReference: {fileID: 0}
+    - target: {fileID: 4828942243257135271, guid: 6083e9c00e147504096b5dbba6b3955b, type: 3}
+      propertyPath: m_Size.y
+      value: 0.648759
+      objectReference: {fileID: 0}
+    - target: {fileID: 4828942243257135271, guid: 6083e9c00e147504096b5dbba6b3955b, type: 3}
+      propertyPath: m_Offset.x
+      value: -0.0036688894
+      objectReference: {fileID: 0}
+    - target: {fileID: 4828942243257135271, guid: 6083e9c00e147504096b5dbba6b3955b, type: 3}
+      propertyPath: m_Offset.y
+      value: 0.06140773
+      objectReference: {fileID: 0}
+    - target: {fileID: 5679934989535551186, guid: 6083e9c00e147504096b5dbba6b3955b, type: 3}
+      propertyPath: m_LocalScale.x
+      value: 15.498
+      objectReference: {fileID: 0}
+    - target: {fileID: 5679934989535551186, guid: 6083e9c00e147504096b5dbba6b3955b, type: 3}
+      propertyPath: m_LocalScale.y
+      value: 15.259
+      objectReference: {fileID: 0}
     - target: {fileID: 5679934989535551186, guid: 6083e9c00e147504096b5dbba6b3955b, type: 3}
       propertyPath: m_LocalPosition.x
-      value: -102.871544
+      value: -101.1
       objectReference: {fileID: 0}
     - target: {fileID: 5679934989535551186, guid: 6083e9c00e147504096b5dbba6b3955b, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 141.72433
+      value: 143.06
       objectReference: {fileID: 0}
     - target: {fileID: 5679934989535551186, guid: 6083e9c00e147504096b5dbba6b3955b, type: 3}
       propertyPath: m_LocalPosition.z
