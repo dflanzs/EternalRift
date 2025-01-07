@@ -44,7 +44,10 @@ public class Shoot : MonoBehaviour
         }
 
         // Detectar disparo automático
-        if (GameManager.Instance.autoShoot)
+        if(GameManager.Instance == null)
+            Debug.LogWarning("No has puesto el GameManager");
+
+        if (GameManager.Instance != null && GameManager.Instance.autoShoot)
         {
             DetectAndShootEnemy();
         }
@@ -96,8 +99,16 @@ public class Shoot : MonoBehaviour
 
                 Bullet bulletScript = bullet.GetComponent<Bullet>();
 
+                ShootDir dir = player.playerData.shootDir;
+                Vector3 direction;
+                 
+                if(dir == ShootDir.UP){
+                    direction = _gun.transform.up;
+                    bullet.transform.Rotate(new Vector3(0,0,90));
+                } else
+                    direction = _gun.transform.right;
 
-                Vector3 directionVector = _gun.transform.right * (weapon._speed + Math.Abs(player.CurrentVelocity.magnitude));
+                Vector3 directionVector = direction * (weapon._speed + Math.Abs(player.CurrentVelocity.magnitude));
                 Vector3 originVector = _gun.transform.position;
                 bulletScript.setWhoShot(true); // true si es el jugador, false si es un NPC
                 
@@ -105,7 +116,6 @@ public class Shoot : MonoBehaviour
                     bulletScript.setAnimation("rifleAnimation", directionVector.x);
                 else if(weapon.name == "Shootgun")
                     bulletScript.setAnimation("shotgunAnimation", directionVector.x);
-                
                 
                 bulletScript.shoot(directionVector, originVector, weapon._range, weapon._damage);
 

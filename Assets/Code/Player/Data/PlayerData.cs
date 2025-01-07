@@ -5,9 +5,9 @@ using UnityEngine;
 [CreateAssetMenu(fileName = "newPlayerData", menuName = "Data/Player Data/Base Data")]
 public class PlayerData : ScriptableObject
 {
-
     [Header("Move State")]
     public float movementVelocity = 13f;
+    public ShootDir shootDir = ShootDir.RIGHT;
 
     [Header("Jump State")]
     public float jumpVelocity = 50f;
@@ -37,5 +37,9 @@ public class PlayerData : ScriptableObject
     [Header("Mutation State")]
     public float mutatedJumpMultiplier = 1.5f;
     public float currentCharge = 0;
-
+}
+public enum ShootDir {
+    UP = 0,
+    LEFT = -1,
+    RIGHT = 1
 }

@@ -83,8 +83,10 @@ public class PlayerHealth : MonoBehaviour
 
     private void HandleFallDamage()
     {
+        if(GameManager.Instance == null)
+            Debug.LogWarning("No has puesto el GameManager");
 
-        if (GameManager.Instance.fallDamage)
+        if (GameManager.Instance != null && GameManager.Instance.fallDamage)
             return; // No aplicar daño si la opción de recibir daño está desactivada
 
 

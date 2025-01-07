@@ -108,6 +108,11 @@ public class Player : MonoBehaviour
             StopSprint();
         }
 
+        if(Input.GetKeyDown(KeyCode.W))
+            playerData.shootDir = ShootDir.UP;
+        else if(Input.GetKeyUp(KeyCode.W))
+            playerData.shootDir = FacingDirection > 0 ? ShootDir.RIGHT : ShootDir.LEFT;
+
         CurrentVelocity = RB.velocity;
         StateMachine.CurrentState.LogicUpdate();
     }
@@ -243,6 +248,8 @@ public class Player : MonoBehaviour
     private void Flip()
     {
         FacingDirection *= -1;
+        if(playerData.shootDir != ShootDir.UP)
+            playerData.shootDir = FacingDirection > 0 ? ShootDir.RIGHT : ShootDir.LEFT;
         transform.Rotate(0.0f, 180.0f, 0.0f);
     }
     public void ActivateMutation()
