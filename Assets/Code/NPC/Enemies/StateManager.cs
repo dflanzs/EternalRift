@@ -1,5 +1,6 @@
 using System;
 using UnityEngine;
+using System.Collections;
 
 public class StateManager : MonoBehaviour
 {
@@ -39,6 +40,13 @@ public class StateManager : MonoBehaviour
     private readonly float k_GroundedRadius = 0.2f;
     private Vector2 _startingPosition;
     private int _prevBulletHash;
+
+
+    //daño visual
+    public Color damageColor = Color.red;
+    private SpriteRenderer spriteRenderer;
+    private Color color_original;
+    public float damageEffectDuration = 0.5f;  // Duración del parpadeo
     #endregion
 
     #region Animations
@@ -67,6 +75,12 @@ public class StateManager : MonoBehaviour
         if(_player == null)
             _player = GameObject.FindGameObjectWithTag("Player");
     }
+    private void Awake()
+    {
+        spriteRenderer = GetComponent<SpriteRenderer>();
+        color_original = spriteRenderer.color;  // Guarda el color original
+    }
+
 
     private void OnEnable() {
         if(_player == null)
@@ -89,6 +103,7 @@ public class StateManager : MonoBehaviour
                     && _prevBulletHash != collidersNPC[i].gameObject.GetHashCode())
                 {
                     _prevBulletHash = collidersNPC[i].gameObject.GetHashCode();
+                    StartCoroutine(FlashDamageEffect());
                     health -= (int) collidersNPC[i].gameObject.GetComponent<Bullet>().Damage;
                 }
             }
@@ -415,4 +430,11 @@ public class StateManager : MonoBehaviour
         this.hashCode = characteristics.hashCode;
     }
     #endregion
+
+    private IEnumerator FlashDamageEffect()
+    {
+        spriteRenderer.color = damageColor;
+        yield return new WaitForSeconds(damageEffectDuration);
+        spriteRenderer.color = color_original;
+    }
 }
