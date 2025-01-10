@@ -112,10 +112,14 @@ public class Shoot : MonoBehaviour
                 Vector3 originVector = _gun.transform.position;
                 bulletScript.setWhoShot(true); // true si es el jugador, false si es un NPC
                 
-                if (weapon.name == "Sniper")
+                if (weapon.name == "Sniper"){
+                    bulletScript.ShotByShotgun(false);
                     bulletScript.setAnimation("rifleAnimation", directionVector.x);
-                else if(weapon.name == "Shootgun")
+                }
+                else if(weapon.name == "Shootgun"){
+                    bulletScript.ShotByShotgun(true);
                     bulletScript.setAnimation("shotgunAnimation", directionVector.x);
+                }
                 
                 bulletScript.shoot(directionVector, originVector, weapon._range, weapon._damage);
 

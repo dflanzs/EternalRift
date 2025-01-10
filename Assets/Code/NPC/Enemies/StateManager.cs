@@ -3,8 +3,6 @@ using UnityEngine;
 
 public class StateManager : MonoBehaviour
 {
-    // To use animation go to project window, click on the animation file, open debug mode, activate legacy 
-
     #region States
     public BaseState currentState;
     private BaseState prevState;
@@ -40,12 +38,10 @@ public class StateManager : MonoBehaviour
     private bool _focused = false, _grounded = false, _found = false;
     private readonly float k_GroundedRadius = 0.2f;
     private Vector2 _startingPosition;
+    private int _prevBulletHash;
     #endregion
 
     #region Animations
-    public AnimationClip attackAnimation;
-
-
     private SpriteAnimator spriteAnimator;
     public SpriteAnimator SpriteAnimator {get { return spriteAnimator; } }
     private new Animation animation;
@@ -54,23 +50,21 @@ public class StateManager : MonoBehaviour
     #region State Functions
     void Start()
     {
-        //Guardamos la posicion inicial para el objectPooling
+        // Store starting position for object pooling
         _startingPosition = transform.position;
-        hashCode = this.gameObject.GetHashCode();
+        hashCode = gameObject.GetHashCode();
+        
         currentState = moveState;
         prevState = null;
         currentState.EnterState(this, _player);
 
         attackableLayer = LayerMask.GetMask("Player");
 
-        // Cargamos las animaciones
+        // Load animations
         spriteAnimator = GetComponent<SpriteAnimator>();
 
-        if (!flies)
-        {
-            animation = GetComponent<Animation>();
-            animation.AddClip(attackAnimation, "attackAnimation");
-        }
+        if(_player == null)
+            _player = GameObject.FindGameObjectWithTag("Player");
     }
 
     private void OnEnable() {
@@ -87,13 +81,14 @@ public class StateManager : MonoBehaviour
         else 
         {
             Collider2D[] collidersNPC = Physics2D.OverlapCircleAll(transform.position, 1);
-
+            
             for(int i = 0; i < collidersNPC.Length; i++)
             {
-                if(collidersNPC[i].gameObject.CompareTag("Bullet"))
+                if(collidersNPC[i].gameObject.CompareTag("Bullet") 
+                    && _prevBulletHash != collidersNPC[i].gameObject.GetHashCode())
                 {
+                    _prevBulletHash = collidersNPC[i].gameObject.GetHashCode();
                     health -= (int) collidersNPC[i].gameObject.GetComponent<Bullet>().Damage;
-                    collidersNPC[i].gameObject.SetActive(false);
                 }
             }
 
@@ -129,6 +124,30 @@ public class StateManager : MonoBehaviour
 
         setGrounded(false);
         return false;
+    }
+
+    public bool checkCollsisionEnemy()
+    {
+        Collider2D[] colliderLeft = Physics2D.OverlapCircleAll(_playerCollisionCheckerLeft.position, k_GroundedRadius);
+        Collider2D[] colliderRight = Physics2D.OverlapCircleAll(_playerCollisionCheckerRight.position, k_GroundedRadius);
+
+        bool enemyCollsion = false;
+
+        for(int i = 0; i < colliderLeft.Length && !enemyCollsion;  i++)
+        {
+            if(colliderLeft[i].gameObject.CompareTag("npc"))
+            {
+                enemyCollsion = true;
+            }
+        }
+        
+        for(int i = 0; i < colliderRight.Length && !enemyCollsion;  i++)
+        {
+            if(colliderRight[i].gameObject.CompareTag("npc"))
+                enemyCollsion = true;
+        }
+
+        return enemyCollsion;
     }
 
     public bool checkFocus(Transform _fieldOfView)
@@ -225,9 +244,6 @@ public class StateManager : MonoBehaviour
             if (attackRC[i].collider.gameObject.GetComponent<Player>() != null)
             {
                 animation.Play("attackAnimation");
-                //TODO: Añadir knockback al jugador y un efecto visual                
-
-                // Solo un hit hace daño
                 _hit = true;
             }
         }

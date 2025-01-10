@@ -51,7 +51,7 @@ public class FocusedState : BaseState
             else
             {
                 npc.setPrevstate(npc.focusedState);
-                npc.setDirection(npc.getDirection()); // Cambiar la dirección
+                npc.setDirection(npc.getDirection()); // Change direction
                 npc.SwitchState(npc.idleState);   
             }
         }
@@ -86,7 +86,7 @@ public class FocusedState : BaseState
                         
                         npc.transform.localScale = _scale; 
                         
-                        // Calcular la dirección hacia el jugador
+                        // Calculate direction towards player (to know if we have to turn around)
                         direction = player.transform.position - npc.transform.position;
                         if (direction.x > 0)
                             npc.setDirection(1);
@@ -94,7 +94,7 @@ public class FocusedState : BaseState
                         else if(direction.x < 0)
                             npc.setDirection(-1);
 
-                        // Aplicar velocidad constante hacia el jugador
+                        // Apply constant speed towards the player
                         _currentSpeed = Mathf.MoveTowards(_currentSpeed, speed, _accel * Time.deltaTime);
                         rb.velocity = new Vector2(_prevDirection*Mathf.Clamp(_currentSpeed, -_maxVelocity, _maxVelocity), rb.velocity.y); 
 
@@ -106,14 +106,14 @@ public class FocusedState : BaseState
                         rb.velocity = new Vector2(0, rb.velocity.y);
 
                         npc.setPrevstate(npc.focusedState);
-                        npc.setDirection(_prevDirection); // Cambiar la dirección
+                        npc.setDirection(_prevDirection); // Change direction
                         npc.SwitchState(npc.idleState);
                     }
                 }
                 else
                 {
                     npc.setPrevstate(npc.focusedState);
-                    npc.setDirection(npc.getDirection()); // Cambiar la dirección
+                    npc.setDirection(npc.getDirection()); // Change direction
                     npc.SwitchState(npc.idleState);
                 }
             }
@@ -125,11 +125,8 @@ public class FocusedState : BaseState
 
     public override void OnCollisionEnter(StateManager npc, GameObject player)
     {
-        // Mantener la velocidad constante hacia el jugador incluso después de la colisión
+        // Maintain velocity even after collisioning with the player
         if (player.CompareTag("npcCollision"))
-        {
-            // Vector2 direction = (player.transform.position - npc.transform.position).normalized;
             rb.velocity = new Vector2(0, rb.velocity.y);
-        }
     }
 }

@@ -10,8 +10,7 @@ public class AttackState : BaseState
     public override void EnterState(StateManager npc, GameObject player)
     {
         _flies = npc.getFlies();
-        _timer = npc.getShootCooldown(); // Disparo instantaneo
-        //_timer = 0f; // Start cooldown from zero
+        _timer = npc.getShootCooldown(); // Instant shooting
         npc.setFocus(true);
     }
 
@@ -34,7 +33,6 @@ public class AttackState : BaseState
                 if (_timer >= npc.getShootCooldown())
                 {
                     npc.ShootBullet(npc, player);
-                    //npc.attack(npc, player.GetComponent<PlayerHealth>());
                     _timer = 0f;
                 }
             }
