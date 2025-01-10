@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -89,6 +90,16 @@ public class Player : MonoBehaviour
         CrouchMoveState = new PlayerCrouchMoveState(this, StateMachine, playerData, "crouchMove");
 
         FacingDirection = 1;
+
+        InputHandler.LookEvent += LookUp;
+        InputHandler.SprintEvent += Sprint;
+        InputHandler.RestartEvent += Restart;
+    }
+
+    void OnDisable(){
+        InputHandler.LookEvent -= LookUp;
+        InputHandler.SprintEvent -= Sprint;
+        InputHandler.RestartEvent -= Restart;
     }
 
     void Start()
@@ -100,26 +111,6 @@ public class Player : MonoBehaviour
 
     void Update()
     {
-        if (Input.GetKeyDown(KeyCode.Z))
-        {
-            // Restaura la escena actual
-            SceneManager.LoadScene(SceneManager.GetActiveScene().name);
-        }
-        // Comprobar si se est� presionando el bot�n "shift"
-        if (Input.GetButtonDown("shift")) // Detecta cuando se presiona
-        {
-            StartSprint();
-        }
-        else if (Input.GetButtonUp("shift")) // Detecta cuando se suelta
-        {
-            StopSprint();
-        }
-
-        if(Input.GetKeyDown(KeyCode.W))
-            playerData.shootDir = ShootDir.UP;
-        else if(Input.GetKeyUp(KeyCode.W))
-            playerData.shootDir = FacingDirection > 0 ? ShootDir.RIGHT : ShootDir.LEFT;
-
         CurrentVelocity = RB.velocity;
         StateMachine.CurrentState.LogicUpdate();
     }
@@ -267,16 +258,29 @@ public class Player : MonoBehaviour
         MutationResetEvent?.Invoke();
     }
 
-    private void StartSprint()
-    {
-        // Aumentar la velocidad del ScriptableObject
-        playerData.movementVelocity = 14f;
+    private void LookUp(bool up) {
+        if(up)
+            playerData.shootDir = ShootDir.UP;
+        else
+            playerData.shootDir = FacingDirection > 0 ? ShootDir.RIGHT : ShootDir.LEFT;
     }
 
-    private void StopSprint()
+    private void Sprint(bool sprint)
     {
-        // Restaurar la velocidad original
-        playerData.movementVelocity = 8f;
+        if(sprint)
+            playerData.movementVelocity = 14f;
+        else
+            playerData.movementVelocity = 8f;
+    }  
+
+    private void Restart()
+    {
+        SceneManager.LoadScene(SceneManager.GetActiveScene().name);
+    }
+
+    public static explicit operator Player(GameObject v)
+    {
+        throw new NotImplementedException();
     }
 
     #endregion
