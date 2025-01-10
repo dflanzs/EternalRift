@@ -1,10 +1,11 @@
+using System;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
 public class PlayerInputHandler : MonoBehaviour
 {
     public Vector2 RawMovementInput { get; private set; }
-    private PlayerInputSystem inputActions;
+    private PlayerInputSystem inputActions { get; set; }
 
     public int NormalizedInputX { get; private set; }
     public int NormalizedInputY { get; private set; }
@@ -15,6 +16,20 @@ public class PlayerInputHandler : MonoBehaviour
     // public bool DashInputStop { get; private set; }
 
     public bool ShootInput { get; private set; }
+
+    #region Events
+    
+    public delegate void LookEventHandler(bool up);
+    public delegate void SprintEventHandler(bool sprint);
+    public delegate void RestartEventHandler();
+    public delegate void ChangeWeaponEventHandler();
+
+    public event LookEventHandler LookEvent;
+    public event SprintEventHandler SprintEvent;
+    public event RestartEventHandler RestartEvent;
+    public event ChangeWeaponEventHandler ChangeWeapon;
+    
+    #endregion
 
     // So the player can't hold the jump button and jump forever
     [SerializeField]
@@ -38,12 +53,26 @@ public class PlayerInputHandler : MonoBehaviour
     {
         inputActions.Player.Move.performed += OnMoveInput;
         inputActions.Player.Move.canceled += OnMoveInput;
+
         inputActions.Player.Jump.performed += OnJumpInput;
         inputActions.Player.Jump.canceled += OnJumpInput;
+
         inputActions.Player.Dash.performed += OnDashInput;
         inputActions.Player.Dash.canceled += OnDashInput;
+
         inputActions.Player.Shoot.performed += OnShootInput;
         inputActions.Player.Shoot.canceled += OnShootInput;
+
+        inputActions.Player.LookUp.performed += OnLookUpInput;
+        inputActions.Player.LookUp.canceled += OnLookUpInput;
+
+        inputActions.Player.Sprint.performed += OnSprintInput;
+        inputActions.Player.Sprint.canceled += OnSprintInput;
+
+        inputActions.Player.Restart.performed += OnRestartInput;
+
+        inputActions.Player.Weapon.performed += OnWeaponInput;
+
         inputActions.Enable();
     }
 
@@ -51,12 +80,26 @@ public class PlayerInputHandler : MonoBehaviour
     {
         inputActions.Player.Move.performed -= OnMoveInput;
         inputActions.Player.Move.canceled -= OnMoveInput;
+
         inputActions.Player.Jump.performed -= OnJumpInput;
         inputActions.Player.Jump.canceled -= OnJumpInput;
+
         inputActions.Player.Dash.performed -= OnDashInput;
         inputActions.Player.Dash.canceled -= OnDashInput;
+
         inputActions.Player.Shoot.performed -= OnShootInput;
         inputActions.Player.Shoot.canceled -= OnShootInput;
+
+        inputActions.Player.LookUp.performed -= OnLookUpInput;
+        inputActions.Player.LookUp.canceled -= OnLookUpInput;
+
+        inputActions.Player.Sprint.performed -= OnSprintInput;
+        inputActions.Player.Sprint.canceled -= OnSprintInput;
+
+        inputActions.Player.Restart.performed += OnRestartInput;
+
+        inputActions.Player.Weapon.performed -= OnWeaponInput;
+
         inputActions.Disable();
     }
 
@@ -123,5 +166,30 @@ public class PlayerInputHandler : MonoBehaviour
     }
 
     public void UseDashInput() => DashInput = false;
+    
+    private void OnLookUpInput(InputAction.CallbackContext context) 
+    {
+        if(context.performed)
+            LookEvent?.Invoke(true);
+        else if (context.canceled)
+            LookEvent?.Invoke(false);
+    }
 
+    private void OnSprintInput(InputAction.CallbackContext context)
+    {
+        if(context.performed)
+            SprintEvent?.Invoke(true);
+        else if (context.canceled)
+            SprintEvent?.Invoke(false);
+    }
+
+    private void OnRestartInput(InputAction.CallbackContext context)
+    {
+        RestartEvent?.Invoke();
+    }
+    
+    private void OnWeaponInput(InputAction.CallbackContext context)
+    {
+        ChangeWeapon?.Invoke();
+    }
 }
