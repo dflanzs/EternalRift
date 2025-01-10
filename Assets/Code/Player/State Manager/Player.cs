@@ -24,8 +24,7 @@ public class Player : MonoBehaviour
     #endregion
 
     #region Mutation Variables
-    public bool IsMutated { get; private set; } 
-    public float MutatedJumpForceMultiplier = 1.5f;
+    public bool IsMutated { get; private set; }
     [SerializeField] private Tilemap tilemap;  // El Tilemap donde est�n los botones
     [SerializeField] private Tile openButtonTile;  // Tile de bot�n abierto
     [SerializeField] private Tile closedButtonTile; // Tile de bot�n cerrado
@@ -57,6 +56,16 @@ public class Player : MonoBehaviour
     private Vector2 lastSafePosition;
     #endregion
 
+    #region Events
+
+    public delegate void MutationBarEventHandler();
+    public delegate void MutationResetEventHandler();
+
+    public static event MutationBarEventHandler MutationBarEvent;
+    public static event MutationResetEventHandler MutationResetEvent;
+    
+    #endregion
+
     #region Unity Callback Functions
     void Awake()
     {
@@ -84,11 +93,9 @@ public class Player : MonoBehaviour
 
     void Start()
     {
-
-
         ResetMutation();
         StateMachine.Initialize(IdleState);
-
+        playerData.shootDir = ShootDir.RIGHT;
     }
 
     void Update()
@@ -107,6 +114,11 @@ public class Player : MonoBehaviour
         {
             StopSprint();
         }
+
+        if(Input.GetKeyDown(KeyCode.W))
+            playerData.shootDir = ShootDir.UP;
+        else if(Input.GetKeyUp(KeyCode.W))
+            playerData.shootDir = FacingDirection > 0 ? ShootDir.RIGHT : ShootDir.LEFT;
 
         CurrentVelocity = RB.velocity;
         StateMachine.CurrentState.LogicUpdate();
@@ -180,7 +192,7 @@ public class Player : MonoBehaviour
         Vector2 center = MovementCollider.offset;
         workspace.Set(MovementCollider.size.x, height);
 
-        center.y += (height - MovementCollider.size.y) / 2;
+        center.y -= (MovementCollider.size.y - height) / 2;
 
         MovementCollider.size = workspace;
         MovementCollider.offset = center;
@@ -227,8 +239,11 @@ public class Player : MonoBehaviour
             // Teletransporta al personaje a la �ltima posici�n segura
             transform.position = lastSafePosition;
         }
-
-
+        if (other.CompareTag("final"))
+        {
+            // Cambia a la escena "EscenaFinal"
+            SceneManager.LoadScene("copia_escena_1");
+        }
     }
 
     private void AnimationTrigger() => StateMachine.CurrentState.AnimationTrigger();
@@ -238,22 +253,18 @@ public class Player : MonoBehaviour
     private void Flip()
     {
         FacingDirection *= -1;
+        if(playerData.shootDir != ShootDir.UP)
+            playerData.shootDir = FacingDirection > 0 ? ShootDir.RIGHT : ShootDir.LEFT;
         transform.Rotate(0.0f, 180.0f, 0.0f);
     }
     public void ActivateMutation()
     {
-        if (!IsMutated) // Solo activar si a�n no est� activa
-        {
-            IsMutated = true;
-            playerData.jumpVelocity *= MutatedJumpForceMultiplier;
-        }
+        MutationBarEvent?.Invoke();
+        playerData.currentCharge = 0;
     }
     void ResetMutation()
     {
-        IsMutated = false;
-        MutatedJumpForceMultiplier = 1.5f;  // Restablecer al valor predeterminado
-        playerData.jumpVelocity = 20f;  // Restablecer el valor original de jumpVelocity
-        playerData.movementVelocity = 8f;
+        MutationResetEvent?.Invoke();
     }
 
     private void StartSprint()

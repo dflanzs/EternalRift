@@ -116,20 +116,12 @@ public class PlayerInputHandler : MonoBehaviour
             // DashInputStop = false;
             dashInputStartTime = Time.time;
         }
-
-        if (context.canceled)
+        else if (context.canceled)
         {
-            // DashInputStop = true;
+            UseDashInput();
         }
     }
 
     public void UseDashInput() => DashInput = false;
 
-    // private void CheckDashInputHoldTime()
-    // {
-    //     if (Time.time >= dashInputStartTime + inputHoldTime)
-    //     {
-    //         DashInput = false;
-    //     }
-    // }
 }

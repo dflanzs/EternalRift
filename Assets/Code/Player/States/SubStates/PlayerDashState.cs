@@ -13,6 +13,7 @@ public class PlayerDashState : PlayerAbilityState
 
     public PlayerDashState(Player player, PlayerStateMachine stateMachine, PlayerData playerData, string animBoolName) : base(player, stateMachine, playerData, animBoolName)
     {
+        lastDashTime = Time.time;
     }
 
     public override void Enter()
@@ -44,6 +45,7 @@ public class PlayerDashState : PlayerAbilityState
         if (Time.time >= dashStartTime + playerData.dashTime)
         {
             isAbilityDone = true;
+            lastDashTime = Time.time;
         }
 
         if (!isExitingState)
