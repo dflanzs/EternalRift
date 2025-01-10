@@ -22,26 +22,25 @@ namespace DeactivatedNPCns
         {  
             npcList = new List<DeactivatedNPCclass>();
             GameObject[] enemies = GameObject.FindGameObjectsWithTag("npc");
-            
-            foreach (GameObject enemy in enemies)
+            foreach (GameObject enemyFE in enemies)
             {
-                if (!enemy.GetComponent<StateManager>().getFound())
+                if (!enemyFE.GetComponent<StateManager>().getFound())
                 {
                     DeactivatedNPCclass deactivatedNPC = new DeactivatedNPCclass();
 
-                    enemy.GetComponent<StateManager>().setFound(true);
+                    enemyFE.GetComponent<StateManager>().setFound(true);
                     
-                    deactivatedNPC.characteristics = enemy.GetComponent<StateManager>().GetAllCharacteristics();
+                    deactivatedNPC.characteristics = enemyFE.GetComponent<StateManager>().GetAllCharacteristics();
 
-                    deactivatedNPC.flies = enemy.GetComponent<StateManager>().getFlies();
+                    deactivatedNPC.flies = enemyFE.GetComponent<StateManager>().getFlies();
                     
-                    deactivatedNPC.health = enemy.GetComponent<StateManager>().getHealth();
-                    deactivatedNPC.position = enemy.GetComponent<StateManager>().getStartingPosition();
+                    deactivatedNPC.health = enemyFE.GetComponent<StateManager>().getHealth();
+                    deactivatedNPC.position = enemyFE.GetComponent<StateManager>().getStartingPosition();
 
                     deactivatedNPC.isActivated = false;
                     
                     npcList.Add(deactivatedNPC);
-                    enemy.SetActive(false); // Desactivar el NPC inicialmente
+                    enemyFE.SetActive(false); // Desactivar el NPC inicialmente
                 }
             }
 
@@ -56,6 +55,7 @@ namespace DeactivatedNPCns
 
                 if (playerIsNear(deactivatedNPC.position) && !deactivatedNPC.isActivated)
                 {
+                    Debug.Log("playerNear");
                     if (deactivatedNPC.characteristics.flies)
                         enemy = ObjectPooling.Instance.requestInstance("Enemy2", deactivatedNPC.characteristics.hashCode);
                     if(!deactivatedNPC.characteristics.flies)
@@ -63,6 +63,8 @@ namespace DeactivatedNPCns
 
                     if (enemy != null)
                     {
+                        Debug.Log("Requesting enemy");
+
                         StateManager npc = enemy.GetComponent<StateManager>();
 
                         // Restore NPC characteristics

@@ -311,6 +311,7 @@ MonoBehaviour:
   _damage: 10
   _shootCooldown: 1
   _crystal: {fileID: 5877597639303525373, guid: 88b452f0cd8a1cf4892afe1c649d4cd5, type: 3}
+  animation: {fileID: 0}
 --- !u!111 &9010704031432317125
 Animation:
   m_ObjectHideFlags: 0
@@ -320,8 +321,9 @@ Animation:
   m_GameObject: {fileID: 3029641940581615907}
   m_Enabled: 1
   serializedVersion: 3
-  m_Animation: {fileID: 0}
-  m_Animations: []
+  m_Animation: {fileID: 7400000, guid: c7b7a0e1174e366378ea81c08bf91a33, type: 2}
+  m_Animations:
+  - {fileID: 7400000, guid: c7b7a0e1174e366378ea81c08bf91a33, type: 2}
   m_WrapMode: 0
   m_PlayAutomatically: 1
   m_AnimatePhysics: 0
