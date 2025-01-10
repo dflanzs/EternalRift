@@ -22,6 +22,10 @@ TagManager:
   - ButtonOpen
   - puerta
   - final
+  - MensajeCuidado
+  - DialogueTrigger
+  - MensajeCristal
+  - MensajeFinal
   layers:
   - Default
   - TransparentFX

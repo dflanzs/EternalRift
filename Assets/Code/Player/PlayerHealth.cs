@@ -113,11 +113,7 @@ public class PlayerHealth : MonoBehaviour
 
     private void OnCollisionEnter2D(Collision2D collision)
     {
-        // Daño por agua (escena tutorial)
-        if (collision.gameObject.CompareTag("Agua") || collision.gameObject.CompareTag("malo"))
-        {
-            SceneManager.LoadScene(SceneManager.GetActiveScene().name);
-        }
+        
 
         // Daño por contacto con enemigo
         if (collision.gameObject.CompareTag("npc"))
@@ -139,6 +135,8 @@ public class PlayerHealth : MonoBehaviour
         {
             TakeDamage(10); // Ajustar el daño según sea necesario
         }
+
+        
     }
 
     // Método para recuperar vida (opcional)
