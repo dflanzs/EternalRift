@@ -10,30 +10,30 @@ public class AttackState : BaseState
     public override void EnterState(StateManager npc, GameObject player)
     {
         _flies = npc.getFlies();
-        _timer = npc.getShootCooldown(); // Disparo instantaneo
+        _timer = npc.getShootCooldown(); // Instant shooting
         npc.setFocus(true);
     }
 
     public override void UpdateState(StateManager npc, GameObject player, Transform _groundChecker, Transform _fieldOfView)
     {
+        if (!npc.SpriteAnimator.IsPlaying("idleAnimation"))
+            npc.idle();
+        
         if (_flies)
         {
             focusRC = Physics2D.Raycast(npc.transform.position, npc.getTarget(player, npc), Mathf.Infinity, LayerMask.GetMask("Ground", "Player"));
 
-            if (focusRC.collider != null && focusRC.collider.CompareTag("Player") || focusRC.collider.CompareTag("npcCollision"))
+            if (focusRC.collider != null && (focusRC.collider.CompareTag("Player") || focusRC.collider.CompareTag("npcCollision")))
                 npc.setFocus(npc.checkFocus(_fieldOfView));
 
             if (npc.getFocus())
             {
-                if (_timer < npc.getShootCooldown())
-                    _timer += Time.deltaTime;
-                else
+                _timer += Time.deltaTime;
+
+                if (_timer >= npc.getShootCooldown())
                 {
                     npc.ShootBullet(npc, player);
-                    //player.GetComponent<Player>().Health -= npc.getDamage();
-                    npc.attack(npc, player.GetComponent<PlayerHealth>());
-
-                    _timer = 0;
+                    _timer = 0f;
                 }
             }
             else
@@ -50,7 +50,7 @@ public class AttackState : BaseState
                     _timer += Time.deltaTime;
                 else
                 {
-                    npc.attack(npc, player.GetComponent<PlayerHealth>());
+                    npc.attack();
                     _timer = 0;
                 }
             }
@@ -70,8 +70,5 @@ public class AttackState : BaseState
         Gizmos.DrawWireSphere(npc.getGun().transform.position, npc.getShootRange());    
     }
 
-    public override void OnCollisionEnter(StateManager npc, GameObject player)
-    {
-
-    }
+    public override void OnCollisionEnter(StateManager npc, GameObject player) { }
 }

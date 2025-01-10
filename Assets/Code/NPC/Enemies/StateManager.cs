@@ -3,8 +3,6 @@ using UnityEngine;
 
 public class StateManager : MonoBehaviour
 {
-    // To use animation go to project window, click on the animation file, open debug mode, activate legacy 
-
     #region States
     public BaseState currentState;
     private BaseState prevState;
@@ -40,19 +38,34 @@ public class StateManager : MonoBehaviour
     private bool _focused = false, _grounded = false, _found = false;
     private readonly float k_GroundedRadius = 0.2f;
     private Vector2 _startingPosition;
+    private int _prevBulletHash;
+    #endregion
+
+    #region Animations
+    private SpriteAnimator spriteAnimator;
+    public SpriteAnimator SpriteAnimator {get { return spriteAnimator; } }
+    [SerializeField] private new Animation animation;
     #endregion
 
     #region State Functions
     void Start()
     {
-        //Guardamos la posicion inicial para el objectPooling
+        // Store starting position for object pooling
         _startingPosition = transform.position;
-        hashCode = this.gameObject.GetHashCode();
+        hashCode = gameObject.GetHashCode();
+        
         currentState = moveState;
         prevState = null;
         currentState.EnterState(this, _player);
 
         attackableLayer = LayerMask.GetMask("Player");
+
+        // Load animations
+        spriteAnimator = GetComponent<SpriteAnimator>();
+        animation = GetComponent<Animation>();
+        
+        if(_player == null)
+            _player = GameObject.FindGameObjectWithTag("Player");
     }
 
     private void OnEnable() {
@@ -69,11 +82,14 @@ public class StateManager : MonoBehaviour
         else 
         {
             Collider2D[] collidersNPC = Physics2D.OverlapCircleAll(transform.position, 1);
-
-            for(int i = 0; i < collidersNPC.Length; i++){
-                if(collidersNPC[i].gameObject.CompareTag("Bullet")){
+            
+            for(int i = 0; i < collidersNPC.Length; i++)
+            {
+                if(collidersNPC[i].gameObject.CompareTag("Bullet") 
+                    && _prevBulletHash != collidersNPC[i].gameObject.GetHashCode())
+                {
+                    _prevBulletHash = collidersNPC[i].gameObject.GetHashCode();
                     health -= (int) collidersNPC[i].gameObject.GetComponent<Bullet>().Damage;
-                    collidersNPC[i].gameObject.SetActive(false);
                 }
             }
 
@@ -98,8 +114,10 @@ public class StateManager : MonoBehaviour
         Collider2D[] collidersGC = Physics2D.OverlapCircleAll(_groundChecker.position, k_GroundedRadius);
 
         // Check if the player is touching ground
-        for(int i = 0;i < collidersGC.Length && !_grounded;i++){
-            if(collidersGC[i].gameObject.CompareTag("Platform")){
+        for(int i = 0;i < collidersGC.Length && !_grounded;i++)
+        {
+            if(collidersGC[i].gameObject.CompareTag("Platform"))
+            {
                 setGrounded(true);
                 return true;
             }
@@ -109,13 +127,38 @@ public class StateManager : MonoBehaviour
         return false;
     }
 
+    public bool checkCollsisionEnemy()
+    {
+        Collider2D[] colliderLeft = Physics2D.OverlapCircleAll(_playerCollisionCheckerLeft.position, k_GroundedRadius);
+        Collider2D[] colliderRight = Physics2D.OverlapCircleAll(_playerCollisionCheckerRight.position, k_GroundedRadius);
+
+        bool enemyCollsion = false;
+
+        for(int i = 0; i < colliderLeft.Length && !enemyCollsion;  i++)
+        {
+            if(colliderLeft[i].gameObject.CompareTag("npc"))
+            {
+                enemyCollsion = true;
+            }
+        }
+        
+        for(int i = 0; i < colliderRight.Length && !enemyCollsion;  i++)
+        {
+            if(colliderRight[i].gameObject.CompareTag("npc"))
+                enemyCollsion = true;
+        }
+
+        return enemyCollsion;
+    }
+
     public bool checkFocus(Transform _fieldOfView)
     {
         Collider2D[] collidersFOV = Physics2D.OverlapCircleAll(_fieldOfView.position, _fieldOfView.gameObject.GetComponent<CircleCollider2D>().radius);
     
-        for(int i = 0; i < collidersFOV.Length && !_focused; i++){
-            
-            if(collidersFOV[i].gameObject.CompareTag("Player")){
+        for(int i = 0; i < collidersFOV.Length && !_focused; i++)
+        {
+            if(collidersFOV[i].gameObject.CompareTag("Player"))
+            {
                 setFocus(true);
                 return true;
             }
@@ -132,16 +175,18 @@ public class StateManager : MonoBehaviour
         
         bool playerCollision = false;
 
-        for(int i = 0; i < colliderLeft.Length && !playerCollision;  i++){
-            if(colliderLeft[i].gameObject.CompareTag("Player")){
+        for(int i = 0; i < colliderLeft.Length && !playerCollision;  i++)
+        {
+            if(colliderLeft[i].gameObject.CompareTag("Player"))
+            {
                 playerCollision = true;
             }
         }
         
-        for(int i = 0; i < colliderRight.Length && !playerCollision;  i++){
-            if(colliderRight[i].gameObject.CompareTag("Player")){
+        for(int i = 0; i < colliderRight.Length && !playerCollision;  i++)
+        {
+            if(colliderRight[i].gameObject.CompareTag("Player"))
                 playerCollision = true;
-            }
         }
 
         return playerCollision;
@@ -174,6 +219,7 @@ public class StateManager : MonoBehaviour
 
             Bullet bulletScript = enemyBullet.GetComponent<Bullet>();
             bulletScript.setWhoShot(false);
+            bulletScript.setAnimation("bulletAnimation", -1);
             
             Vector3 directionVector = getBulletSpeed() * getTarget(player, npc);
             Vector3 originVector = _gun.transform.position;
@@ -185,25 +231,37 @@ public class StateManager : MonoBehaviour
         }   
     }
 
-    public void attack(StateManager npc, PlayerHealth player)
+    #endregion
+    
+    #region Animation playing
+    public void attack()
     {
-        Animation animation = npc.gameObject.GetComponent<Animation>();
-        //animation["Enemy1"].layer = 0;
-
         bool _hit = false;
-        attackRC = Physics2D.CircleCastAll(npc.getGun().transform.position, npc.getShootRange(), npc.getGun().transform.position, attackableLayer);
+        if (animation.IsPlaying("attackAnimation"))
+            animation.Stop();
+        
+        attackRC = Physics2D.CircleCastAll(getGun().transform.position, getShootRange(), getGun().transform.position, attackableLayer);
 
         for (int i = 0; i < attackRC.Length && !_hit; i++)
         {
             if (attackRC[i].collider.gameObject.GetComponent<Player>() != null)
             {
-                //animation.Play("Enemy1");
-                //TODO: Añadir knockback al jugador y un efecto visual                
-
-                // Solo un hit hace daño
+                animation.Play("attackAnimation");
                 _hit = true;
             }
         }
+    }
+    public void walk()
+    {
+        //animation.Stop();
+        spriteAnimator.Play("walkAnimation", true);
+        //animation.Play("walkAnimation");
+    }
+
+    public void idle()
+    {
+        //animation.Stop();
+        spriteAnimator.Play("idleAnimation", true);
     }
     #endregion
 

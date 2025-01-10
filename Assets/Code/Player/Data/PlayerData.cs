@@ -5,9 +5,9 @@ using UnityEngine;
 [CreateAssetMenu(fileName = "newPlayerData", menuName = "Data/Player Data/Base Data")]
 public class PlayerData : ScriptableObject
 {
-
     [Header("Move State")]
     public float movementVelocity = 13f;
+    public ShootDir shootDir = ShootDir.RIGHT;
 
     [Header("Jump State")]
     public float jumpVelocity = 50f;
@@ -22,7 +22,6 @@ public class PlayerData : ScriptableObject
     public float dashVelocity = 100f;
     public float dashCooldown = 1f;
     public float dashTime = 0.2f;
-    public float dashWhileMovingMultiplier = 2.5f;
 
     [Header("Crouch State")]
     public float crouchMovementVelocity = 5f;
@@ -37,5 +36,11 @@ public class PlayerData : ScriptableObject
     [Header("Mutation State")]
     public float mutatedJumpMultiplier = 1.5f;
     public float currentCharge = 0;
-
+    public bool cooldownWeapons = false;
+    public float cooldownFactor = 0.5f;
+}
+public enum ShootDir {
+    UP = 0,
+    LEFT = -1,
+    RIGHT = 1
 }

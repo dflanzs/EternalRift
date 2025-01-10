@@ -107,25 +107,53 @@ public class ObjectPooling : MonoBehaviour
         } 
         else if (objectType == "Enemy1")
         {
-            for (int i = 0; i < enemy1Pool.Count; i++)
+            if (enemy1Pool == null)
             {
-                enemy1Pool.TryGetValue(hashCode, out auxGO);
-                if (!auxGO.activeSelf)
-                {
-                    return auxGO;
-                }
+                Debug.LogError("enemy1Pool is null");
+                return null;
+            }
+
+            if (!enemy1Pool.TryGetValue(hashCode, out auxGO))
+            {
+                Debug.LogError($"No enemy1 found with hashCode: {hashCode}");
+                return null;
+            }
+
+            if (auxGO == null)
+            {
+                Debug.LogError("auxGO is null for Enemy1");
+                return null;
+            }
+
+            if (!auxGO.activeSelf)
+            {
+                return auxGO;
             }
             return null;
         } 
         else if (objectType == "Enemy2")
         {
-            for (int i = 0; i < enemy2Pool.Count; i++)
+            if (enemy2Pool == null)
             {
-                enemy2Pool.TryGetValue(hashCode, out auxGO);
-                if (!auxGO.activeSelf)
-                {
-                    return auxGO;
-                }
+                Debug.LogError("enemy2Pool is null");
+                return null;
+            }
+
+            if (!enemy2Pool.TryGetValue(hashCode, out auxGO))
+            {
+                Debug.LogError($"No enemy2 found with hashCode: {hashCode}");
+                return null;
+            }
+
+            if (auxGO == null)
+            {
+                Debug.LogError("auxGO is null for Enemy2");
+                return null;
+            }
+
+            if (!auxGO.activeSelf)
+            {
+                return auxGO;
             }
             return null;
         } 

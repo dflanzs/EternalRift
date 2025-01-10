@@ -1,3 +1,4 @@
+using System.Threading;
 using UnityEngine;
 
 public class MoveState : BaseState
@@ -12,6 +13,9 @@ public class MoveState : BaseState
     private int _direction;
     private bool _flies;
     private RaycastHit2D focusRC;
+    private readonly float _waitingTime = 0.5f;
+    private float _timer;
+    private Vector3 _lastPosition;
 
     public override void EnterState(StateManager npc, GameObject player)
     {
@@ -29,14 +33,19 @@ public class MoveState : BaseState
 
         _direction = npc.getDirection();
         _flies = npc.getFlies();
+
+        _timer = 0;
     }
 
     public override void UpdateState(StateManager npc, GameObject player, Transform _groundChecker, Transform _fieldOfView)
-    {        
+    {
         _grounded = npc.checkGrounded(_groundChecker);
-        
+
         if (_flies)
         {
+            if (!npc.SpriteAnimator.IsPlaying("idleAnimation"))
+                npc.idle();
+            
             focusRC = Physics2D.Raycast(npc.transform.position, npc.getTarget(player, npc), Mathf.Infinity, LayerMask.GetMask("Ground", "Player"));
 
             if (focusRC.collider != null && focusRC.collider.CompareTag("Player") || focusRC.collider.CompareTag("npcCollision"))
@@ -51,7 +60,7 @@ public class MoveState : BaseState
             {
                 if (!_grounded)
                 {
-                    // Aplicar velocidad constante hacia el jugador
+                    // Apply constant velocity
                     _currentSpeed = Mathf.MoveTowards(_currentSpeed, speed, _accel * Time.deltaTime);
                     rb.velocity = new Vector2(_direction*Mathf.Clamp(_currentSpeed, -_maxVelocity, _maxVelocity), rb.velocity.y);
                 } 
@@ -80,9 +89,36 @@ public class MoveState : BaseState
             }
             else
             {
-                if(_grounded){
+                if(_grounded)
+                {
+                    // TODO: Change how enemy collisions are handled (rn like walls by waiting, 
+                    // but it shuold be like ground with the function checkCollsiionEnemy() in StateManager)
                     _currentSpeed = Mathf.MoveTowards(_currentSpeed, speed, _accel * Time.deltaTime);
                     rb.velocity = new Vector2(_direction * Mathf.Clamp(_currentSpeed, -_maxVelocity, _maxVelocity), rb.velocity.y);
+                    
+                    if (!npc.SpriteAnimator.IsPlaying("walkAnimation"))
+                        npc.walk();
+
+
+                    if (_lastPosition.Equals(npc.gameObject.transform.position))
+                    {
+                        if (_timer >= _waitingTime)
+                        {
+                            // Enemy is stuck, switch to idle state
+                            npc.setPrevstate(npc.moveState);
+                            npc.SwitchState(npc.idleState);
+                        }    
+                        else
+                        {
+                            // Update timer and last position
+                            _timer += Time.deltaTime;
+                        }
+                    }
+                    else
+                        _timer = 0;
+
+                    // Update position always
+                    _lastPosition = npc.gameObject.transform.position;
                 }
                 else
                 {

@@ -22,28 +22,25 @@ namespace DeactivatedNPCns
         {  
             npcList = new List<DeactivatedNPCclass>();
             GameObject[] enemies = GameObject.FindGameObjectsWithTag("npc");
-            
-            foreach (GameObject enemy in enemies)
+            foreach (GameObject enemyFE in enemies)
             {
-                Debug.Log($"NPC Starting Position: {enemy.GetComponent<StateManager>().getStartingPosition()}");
-
-                if (!enemy.GetComponent<StateManager>().getFound())
+                if (!enemyFE.GetComponent<StateManager>().getFound())
                 {
                     DeactivatedNPCclass deactivatedNPC = new DeactivatedNPCclass();
 
-                    enemy.GetComponent<StateManager>().setFound(true);
+                    enemyFE.GetComponent<StateManager>().setFound(true);
                     
-                    deactivatedNPC.characteristics = enemy.GetComponent<StateManager>().GetAllCharacteristics();
+                    deactivatedNPC.characteristics = enemyFE.GetComponent<StateManager>().GetAllCharacteristics();
 
-                    deactivatedNPC.flies = enemy.GetComponent<StateManager>().getFlies();
+                    deactivatedNPC.flies = enemyFE.GetComponent<StateManager>().getFlies();
                     
-                    deactivatedNPC.health = enemy.GetComponent<StateManager>().getHealth();
-                    deactivatedNPC.position = enemy.GetComponent<StateManager>().getStartingPosition();
+                    deactivatedNPC.health = enemyFE.GetComponent<StateManager>().getHealth();
+                    deactivatedNPC.position = enemyFE.GetComponent<StateManager>().getStartingPosition();
 
                     deactivatedNPC.isActivated = false;
                     
                     npcList.Add(deactivatedNPC);
-                    enemy.SetActive(false); // Desactivar el NPC inicialmente
+                    enemyFE.SetActive(false); // Desactivar el NPC inicialmente
                 }
             }
 
@@ -52,31 +49,29 @@ namespace DeactivatedNPCns
 
         void Update()
         {
-            Debug.Log("count " + npcList.Count);
             for (int i = 0; i < npcList.Count; i++)
             {
                 DeactivatedNPCclass deactivatedNPC = npcList[i];
 
                 if (playerIsNear(deactivatedNPC.position) && !deactivatedNPC.isActivated)
                 {
-                    if (deactivatedNPC.characteristics.flies){
-                        Debug.Log("Enemy2");
+                    Debug.Log("playerNear");
+                    if (deactivatedNPC.characteristics.flies)
                         enemy = ObjectPooling.Instance.requestInstance("Enemy2", deactivatedNPC.characteristics.hashCode);
-                    }
-                    if(!deactivatedNPC.characteristics.flies){
-                        Debug.Log("Enemy1");
+                    if(!deactivatedNPC.characteristics.flies)
                         enemy = ObjectPooling.Instance.requestInstance("Enemy1", deactivatedNPC.characteristics.hashCode);
-                    }
 
                     if (enemy != null)
                     {
+                        Debug.Log("Requesting enemy");
+
                         StateManager npc = enemy.GetComponent<StateManager>();
 
-                        // Restaurar las características del npc
+                        // Restore NPC characteristics
                         npc.SetAllCharacteristics(deactivatedNPC.characteristics);
 
                         enemy.transform.position = deactivatedNPC.position;
-                        npc.setHealth(deactivatedNPC.health);
+                        npc.setHealth(deactivatedNPC.health); // Ensure health is set correctly
                         npc.setFlies(deactivatedNPC.flies);
 
                         npc.deactivatedNPC = deactivatedNPC;
@@ -84,7 +79,7 @@ namespace DeactivatedNPCns
                         npc.setPrevstate(npc.deactivatedState);
                         npc.SwitchState(npc.idleState);
 
-                        // Marcar el enemigo original como activo para evitar duplicados
+                        // Mark the original enemy as active to avoid duplicates
                         enemy.SetActive(true);
                         deactivatedNPC.isActivated = true;
                         npcList[i] = deactivatedNPC;
