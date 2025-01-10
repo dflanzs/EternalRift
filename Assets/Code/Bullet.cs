@@ -5,14 +5,13 @@ public class Bullet : MonoBehaviour
     [SerializeField] private float k_GroundedRadius= 2f;
     private int _damage;
     private  bool _shotByPlayer;
-    public int Damage { get { return _damage; } }
+    public float Damage { get { return _damage; } }
 
     private SpriteAnimator spriteAnimator;
     private new string animation;
     private Vector3 _originVector;
     private float _spriteDirection;
     private bool _shotgun, _collision;
-    private PlayerHealth _playerHealth;
 
     [SerializeField] private Rigidbody2D _rigid;
 
@@ -21,7 +20,6 @@ public class Bullet : MonoBehaviour
         _rigid = GetComponent<Rigidbody2D>();
         spriteAnimator = GetComponent<SpriteAnimator>();
         _collision = false;
-        _playerHealth = GameObject.FindGameObjectWithTag("Player").GetComponent<PlayerHealth>();
     }
 
     void Update()
@@ -55,7 +53,6 @@ public class Bullet : MonoBehaviour
                     for(int i = 0; i < collisions.Length && !_collision;  i++){
                         if(collisions[i].gameObject.CompareTag("npc")){
                             _collision = true;
-                            _playerHealth.TakeDamage(_damage);
                         }
                     }
                     //  Disparos por el player solo para los enemigos
@@ -74,6 +71,8 @@ public class Bullet : MonoBehaviour
                     if(collisions[i].gameObject.CompareTag("Player"))
                     {
                         _collision = true;
+                        collisions[i].gameObject.GetComponent<PlayerHealth>().TakeDamage(_damage);
+
                     }
                 }
                 if (_collision)

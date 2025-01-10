@@ -234,7 +234,7 @@ public class StateManager : MonoBehaviour
     #endregion
     
     #region Animation playing
-    public void attack(PlayerHealth playerHealth)
+    public void attack()
     {
         bool _hit = false;
         if (animation.IsPlaying("attackAnimation"))
@@ -247,7 +247,14 @@ public class StateManager : MonoBehaviour
             if (attackRC[i].collider.gameObject.GetComponent<Player>() != null)
             {
                 animation.Play("attackAnimation");
-                playerHealth.TakeDamage(_damage);
+                PlayerHealth ph = attackRC[i].collider.gameObject.GetComponent<PlayerHealth>();
+                if (ph == null)
+                {
+                    Debug.LogWarning("ph is null");
+                }
+                else
+                    ph.TakeDamage(_damage);
+            
                 _hit = true;
             }
         }
