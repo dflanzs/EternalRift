@@ -199,7 +199,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   playerData: {fileID: 11400000, guid: f44a0ce5a9b83a948a2dfaa764e2ce41, type: 2}
-  MutatedJumpForceMultiplier: 1.5
   tilemap: {fileID: 0}
   openButtonTile: {fileID: 11400000, guid: 48c368ebd5ff0b942bf207bde1eeb977, type: 2}
   closedButtonTile: {fileID: 11400000, guid: 41b58566a0b90004994eb0b067909b61, type: 2}
@@ -333,6 +332,8 @@ MonoBehaviour:
   healthBar: {fileID: 0}
   fallThreshold: 15
   fallDamagePerUnit: 1
+  damageColor: {r: 1, g: 0, b: 0, a: 1}
+  damageEffectDuration: 0.5
   groundCheck: {fileID: 1905046544460231677}
   groundCheckRadius: 0.2
   groundLayer:
@@ -454,6 +455,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a39293c86e06dcde98e7517c5d0c97cb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _player: {fileID: 5073718179109900588}
   scriptShoot: {fileID: 4187580123899886668}
   weapons: []
 --- !u!1 &8610688665059887902
