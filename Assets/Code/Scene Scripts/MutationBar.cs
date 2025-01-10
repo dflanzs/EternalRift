@@ -18,13 +18,14 @@ public class MutationBar : MonoBehaviour
     {
         playerData = player.playerData;
         // Asegura que la carga se resetee al iniciar la escena
-        ResetCharge();
+        //ResetCharge();
         mutationBarUi.UpdateBar(playerData.currentCharge, maxCharge); // Asegura que la UI refleje el progreso actual
         AddCharge(0);
     }
 
     public void AddCharge(float amount)
     {
+        Debug.LogWarning($"{playerData.currentCharge} + {amount}");
         playerData.currentCharge += amount;
         mutationBarUi.UpdateBar(playerData.currentCharge, maxCharge);
 
