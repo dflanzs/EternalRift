@@ -25,7 +25,7 @@ public class StateManager : MonoBehaviour
     [SerializeField] private int health;
     [SerializeField] private float _bulletSpeed = 10f;
     [SerializeField] private float _shootRange = 10f;
-    [SerializeField] private float _damage = 10f;
+    [SerializeField] private int _damage = 10;
     [SerializeField] private float _shootCooldown = 1f;
     [SerializeField] private GameObject _crystal;
 
@@ -234,7 +234,7 @@ public class StateManager : MonoBehaviour
     #endregion
     
     #region Animation playing
-    public void attack()
+    public void attack(PlayerHealth playerHealth)
     {
         bool _hit = false;
         if (animation.IsPlaying("attackAnimation"))
@@ -247,6 +247,7 @@ public class StateManager : MonoBehaviour
             if (attackRC[i].collider.gameObject.GetComponent<Player>() != null)
             {
                 animation.Play("attackAnimation");
+                playerHealth.TakeDamage(_damage);
                 _hit = true;
             }
         }
@@ -331,11 +332,11 @@ public class StateManager : MonoBehaviour
         _shootRange = shootRange;
     }
 
-    public float getDamage()
+    public int getDamage()
     {
         return _damage;
     }
-    public void setDamage(float damage)
+    public void setDamage(int damage)
     {
         _damage = damage;
     }
@@ -374,7 +375,7 @@ public class StateManager : MonoBehaviour
         public int health;
         public float bulletSpeed;
         public float shootRange;
-        public float damage;
+        public int damage;
         public float shootCooldown;
         public GameObject crystal;
         public int direction;

@@ -50,7 +50,7 @@ public class AttackState : BaseState
                     _timer += Time.deltaTime;
                 else
                 {
-                    npc.attack();
+                    npc.attack(player.GetComponent<PlayerHealth>());
                     _timer = 0;
                 }
             }

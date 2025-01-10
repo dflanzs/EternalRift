@@ -3,15 +3,16 @@ public class Bullet : MonoBehaviour
 {
     private float _range;
     [SerializeField] private float k_GroundedRadius= 2f;
-    private float _damage;
+    private int _damage;
     private  bool _shotByPlayer;
-    public float Damage { get { return _damage; } }
+    public int Damage { get { return _damage; } }
 
     private SpriteAnimator spriteAnimator;
     private new string animation;
     private Vector3 _originVector;
     private float _spriteDirection;
     private bool _shotgun, _collision;
+    private PlayerHealth _playerHealth;
 
     [SerializeField] private Rigidbody2D _rigid;
 
@@ -20,6 +21,7 @@ public class Bullet : MonoBehaviour
         _rigid = GetComponent<Rigidbody2D>();
         spriteAnimator = GetComponent<SpriteAnimator>();
         _collision = false;
+        _playerHealth = GameObject.FindGameObjectWithTag("Player").GetComponent<PlayerHealth>();
     }
 
     void Update()
@@ -53,6 +55,7 @@ public class Bullet : MonoBehaviour
                     for(int i = 0; i < collisions.Length && !_collision;  i++){
                         if(collisions[i].gameObject.CompareTag("npc")){
                             _collision = true;
+                            _playerHealth.TakeDamage(_damage);
                         }
                     }
                     //  Disparos por el player solo para los enemigos
@@ -69,7 +72,9 @@ public class Bullet : MonoBehaviour
             {
                 for(int i = 0; i < collisions.Length && !_collision;  i++){
                     if(collisions[i].gameObject.CompareTag("Player"))
+                    {
                         _collision = true;
+                    }
                 }
                 if (_collision)
                 {
@@ -88,7 +93,7 @@ public class Bullet : MonoBehaviour
         }
     }
 
-    public void shoot(Vector3 movement,Vector3 originVector,float range,float damage)
+    public void shoot(Vector3 movement,Vector3 originVector,float range,int damage)
     {
         _range = range;
         _damage = damage;
