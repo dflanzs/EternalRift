@@ -305,13 +305,12 @@ MonoBehaviour:
   _fieldOfView: {fileID: 4112436093051482115}
   _gun: {fileID: 5528387681031065679}
   flies: 0
-  health: 100
+  health: 50
   _bulletSpeed: 10
   _shootRange: 1
   _damage: 10
   _shootCooldown: 1
   _crystal: {fileID: 5877597639303525373, guid: 88b452f0cd8a1cf4892afe1c649d4cd5, type: 3}
-  attackAnimation: {fileID: 7400000, guid: c7b7a0e1174e366378ea81c08bf91a33, type: 2}
 --- !u!111 &9010704031432317125
 Animation:
   m_ObjectHideFlags: 0

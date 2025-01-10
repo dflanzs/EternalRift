@@ -38,6 +38,7 @@ public class StateManager : MonoBehaviour
     private bool _focused = false, _grounded = false, _found = false;
     private readonly float k_GroundedRadius = 0.2f;
     private Vector2 _startingPosition;
+    private int _prevBulletHash;
     #endregion
 
     #region Animations
@@ -80,13 +81,14 @@ public class StateManager : MonoBehaviour
         else 
         {
             Collider2D[] collidersNPC = Physics2D.OverlapCircleAll(transform.position, 1);
-
+            
             for(int i = 0; i < collidersNPC.Length; i++)
             {
-                if(collidersNPC[i].gameObject.CompareTag("Bullet"))
+                if(collidersNPC[i].gameObject.CompareTag("Bullet") 
+                    && _prevBulletHash != collidersNPC[i].gameObject.GetHashCode())
                 {
+                    _prevBulletHash = collidersNPC[i].gameObject.GetHashCode();
                     health -= (int) collidersNPC[i].gameObject.GetComponent<Bullet>().Damage;
-                    collidersNPC[i].gameObject.SetActive(false);
                 }
             }
 
