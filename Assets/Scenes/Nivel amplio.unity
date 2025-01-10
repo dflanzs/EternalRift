@@ -66853,12 +66853,12 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   bulletPrefab: {fileID: 5574008668113540788, guid: 70ad070ea6ec495bc965bfacf091a2ab, type: 3}
-  enemy1Prefab: {fileID: 0}
-  enemy2Prefab: {fileID: 0}
-  enemyBullet: {fileID: 0}
+  enemy1Prefab: {fileID: 3029641940581615907, guid: 8bd64c6732e1e8b4da960f60184b7914, type: 3}
+  enemy2Prefab: {fileID: 3029641940581615907, guid: 18ff14843dcf45046b8a3bf5f93c51ea, type: 3}
+  enemyBullet: {fileID: 3166457267423469801, guid: ffe07451ab2180d74847841561e39634, type: 3}
   bulletsPoolSize: 10
-  enemiesPoolSize: 0
-  enemyBulletsPoolSize: 0
+  enemiesPoolSize: 10
+  enemyBulletsPoolSize: 10
 --- !u!4 &939735100
 Transform:
   m_ObjectHideFlags: 0
@@ -71025,6 +71025,7 @@ GameObject:
   - component: {fileID: 1521776856}
   - component: {fileID: 1521776859}
   - component: {fileID: 1521776860}
+  - component: {fileID: 1521776861}
   m_Layer: 0
   m_Name: Main Camera
   m_TagString: MainCamera
@@ -71184,6 +71185,18 @@ MonoBehaviour:
   m_CameraActivatedEvent:
     m_PersistentCalls:
       m_Calls: []
+--- !u!114 &1521776861
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1521776855}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e5cbee0267d5c5b9a95193ddd2bb490b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &1556088329
 GameObject:
   m_ObjectHideFlags: 0

@@ -44,7 +44,7 @@ public class StateManager : MonoBehaviour
     #region Animations
     private SpriteAnimator spriteAnimator;
     public SpriteAnimator SpriteAnimator {get { return spriteAnimator; } }
-    private new Animation animation;
+    [SerializeField] private new Animation animation;
     #endregion
 
     #region State Functions
@@ -62,7 +62,8 @@ public class StateManager : MonoBehaviour
 
         // Load animations
         spriteAnimator = GetComponent<SpriteAnimator>();
-
+        animation = GetComponent<Animation>();
+        
         if(_player == null)
             _player = GameObject.FindGameObjectWithTag("Player");
     }
@@ -233,11 +234,13 @@ public class StateManager : MonoBehaviour
     #endregion
     
     #region Animation playing
-    public void attack(StateManager npc, PlayerHealth player)
+    public void attack()
     {
         bool _hit = false;
-        animation.Stop();
-        attackRC = Physics2D.CircleCastAll(npc.getGun().transform.position, npc.getShootRange(), npc.getGun().transform.position, attackableLayer);
+        if (animation.IsPlaying("attackAnimation"))
+            animation.Stop();
+        
+        attackRC = Physics2D.CircleCastAll(getGun().transform.position, getShootRange(), getGun().transform.position, attackableLayer);
 
         for (int i = 0; i < attackRC.Length && !_hit; i++)
         {
