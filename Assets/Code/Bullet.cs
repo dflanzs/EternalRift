@@ -3,7 +3,7 @@ public class Bullet : MonoBehaviour
 {
     private float _range;
     [SerializeField] private float k_GroundedRadius= 2f;
-    private float _damage;
+    private int _damage;
     private  bool _shotByPlayer;
     public float Damage { get { return _damage; } }
 
@@ -69,7 +69,11 @@ public class Bullet : MonoBehaviour
             {
                 for(int i = 0; i < collisions.Length && !_collision;  i++){
                     if(collisions[i].gameObject.CompareTag("Player"))
+                    {
                         _collision = true;
+                        collisions[i].gameObject.GetComponent<PlayerHealth>().TakeDamage(_damage);
+
+                    }
                 }
                 if (_collision)
                 {
@@ -88,7 +92,7 @@ public class Bullet : MonoBehaviour
         }
     }
 
-    public void shoot(Vector3 movement,Vector3 originVector,float range,float damage)
+    public void shoot(Vector3 movement,Vector3 originVector,float range,int damage)
     {
         _range = range;
         _damage = damage;
