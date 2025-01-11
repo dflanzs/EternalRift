@@ -82,6 +82,7 @@ GameObject:
   - component: {fileID: 4002940706388455317}
   - component: {fileID: 3359234506033060666}
   - component: {fileID: 7936930121533801799}
+  - component: {fileID: 1129587506420449095}
   m_Layer: 6
   m_Name: Player
   m_TagString: Player
@@ -462,6 +463,19 @@ MonoBehaviour:
   dashSounds: {fileID: 8300000, guid: f9b6598ec076dc70ca593e2042c37ca0, type: 3}
   keySound: {fileID: 0}
   player: {fileID: 5073718179109900588}
+--- !u!114 &1129587506420449095
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3907452991622423516}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5a062cd65f271cc498c07355ecbfd5cb, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  dialogueManager: {fileID: 0}
 --- !u!1 &8165883850531986992
 GameObject:
   m_ObjectHideFlags: 0

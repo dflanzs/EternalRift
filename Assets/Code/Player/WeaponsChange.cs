@@ -25,13 +25,10 @@ public class WeaponsChange : MonoBehaviour
       else
         Debug.LogWarning("El jugador no tiene armas");
 
-      if(_player == null)
-        _player = (Player) GameObject.Find("Player");
-
       _player.InputHandler.ChangeWeapon += ChangeWeapon;
     }
 
-    void OnDisable(){
+    void OnDestroy(){
       _player.InputHandler.ChangeWeapon -= ChangeWeapon;
     }
 

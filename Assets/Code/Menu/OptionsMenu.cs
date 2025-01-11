@@ -60,11 +60,11 @@ public class OptionsMenu : MonoBehaviour {
     }
 
     public void ToggleAutoShoot(bool value){
-        GameManager.Instance.autoShoot = !GameManager.Instance.autoShoot;
+        GameManager.Instance.autoShoot = value;
     }
 
     public void ToggleFallDamage(bool value){
-        GameManager.Instance.fallDamage = !GameManager.Instance.fallDamage;
+        GameManager.Instance.fallDamage = value;
     }
 
     public void SetVolumeMusica(float volume)
