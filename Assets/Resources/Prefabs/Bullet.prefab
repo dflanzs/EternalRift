@@ -173,6 +173,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   k_GroundedRadius: 0.5
+  player: {fileID: 3907452991622423516, guid: abf6b26570e24404baa46261c0d5ca43, type: 3}
   _rigid: {fileID: 65828750682158186}
 --- !u!114 &7965245427573397803
 MonoBehaviour:

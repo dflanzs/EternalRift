@@ -25,7 +25,15 @@ public class Shoot : MonoBehaviour
     [SerializeField] private string enemyTag = "npc";
 
     private Transform nearestEnemy; // Referencia al enemigo más cercano
-    
+    public AudioSource audioSource;
+
+    public AudioClip shotgun, sniper;
+
+    private void Start(){
+        GameObject sonido = GameObject.Find("PlayerSoundManager");
+        if (sonido != null)
+        audioSource = sonido.GetComponent<AudioSource>();
+    }   
     private void Update()
     {
         // Reduce el cooldown
@@ -90,6 +98,11 @@ public class Shoot : MonoBehaviour
     {
         if (GameManager.Instance.hasWeapon && cooldownCounter <= 0.0f)
         {
+            if(weapon.name == "Sniper")
+                audioSource.PlayOneShot(sniper);
+            if(weapon.name == "Shootgun")
+                audioSource.PlayOneShot(shotgun);
+
             GameObject bullet = ObjectPooling.Instance.requestInstance("Bullet", 0);
             if (bullet != null)
             {
