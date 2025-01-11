@@ -251,7 +251,6 @@ public class Player : MonoBehaviour
     public void ActivateMutation()
     {
         MutationBarEvent?.Invoke();
-        playerData.currentCharge = 0;
     }
     void ResetMutation()
     {
@@ -259,6 +258,7 @@ public class Player : MonoBehaviour
     }
 
     private void LookUp(bool up) {
+        Debug.LogWarning($"{up}");
         if(up)
             playerData.shootDir = ShootDir.UP;
         else

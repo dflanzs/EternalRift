@@ -25,7 +25,6 @@ public class MutationBar : MonoBehaviour
 
     public void AddCharge(float amount)
     {
-        Debug.LogWarning($"{playerData.currentCharge} + {amount}");
         playerData.currentCharge += amount;
         mutationBarUi.UpdateBar(playerData.currentCharge, maxCharge);
 
@@ -36,6 +35,7 @@ public class MutationBar : MonoBehaviour
             if (player != null)
             {
                 player.ActivateMutation();
+                ResetCharge();
             }
         }
     }
