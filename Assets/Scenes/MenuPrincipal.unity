@@ -302,10 +302,10 @@ MonoBehaviour:
   onValueChanged:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 1298382135}
+      - m_Target: {fileID: 7566278747953099303}
         m_TargetAssemblyTypeName: OptionsMenu, Code
         m_MethodName: ToggleAutoShoot
-        m_Mode: 6
+        m_Mode: 0
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
           m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
@@ -683,6 +683,7 @@ MonoBehaviour:
   hasWeapon: 0
   autoShoot: 0
   fallDamage: 0
+  dialogueManager: {fileID: 0}
 --- !u!1 &560740335
 GameObject:
   m_ObjectHideFlags: 0
@@ -843,10 +844,10 @@ MonoBehaviour:
   onValueChanged:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 1298382135}
+      - m_Target: {fileID: 7566278747953099303}
         m_TargetAssemblyTypeName: OptionsMenu, Code
         m_MethodName: ToggleFallDamage
-        m_Mode: 6
+        m_Mode: 0
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
           m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
@@ -979,7 +980,7 @@ RectTransform:
   m_Father: {fileID: 1200703052}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 0, y: 1}
+  m_AnchorMax: {x: 0, y: 0}
   m_AnchoredPosition: {x: -1.9000015, y: 0.0000011920929}
   m_SizeDelta: {x: 6.5444, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
@@ -1283,7 +1284,7 @@ RectTransform:
   m_Father: {fileID: 126603608}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 0, y: 1}
+  m_AnchorMax: {x: 0, y: 0}
   m_AnchoredPosition: {x: -2.5, y: 0}
   m_SizeDelta: {x: 5, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
@@ -1372,14 +1373,13 @@ GameObject:
   - component: {fileID: 1298382132}
   - component: {fileID: 1298382134}
   - component: {fileID: 1298382133}
-  - component: {fileID: 1298382135}
   m_Layer: 5
   m_Name: WndowOption
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!224 &1298382132
 RectTransform:
   m_ObjectHideFlags: 0
@@ -1445,20 +1445,6 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1298382131}
   m_CullTransparentMesh: 0
---- !u!114 &1298382135
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1298382131}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 5917147521a4f0948b9f8dc37b783e80, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  fallDamage: {fileID: 601014706}
-  autoShoot: {fileID: 65478832}
 --- !u!1 &1300004779
 GameObject:
   m_ObjectHideFlags: 0
@@ -1698,7 +1684,7 @@ RectTransform:
   m_Father: {fileID: 1747376353}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 0, y: 1}
+  m_AnchorMax: {x: 0, y: 0}
   m_AnchoredPosition: {x: -1.9000015, y: 0.0000011920929}
   m_SizeDelta: {x: 6.5444, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
@@ -1852,7 +1838,7 @@ RectTransform:
   m_Father: {fileID: 1516755644}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 0, y: 1}
+  m_AnchorMax: {x: 0, y: 0}
   m_AnchoredPosition: {x: -2.5, y: 0}
   m_SizeDelta: {x: 5, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
@@ -2277,7 +2263,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3312291582102142078, guid: 4b7807c5c47345a4b82698b8bcdd3334, type: 3}
       propertyPath: m_AnchoredPosition.x
-      value: 59.4
+      value: 0.40000153
       objectReference: {fileID: 0}
     - target: {fileID: 3312291582102142078, guid: 4b7807c5c47345a4b82698b8bcdd3334, type: 3}
       propertyPath: m_AnchoredPosition.y
@@ -2499,6 +2485,7 @@ GameObject:
   - component: {fileID: 220485082734330567}
   - component: {fileID: 3331858941241720840}
   - component: {fileID: 7566278747953099302}
+  - component: {fileID: 7566278747953099303}
   m_Layer: 5
   m_Name: Canvas
   m_TagString: Untagged
@@ -2923,6 +2910,20 @@ MonoBehaviour:
   MainMenu: {fileID: 803587060}
   OptionMenu: {fileID: 1298382131}
   data: {fileID: 11400000, guid: f44a0ce5a9b83a948a2dfaa764e2ce41, type: 2}
+--- !u!114 &7566278747953099303
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3016668527312161660}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5917147521a4f0948b9f8dc37b783e80, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  fallDamage: {fileID: 601014706}
+  autoShoot: {fileID: 65478832}
 --- !u!1001 &8016185394235080563
 PrefabInstance:
   m_ObjectHideFlags: 0

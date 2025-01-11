@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: playerData
   m_EditorClassIdentifier: 
   movementVelocity: 8
-  facingDir: 2
+  shootDir: 1
   jumpVelocity: 20
   amountOfJumps: 1
   maxVelocity: 45
@@ -32,3 +32,5 @@ MonoBehaviour:
     m_Bits: 8
   mutatedJumpMultiplier: 1.5
   currentCharge: 0
+  cooldownWeapons: 0
+  cooldownFactor: 0.5
