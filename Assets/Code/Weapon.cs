@@ -14,4 +14,6 @@ public class Weapon : ScriptableObject
   public float _speed;
   public float _range;
 
+  public AudioClip _weaponsound;
+
 }
