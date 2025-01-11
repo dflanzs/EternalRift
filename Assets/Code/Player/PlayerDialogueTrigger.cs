@@ -115,7 +115,7 @@ public class PlayerDialogueTrigger : MonoBehaviour
             name = "Guía",
             sentences = new string[]
             {
-                "¿Orion?                                                    (Pulsa Enter para continuar)",
+                "¿Orion?\n(Pulsa Enter para continuar)",
                 "¿Me recibes? Al habla la Doctora Evee Kross.",
                 "Genial, recepción establecida. Podemos comenzar la misión.",
                 "Te recuerdo que tu objetivo es lograr salir de esta cueva para poder infiltrarnos de manera subterránea en el laboratorio de la Facción del Sur.",

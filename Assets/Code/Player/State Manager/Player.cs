@@ -90,23 +90,23 @@ public class Player : MonoBehaviour
         CrouchMoveState = new PlayerCrouchMoveState(this, StateMachine, playerData, "crouchMove");
 
         FacingDirection = 1;
-
-        InputHandler.LookEvent += LookUp;
-        InputHandler.SprintEvent += Sprint;
-        InputHandler.RestartEvent += Restart;
-    }
-
-    void OnDisable(){
-        InputHandler.LookEvent -= LookUp;
-        InputHandler.SprintEvent -= Sprint;
-        InputHandler.RestartEvent -= Restart;
     }
 
     void Start()
     {
+        InputHandler.LookEvent += LookUp;
+        InputHandler.SprintEvent += Sprint;
+        InputHandler.RestartEvent += Restart;
+
         ResetMutation();
         StateMachine.Initialize(IdleState);
         playerData.shootDir = ShootDir.RIGHT;
+    }
+    
+    void OnDestroy(){
+        InputHandler.LookEvent -= LookUp;
+        InputHandler.SprintEvent -= Sprint;
+        InputHandler.RestartEvent -= Restart;
     }
 
     void Update()
@@ -251,7 +251,6 @@ public class Player : MonoBehaviour
     public void ActivateMutation()
     {
         MutationBarEvent?.Invoke();
-        playerData.currentCharge = 0;
     }
     void ResetMutation()
     {
