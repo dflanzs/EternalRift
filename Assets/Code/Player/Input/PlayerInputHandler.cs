@@ -169,7 +169,6 @@ public class PlayerInputHandler : MonoBehaviour
     
     private void OnLookUpInput(InputAction.CallbackContext context) 
     {
-        Debug.LogWarning("Benzema: Ahora me voy a mirar");
         if(context.performed)
             LookEvent?.Invoke(true);
         else if (context.canceled)
@@ -178,7 +177,6 @@ public class PlayerInputHandler : MonoBehaviour
 
     private void OnSprintInput(InputAction.CallbackContext context)
     {
-        Debug.LogWarning("Benzema: Ahora me voy a correr");
         if(context.performed)
             SprintEvent?.Invoke(true);
         else if (context.canceled)
@@ -187,7 +185,6 @@ public class PlayerInputHandler : MonoBehaviour
 
     private void OnRestartInput(InputAction.CallbackContext context)
     {
-        Debug.LogWarning("Benzema: Ahora me voy a resetear");
         RestartEvent?.Invoke();
     }
     
