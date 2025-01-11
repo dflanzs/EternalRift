@@ -510,8 +510,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: -2.1, y: 0}
-  m_SizeDelta: {x: -28, y: -3}
+  m_AnchoredPosition: {x: 7.404182, y: 0}
+  m_SizeDelta: {x: -8.99163, y: -3}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &264470685
 MonoBehaviour:
@@ -546,7 +546,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: "Da\xF1o Por ca\xEDda"
+  m_Text: "Desactivar da\xF1o por ca\xEDda"
 --- !u!222 &264470686
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -1760,8 +1760,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: 3.6, y: -4.4}
-  m_SizeDelta: {x: -14.6329, y: 5.6123}
+  m_AnchoredPosition: {x: 7.962533, y: -4.4}
+  m_SizeDelta: {x: -5.90782, y: 5.6123}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1554645059
 MonoBehaviour:
@@ -1796,7 +1796,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: "Disparo Autom\xE1tico"
+  m_Text: "Activar disparo dutom\xE1tico"
 --- !u!222 &1554645060
 CanvasRenderer:
   m_ObjectHideFlags: 0
