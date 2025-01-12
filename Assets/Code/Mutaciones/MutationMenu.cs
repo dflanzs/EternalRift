@@ -36,6 +36,9 @@ public class MutationMenu : MonoBehaviour
     }
 
     private void HandleMutation() {
+        if(b_salto && b_cooldown)
+            return;
+            
         Time.timeScale = 0;
 
         _panel.SetActive(true);
