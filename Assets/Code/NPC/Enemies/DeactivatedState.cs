@@ -6,6 +6,7 @@ public class DeactivatedState : BaseState
 
     public override void EnterState(StateManager npc, GameObject player)
     {
+        Debug.Log("Deactivate:" + npc.gameObject.GetHashCode());
         rb = npc.GetComponent<Rigidbody2D>();
 
         // Deactivate

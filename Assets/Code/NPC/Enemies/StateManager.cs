@@ -30,7 +30,7 @@ public class StateManager : MonoBehaviour
     [SerializeField] private float _shootCooldown = 1f;
     [SerializeField] private GameObject _crystal;
 
-    private int hashCode;
+    private int instanceID;
     public DeactivatedNPCns.DeactivateNCP.DeactivatedNPCclass deactivatedNPC;
     public GameObject Crystal { get { return _crystal;} }
     private RaycastHit2D[] attackRC;
@@ -60,7 +60,7 @@ public class StateManager : MonoBehaviour
     {
         // Store starting position for object pooling
         _startingPosition = transform.position;
-        hashCode = gameObject.GetHashCode();
+        instanceID = gameObject.GetInstanceID();
         
         currentState = moveState;
         prevState = null;
@@ -77,8 +77,12 @@ public class StateManager : MonoBehaviour
     }
     private void Awake()
     {
+        instanceID = gameObject.GetInstanceID();
+        _startingPosition = transform.position; // Ensure each NPC saves its unique spawn position
         spriteRenderer = GetComponent<SpriteRenderer>();
-        color_original = spriteRenderer.color;  // Guarda el color original
+        color_original = spriteRenderer.color;
+        if(_player == null)
+            _player = GameObject.FindGameObjectWithTag("Player");
     }
 
 
@@ -100,9 +104,9 @@ public class StateManager : MonoBehaviour
             for(int i = 0; i < collidersNPC.Length; i++)
             {
                 if(collidersNPC[i].gameObject.CompareTag("Bullet") 
-                    && _prevBulletHash != collidersNPC[i].gameObject.GetHashCode())
+                    && _prevBulletHash != collidersNPC[i].gameObject.GetInstanceID())
                 {
-                    _prevBulletHash = collidersNPC[i].gameObject.GetHashCode();
+                    _prevBulletHash = collidersNPC[i].gameObject.GetInstanceID();
                     StartCoroutine(FlashDamageEffect());
                     health -= (int) collidersNPC[i].gameObject.GetComponent<Bullet>().Damage;
                 }
@@ -404,38 +408,48 @@ public class StateManager : MonoBehaviour
         public bool focused;
         public bool grounded;
         public bool found;
-        public int hashCode;
+        public int instanceID;
         public Vector2 startingPosition;
         // Agrega otras características si es necesario
     }
 
     public NPCCharacteristics GetAllCharacteristics()
     {
-        return new NPCCharacteristics
-        {
-            flies = this.getFlies(),
-            health = this.getHealth(),
-            bulletSpeed = this.getBulletSpeed(),
-            shootRange = this.getShootRange(),
-            damage = this.getDamage(),
-            shootCooldown = this.getShootCooldown(),
-            crystal = this._crystal,
-            startingPosition = this._startingPosition,
-            hashCode = this.hashCode
-        };
+        NPCCharacteristics c = new NPCCharacteristics();
+        c.instanceID = instanceID;
+        c.startingPosition = _startingPosition; // Return the unique spawn position
+        c.flies = flies;
+        c.health = health;
+        c.bulletSpeed = _bulletSpeed;
+        c.shootRange = _shootRange;
+        c.damage = _damage;
+        c.shootCooldown = _shootCooldown;
+        c.crystal = _crystal;
+        c.direction = direction;
+        c.focused = _focused;
+        c.grounded = _grounded;
+        c.found = _found;
+        c.instanceID = instanceID;
+        c.startingPosition = _startingPosition;
+        return c;
     }
 
-    public void SetAllCharacteristics(NPCCharacteristics characteristics)
+    public void SetAllCharacteristics(NPCCharacteristics c)
     {
-        this.setFlies(characteristics.flies);
-        this.setHealth( characteristics.health);
-        this.setBulletSpeed(characteristics.bulletSpeed);
-        this.setShootRange(characteristics.shootRange);
-        this.setDamage(characteristics.damage);
-        this.setShootCooldown(characteristics.shootCooldown);
-        this._crystal = characteristics.crystal;
-        this._startingPosition = characteristics.startingPosition;
-        this.hashCode = characteristics.hashCode;
+        instanceID = c.instanceID;
+        _startingPosition = c.startingPosition; // Restore the correct spawn position
+        flies = c.flies;
+        health = c.health;
+        _bulletSpeed = c.bulletSpeed;
+        _shootRange = c.shootRange;
+        _damage = c.damage;
+        _shootCooldown = c.shootCooldown;
+        _crystal = c.crystal;
+        direction = c.direction;
+        _focused = c.focused;
+        _grounded = c.grounded;
+        _found = c.found;
+        _startingPosition = c.startingPosition;
     }
     #endregion
 
