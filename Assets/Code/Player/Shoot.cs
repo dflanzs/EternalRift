@@ -8,7 +8,11 @@ public class Shoot : MonoBehaviour
 
     [Header("Gun values")]
     [SerializeField] private Weapon weapon;
-    public Weapon Weapon { set { weapon = value; } }
+    public Weapon Weapon
+    {
+        get { return weapon; }
+        set { weapon = value; }
+    }
 
     private float cooldownCounter = 0.0f;
     public float CooldownCounter { set { cooldownCounter = value; } }
@@ -21,7 +25,15 @@ public class Shoot : MonoBehaviour
     [SerializeField] private string enemyTag = "npc";
 
     private Transform nearestEnemy; // Referencia al enemigo más cercano
-    
+    public AudioSource audioSource;
+
+    public AudioClip shotgun, sniper;
+
+    private void Start(){
+        GameObject sonido = GameObject.Find("PlayerSoundManager");
+        if (sonido != null)
+        audioSource = sonido.GetComponent<AudioSource>();
+    }   
     private void Update()
     {
         // Reduce el cooldown
@@ -40,7 +52,10 @@ public class Shoot : MonoBehaviour
         }
 
         // Detectar disparo automático
-        if (GameManager.Instance.autoShoot)
+        if(GameManager.Instance == null)
+            Debug.LogWarning("No has puesto el GameManager");
+
+        if (GameManager.Instance != null && GameManager.Instance.autoShoot)
         {
             DetectAndShootEnemy();
         }
@@ -83,8 +98,12 @@ public class Shoot : MonoBehaviour
     {
         if (GameManager.Instance.hasWeapon && cooldownCounter <= 0.0f)
         {
-            GameObject bullet = ObjectPooling.Instance.requestInstance("Bullet", 0);
+            if(weapon.name == "Sniper")
+                audioSource.PlayOneShot(sniper);
+            if(weapon.name == "Shootgun")
+                audioSource.PlayOneShot(shotgun);
 
+            GameObject bullet = ObjectPooling.Instance.requestInstance("Bullet", 0);
             if (bullet != null)
             {
                 bullet.SetActive(true);
@@ -93,14 +112,35 @@ public class Shoot : MonoBehaviour
 
                 Bullet bulletScript = bullet.GetComponent<Bullet>();
 
-                Vector3 directionVector = _gun.transform.right * (weapon._speed + Math.Abs(player.CurrentVelocity.magnitude));
+                ShootDir dir = player.playerData.shootDir;
+                Vector3 direction;
+                 
+                if(dir == ShootDir.UP){
+                    direction = _gun.transform.up;
+                    bullet.transform.Rotate(new Vector3(0,0,90));
+                } else
+                    direction = _gun.transform.right;
+
+                Vector3 directionVector = direction * (weapon._speed + Math.Abs(player.CurrentVelocity.magnitude));
                 Vector3 originVector = _gun.transform.position;
                 bulletScript.setWhoShot(true); // true si es el jugador, false si es un NPC
-
+                
+                if (weapon.name == "Sniper"){
+                    bulletScript.ShotByShotgun(false);
+                    bulletScript.setAnimation("rifleAnimation", directionVector.x);
+                }
+                else if(weapon.name == "Shootgun"){
+                    bulletScript.ShotByShotgun(true);
+                    bulletScript.setAnimation("shotgunAnimation", directionVector.x);
+                }
+                
                 bulletScript.shoot(directionVector, originVector, weapon._range, weapon._damage);
 
                 bullet.GetComponent<BoxCollider2D>().gameObject.SetActive(true);
-                cooldownCounter = weapon._cooldown;
+                if(!player.playerData.cooldownWeapons)
+                    cooldownCounter = weapon._cooldown;
+                else
+                    cooldownCounter = weapon._cooldown * player.playerData.cooldownFactor;
 
                 //Debug.Log($"Disparo realizado. Disparo Automático: {autoShootEnabled}");
             }

@@ -13,6 +13,7 @@ GameObject:
   - component: {fileID: -8541482961809384718}
   - component: {fileID: 65828750682158186}
   - component: {fileID: 1925558059613676048}
+  - component: {fileID: 7965245427573397803}
   m_Layer: 0
   m_Name: Bullet
   m_TagString: Bullet
@@ -28,7 +29,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 5574008668113540788}
   serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: -0.7071068, w: 0.7071068}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
@@ -172,4 +173,42 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   k_GroundedRadius: 0.5
+  player: {fileID: 3907452991622423516, guid: abf6b26570e24404baa46261c0d5ca43, type: 3}
   _rigid: {fileID: 65828750682158186}
+--- !u!114 &7965245427573397803
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5574008668113540788}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 389ae12084a39ffaf8c0bd92b71a3d87, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  spriteRenderer: {fileID: 3286993151273100138}
+  animations:
+  - name: rifleAnimation
+    fps: 4
+    frames:
+    - {fileID: 21300000, guid: 7be98878fd06a7a0681faf1552d45821, type: 3}
+    - {fileID: 21300000, guid: 1fe1eb7e9f63cbec0b3d39c9af60ec3a, type: 3}
+    - {fileID: 21300000, guid: 9d081ad379d83093ea9c0377219a35a4, type: 3}
+    - {fileID: 21300000, guid: 787ef6ac1f57ccdacaeb45e593cda6a9, type: 3}
+    sequenceCode: 0,1,2,3
+    cue: 
+    triggers: []
+  - name: shotgunAnimation
+    fps: 30
+    frames:
+    - {fileID: 21300000, guid: d33d40feca5371932817bb96fe9bcee5, type: 3}
+    - {fileID: 21300000, guid: 31bf06764a40166b7a4dceba3dddeaaa, type: 3}
+    - {fileID: 21300000, guid: c593f4b9033ccf161a39a4249cfc429c, type: 3}
+    - {fileID: 21300000, guid: b377671a23e4fb906b8c711fd99b1b52, type: 3}
+    sequenceCode: 0,1,2,3
+    cue: 
+    triggers: []
+  loop: 0
+  speedMultiplier: 1
+  playAnimationOnStart: 

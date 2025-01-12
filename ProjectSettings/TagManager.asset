@@ -22,6 +22,10 @@ TagManager:
   - ButtonOpen
   - puerta
   - final
+  - MensajeCuidado
+  - DialogueTrigger
+  - MensajeCristal
+  - MensajeFinal
   layers:
   - Default
   - TransparentFX
@@ -56,6 +60,6 @@ TagManager:
   - 
   - 
   m_SortingLayers:
-  - name: Default
+  - name: weapon
     uniqueID: 0
     locked: 0

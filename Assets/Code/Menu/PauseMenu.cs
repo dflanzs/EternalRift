@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class PauseMenu : MonoBehaviour
 {
@@ -8,6 +9,11 @@ public class PauseMenu : MonoBehaviour
     public GameObject OptionMenu;
     public GameObject PasueMenu;
     public GameObject LeaveMenu;
+
+    public Slider volumeMusicaSlider, volumeSonidoSlider;
+    public AudioSource audioSourceMusica;
+    public AudioSource[] audioSourceSonido;
+
 
     public void MainMenuButton()
     {

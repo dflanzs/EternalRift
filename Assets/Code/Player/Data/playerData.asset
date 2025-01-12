@@ -13,15 +13,15 @@ MonoBehaviour:
   m_Name: playerData
   m_EditorClassIdentifier: 
   movementVelocity: 8
+  shootDir: 1
   jumpVelocity: 20
   amountOfJumps: 1
-  maxVelocity: 100
+  maxVelocity: 45
   coyoteTime: 0.2
   jumpHeightMultiplier: 0.8
   dashVelocity: 15
   dashCooldown: 1
-  dashTime: 3
-  dashWhileMovingMultiplier: 2.5
+  dashTime: 0.2
   crouchMovementVelocity: 5
   crouchColliderHeight: 1
   standColliderHeight: 2
@@ -32,3 +32,5 @@ MonoBehaviour:
     m_Bits: 8
   mutatedJumpMultiplier: 1.5
   currentCharge: 0
+  cooldownWeapons: 0
+  cooldownFactor: 0.5

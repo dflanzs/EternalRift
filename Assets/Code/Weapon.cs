@@ -9,9 +9,11 @@ public class Weapon : ScriptableObject
 
   public Sprite artwork;
 
-  public float _damage;
+  public int _damage;
   public float _cooldown;
   public float _speed;
   public float _range;
+
+  public AudioClip _weaponsound;
 
 }

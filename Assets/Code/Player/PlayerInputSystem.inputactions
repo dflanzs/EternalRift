@@ -40,6 +40,42 @@
                     "processors": "",
                     "interactions": "",
                     "initialStateCheck": true
+                },
+                {
+                    "name": "LookUp",
+                    "type": "Button",
+                    "id": "2df7b3ab-f6ed-4f05-9b15-1615422c1d15",
+                    "expectedControlType": "",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                },
+                {
+                    "name": "Sprint",
+                    "type": "Button",
+                    "id": "cf4b9cae-4fe6-4c3b-bb4d-38fa0505c8c3",
+                    "expectedControlType": "",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                },
+                {
+                    "name": "Restart",
+                    "type": "Button",
+                    "id": "90ca806f-5964-49b9-b0eb-1f73fb1e2303",
+                    "expectedControlType": "",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                },
+                {
+                    "name": "Weapon",
+                    "type": "Button",
+                    "id": "c383c1b0-5824-42a1-a02b-b7947fb1caa1",
+                    "expectedControlType": "",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
                 }
             ],
             "bindings": [
@@ -68,7 +104,7 @@
                 {
                     "name": "",
                     "id": "fafab3f2-7526-4813-aad6-319ca0ea590c",
-                    "path": "<Mouse>/leftButton",
+                    "path": "<Keyboard>/k",
                     "interactions": "",
                     "processors": "",
                     "groups": ";Keyboard",
@@ -83,28 +119,6 @@
                     "interactions": "",
                     "processors": "",
                     "groups": ";Gamepad",
-                    "action": "Shoot",
-                    "isComposite": false,
-                    "isPartOfComposite": false
-                },
-                {
-                    "name": "",
-                    "id": "b2c6a628-9b0d-48fc-aa1e-0d8d551c0209",
-                    "path": "<Gamepad>/buttonWest",
-                    "interactions": "Hold",
-                    "processors": "",
-                    "groups": ";Gamepad",
-                    "action": "Shoot",
-                    "isComposite": false,
-                    "isPartOfComposite": false
-                },
-                {
-                    "name": "",
-                    "id": "64986149-e856-4a60-a335-e9f0a421dcef",
-                    "path": "<Mouse>/leftButton",
-                    "interactions": "Hold",
-                    "processors": "",
-                    "groups": ";Keyboard",
                     "action": "Shoot",
                     "isComposite": false,
                     "isPartOfComposite": false
@@ -183,6 +197,50 @@
                     "processors": "StickDeadzone",
                     "groups": ";Gamepad",
                     "action": "Move",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "16e24fe2-48bf-4174-a379-61d8da133ba3",
+                    "path": "<Keyboard>/w",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "LookUp",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "9c421abe-13b1-4d7d-b1c5-c2966f303839",
+                    "path": "<Keyboard>/shift",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Sprint",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "bb224b21-7ff3-4a9d-96cd-dd29176054b6",
+                    "path": "<Keyboard>/z",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Restart",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "d57a4fef-18ba-4e8a-a412-3144dd51186f",
+                    "path": "<Keyboard>/l",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Weapon",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }

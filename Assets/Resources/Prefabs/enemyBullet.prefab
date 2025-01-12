@@ -13,6 +13,7 @@ GameObject:
   - component: {fileID: 1296540209230627093}
   - component: {fileID: -4016270751563027530}
   - component: {fileID: -795805872326729795}
+  - component: {fileID: 9179123629146177534}
   m_Layer: 2
   m_Name: enemyBullet
   m_TagString: enemyBullets
@@ -76,7 +77,7 @@ SpriteRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
-  m_Sprite: {fileID: -2413806693520163455, guid: a86470a33a6bf42c4b3595704624658b, type: 3}
+  m_Sprite: {fileID: 21300000, guid: 63f9bace4f63860539d6184c8abca002, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
@@ -160,16 +161,43 @@ BoxCollider2D:
   m_IsTrigger: 0
   m_UsedByEffector: 0
   m_UsedByComposite: 0
-  m_Offset: {x: 0, y: 0}
+  m_Offset: {x: -0.028862, y: -0.00360775}
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
     pivot: {x: 0.5, y: 0.5}
-    oldSize: {x: 1, y: 1}
+    oldSize: {x: 1.0666667, y: 1.0666667}
     newSize: {x: 1, y: 1}
     adaptiveTilingThreshold: 0.5
     drawMode: 0
     adaptiveTiling: 0
   m_AutoTiling: 0
   serializedVersion: 2
-  m_Size: {x: 1, y: 1}
+  m_Size: {x: 0.6247935, y: 0.5598539}
   m_EdgeRadius: 0
+--- !u!114 &9179123629146177534
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3166457267423469801}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 389ae12084a39ffaf8c0bd92b71a3d87, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  spriteRenderer: {fileID: 5099925169221214066}
+  animations:
+  - name: bulletAnimation
+    fps: 4
+    frames:
+    - {fileID: 21300000, guid: 63f9bace4f63860539d6184c8abca002, type: 3}
+    - {fileID: 21300000, guid: c546b1ec458a2d1129fffd998800cf56, type: 3}
+    - {fileID: 21300000, guid: cdca89641f3e0cb15b096999c654bc67, type: 3}
+    - {fileID: 21300000, guid: 477c05e719f0ebddf9a55c2626cac622, type: 3}
+    sequenceCode: 0,1,2,3
+    cue: 
+    triggers: []
+  loop: 0
+  speedMultiplier: 1
+  playAnimationOnStart: 
