@@ -4,8 +4,8 @@ using UnityEngine;
 
 public class ObjectPooling : MonoBehaviour
 {
-    [SerializeField] private Queue<GameObject> bulletsPool, enemyBulletsPool; 
-    Dictionary<int, GameObject> enemy1Pool, enemy2Pool;
+    [SerializeField] private Queue<GameObject> bulletsPool = new Queue<GameObject>(), enemyBulletsPool = new Queue<GameObject>(); 
+    Dictionary<int, GameObject> enemy1Pool = new Dictionary<int, GameObject>(), enemy2Pool = new Dictionary<int, GameObject>();
 
     [SerializeField] private GameObject bulletPrefab, enemy1Prefab, enemy2Prefab, enemyBullet;
     List<int> enemy1Positions = new List<int>();
@@ -21,13 +21,8 @@ public class ObjectPooling : MonoBehaviour
         get { return poolInstance; }
     }
 
-    void Awake()
+    void Start()
     {   
-        bulletsPool = new Queue<GameObject>();
-        enemy1Pool = new Dictionary<int, GameObject>();     
-        enemy2Pool = new Dictionary<int, GameObject>();
-        enemyBulletsPool = new Queue<GameObject>();
-        
         if(poolInstance == null)
         {
             poolInstance = this;
@@ -41,9 +36,9 @@ public class ObjectPooling : MonoBehaviour
         foreach (GameObject enemy in enemies)
         {
             if (enemy.GetComponent<StateManager>().getFlies())
-                enemy2Positions.Add(enemy.GetHashCode());
+                enemy2Positions.Add(enemy.GetInstanceID());
             else
-                enemy1Positions.Add(enemy.GetHashCode());
+                enemy1Positions.Add(enemy.GetInstanceID());
         }
 
         addToPool(bulletsPoolSize, enemiesPoolSize, enemyBulletsPoolSize);
@@ -89,7 +84,7 @@ public class ObjectPooling : MonoBehaviour
         }
     }
 
-    public GameObject requestInstance(string objectType, int hashCode)
+    public GameObject requestInstance(string objectType, int instanceID)
     {
         GameObject auxGO;
         if(objectType == "Bullet")
@@ -113,9 +108,9 @@ public class ObjectPooling : MonoBehaviour
                 return null;
             }
 
-            if (!enemy1Pool.TryGetValue(hashCode, out auxGO))
+            if (!enemy1Pool.TryGetValue(instanceID, out auxGO))
             {
-                Debug.LogError($"No enemy1 found with hashCode: {hashCode}");
+                Debug.LogError($"No enemy1 found with instanceID: {instanceID}");
                 return null;
             }
 
@@ -139,9 +134,9 @@ public class ObjectPooling : MonoBehaviour
                 return null;
             }
 
-            if (!enemy2Pool.TryGetValue(hashCode, out auxGO))
+            if (!enemy2Pool.TryGetValue(instanceID, out auxGO))
             {
-                Debug.LogError($"No enemy2 found with hashCode: {hashCode}");
+                Debug.LogError($"No enemy2 found with instanceID: {instanceID}");
                 return null;
             }
 
