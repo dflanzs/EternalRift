@@ -14,10 +14,10 @@ namespace DeactivatedNPCns
             public bool isActivated;
             public StateManager.NPCCharacteristics characteristics;
         }
-
+            
+        private GameObject enemy; 
         private GameObject _player;
         private List<DeactivatedNPCclass> npcList;
-        private GameObject enemy;
         void Start()
         {  
             npcList = new List<DeactivatedNPCclass>();
@@ -57,9 +57,9 @@ namespace DeactivatedNPCns
                 {
                     Debug.Log("playerNear");
                     if (deactivatedNPC.characteristics.flies)
-                        enemy = ObjectPooling.Instance.requestInstance("Enemy2", deactivatedNPC.characteristics.hashCode);
+                        enemy = ObjectPooling.Instance.requestInstance("Enemy2", deactivatedNPC.characteristics.instanceID);
                     if(!deactivatedNPC.characteristics.flies)
-                        enemy = ObjectPooling.Instance.requestInstance("Enemy1", deactivatedNPC.characteristics.hashCode);
+                        enemy = ObjectPooling.Instance.requestInstance("Enemy1", deactivatedNPC.characteristics.instanceID);
 
                     if (enemy != null)
                     {
@@ -83,6 +83,10 @@ namespace DeactivatedNPCns
                         enemy.SetActive(true);
                         deactivatedNPC.isActivated = true;
                         npcList[i] = deactivatedNPC;
+                    }
+                    else
+                    {
+                        Debug.Log("Enemy is null");
                     }
                 }
             }
