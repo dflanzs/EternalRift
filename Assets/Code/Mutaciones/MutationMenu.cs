@@ -28,6 +28,15 @@ public class MutationMenu : MonoBehaviour
 
         Player.MutationBarEvent += HandleMutation;
         Player.MutationResetEvent += HandleMutationReset;
+
+        b_cooldown = _player.playerData.cooldownWeapons;
+        b_salto = _player.playerData.jumpVelocity > 20.0f;
+
+        if(b_salto)
+            _salto.gameObject.SetActive(false);
+
+        if(b_cooldown)
+            _cooldown.gameObject.SetActive(false);
     }
 
     private void OnDestroy(){
